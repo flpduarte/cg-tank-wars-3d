@@ -20,6 +20,7 @@
 #include "explosoes.hpp"
 
 /* Implementação das funções da classe Municao */
+
 /**
  * Valor da derivada do i-ésima variável de estado,
  * no instante atual. O tempo foi desprezado porque

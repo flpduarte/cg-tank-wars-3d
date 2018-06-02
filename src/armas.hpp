@@ -84,6 +84,7 @@ enum TipoMunicao
     BOMBA5MEGATONS
 };
 
+
 /**
  * Estrutura MunicaoEQtd: Agrupa uma munição e sua respectiva quantidade,
  * para uso na classe Jogador, ao criar a lista de munições.
