@@ -21,6 +21,8 @@
  * Nesta versão inicial do programa, o projétil se deslocará somente no plano XZ
  * do sistema de coordenadas do mundo.
  */
+#ifndef MUNICAO_HPP
+#define MUNICAO_HPP
 
 /**
  * Municao: interface para munições. Cada munição implementada no jogo seguirá
@@ -80,3 +82,5 @@ public:
     void detonar();             // Executa o efeito de explosão no local atual
                                 // do armamento
 };
+
+#endif

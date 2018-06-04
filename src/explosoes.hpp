@@ -13,6 +13,8 @@
  * Inicialmente conterá somente explosão;
  * No futuro, será incluso aqui a produção de terra (Ball of Dirt).
  */
+#ifndef EXPLOSOES_HPP
+#define EXPLOSOES_HPP
 
 /**
  * Efeito de explosão: exibe na tela o efeito de explosão a partir do epicentro
@@ -29,3 +31,5 @@
  *                   | (configurado como a constante FRACAO_RAIO_DANOa)
  */
 void efeito_explosao(int epicentro[3], int raio_explosao);
+
+#endif

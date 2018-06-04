@@ -12,9 +12,11 @@
  * Contém as declarações da classe Jogador e outras classes relacionadas.
  *
  */
+#ifndef JOGADOR_HPP
+#define JOGADOR_HPP
+
 #include <string>
 #include "armas.hpp"
-using namespace std;
 
 /**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
@@ -22,8 +24,8 @@ using namespace std;
 struct Jogador
 {
     // Propriedades do tanque
-    string nome[31];
     float cor[3];       // em RGB
+    std::string nome;
 
     // Pontuação, dinheiro e armamentos disponíveis
     int pontos;
@@ -40,3 +42,5 @@ struct Jogador
     Jogador(int i);
     //void re
 };
+
+#endif

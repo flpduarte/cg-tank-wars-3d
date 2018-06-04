@@ -17,11 +17,12 @@ CXXFLAGS = -Wall -Werror -O0 -ggdb3
 LDLIBS   = -lm -lglut32cu -lglu32 -lopengl32
 
 # Arquivos fonte
-FONTES = bomb.cpp armas.cpp explosoes.cpp jogador.cpp mundo.cpp municao.cpp
+FONTES = bomb.cpp armas.cpp explosoes.cpp globals.cpp interacoes.cpp jogador.cpp \
+         mundo.cpp municao.cpp objetos3D.cpp
 OBJS = $(FONTES:.cpp=.o)
 
 # Headers comuns a todos os arquivos. Headers específicos serão gravados em suas respectivas regras
-DEP_COMUNS = constantes.hpp Makefile
+DEP_COMUNS = constantes.hpp globals.hpp objetos3D.hpp Makefile
 
 # default target
 bomb: $(OBJS)
@@ -32,11 +33,13 @@ $(OBJS): $(DEP_COMUNS)
 
 # dependencias especificas
 armas.o: armas.hpp
+explosoes.o municao.o: explosoes.hpp
 jogador.o mundo.o: jogador.hpp
 mundo.o: mundo.hpp
 municao.o mundo.o armas.o: municao.hpp
-explosoes.o municao.o: explosoes.hpp
 
+objetos3D.o: objetos3D.cpp
+	$(CXX) $(CXXFLAGS) -c -o $@ $< $(LDLIBS)
 
 clean:
 	del *.exe *.o *.gch

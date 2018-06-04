@@ -13,6 +13,9 @@
  * de armamentos existente.
  *
  */
+#ifndef ARMAS_HPP
+#define ARMAS_HPP
+
 #include <array>
 #include "municao.hpp"
 
@@ -97,3 +100,5 @@ struct MunicaoEQtd
 
 MunicaoEQtd *nova_lista_municoes();
 Municao     *obter_objeto_municao(TipoMunicao tipo);
+
+#endif
