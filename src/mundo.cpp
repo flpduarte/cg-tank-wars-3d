@@ -22,14 +22,16 @@
  */
 Mundo::Mundo()
 {
-    this->tela_atual = TELA_INICIAL;
-    this->n_jogadores = PADRAO_N_JOGADORES;
-
     // Inicia os jogadores
     for (int i = 0; i < MAX_JOGADORES; i++)
     {
         this->jogadores[i] = new Jogador(i + 1);
     }
+
+    // Configurações padrão
+    this->tela_atual  = TELA_INICIAL;
+    this->n_jogadores = PADRAO_N_JOGADORES;
+    this->n_rodadas   = PADRAO_N_RODADAS;
 }
 
 /**
@@ -37,6 +39,7 @@ Mundo::Mundo()
  */
 Mundo::~Mundo()
 {
+
     for (int i = 0; i < MAX_JOGADORES; i++)
     {
         delete this->jogadores[i];

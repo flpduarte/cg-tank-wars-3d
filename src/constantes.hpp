@@ -19,7 +19,7 @@
 
 /* Configuração padrão do jogo */
 #define PADRAO_N_JOGADORES 2
-
+#define PADRAO_N_RODADAS   10
 
 /* Dimensões e posição da janela */
 #define JANELA_LARGURA     800
