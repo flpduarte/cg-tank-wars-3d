@@ -1,0 +1,4 @@
+http://www.inf.pucrs.br/~manssour/OpenGL/Menus-Fonte.html
+https://stackoverflow.com/questions/14318/using-glut-bitmap-fonts?noredirect=1&lq=1
+https://stackoverflow.com/questions/18847109/displaying-fixed-location-2d-text-in-a-3d-opengl-world-using-glut/21923064#21923064
+https://stackoverflow.com/questions/9430852/glutbitmapcharacter-positions-text-wrong?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
