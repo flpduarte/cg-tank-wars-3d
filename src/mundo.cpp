@@ -32,6 +32,9 @@ Mundo::Mundo()
     this->tela_atual  = TELA_INICIAL;
     this->n_jogadores = PADRAO_N_JOGADORES;
     this->n_rodadas   = PADRAO_N_RODADAS;
+
+    // Cria o menu principal a partir dos dados do Mundo
+    this->configurar_menu_principal();
 }
 
 /**
@@ -44,4 +47,29 @@ Mundo::~Mundo()
     {
         delete this->jogadores[i];
     }
+}
+
+/**
+ * Cria as entradas do menu principal.
+ * Entradas são:
+ * - Escolha do número de jogadores
+ * - Escolha do número de rodadas
+ * - Botão "Continuar"
+ *
+ * Botão continuar deve ser associado à ação "escolher jogadores"
+ */
+void Mundo::configurar_menu_principal()
+{
+    // TODO
+    return;
+}
+
+
+/**
+ * Inicia a tela principal do jogo.
+ */
+void Mundo::tela_inicial()
+{
+    this->menu_principal.exibir();
+    this->tela_atual = TELA_INICIAL;
 }

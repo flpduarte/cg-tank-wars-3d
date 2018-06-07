@@ -23,10 +23,12 @@
 
 using namespace std;
 
+void configura_menu_principal(Menu &);
 
+/* Função Principal */
 int main()
 {
-    // Inicia janela
+    // Configurações da tela do jogo
     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowPosition(JANELA_POSICAO_X, JANELA_POSICAO_Y);
     glutInitWindowSize(JANELA_LARGURA, JANELA_ALTURA);
@@ -42,5 +44,7 @@ int main()
     //glutTimerFunc(10,timerFunc,1);
 
     // Inicia loop do jogo
+    estado_do_mundo.tela_inicial();
 	glutMainLoop();
+    return 0;
 }
