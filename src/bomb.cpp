@@ -23,8 +23,6 @@
 
 using namespace std;
 
-void configura_menu_principal(Menu &);
-
 /* Função Principal */
 int main()
 {
@@ -44,7 +42,7 @@ int main()
     //glutTimerFunc(10,timerFunc,1);
 
     // Inicia loop do jogo
-    estado_do_mundo.tela_inicial();
+    mundo.tela_inicial();
 	glutMainLoop();
     return 0;
 }

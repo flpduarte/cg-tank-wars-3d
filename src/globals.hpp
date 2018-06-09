@@ -17,6 +17,6 @@
 #include "mundo.hpp"
 #include "menu.hpp"
 
-extern Mundo estado_do_mundo;
+extern Mundo mundo;
 
 #endif

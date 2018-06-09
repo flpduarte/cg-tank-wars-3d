@@ -18,9 +18,9 @@
 #ifndef INTERACOES_HPP
 #define INTERACOES_HPP
 
-void interacao_teclado(unsigned char tecla, int x, int y);
-void interacao_teclas_especiais(int key, int x, int y);
-void interacao_mouse(int botao, int estado, int x, int y);
+void interacao_teclado(unsigned char, int, int);
+void interacao_teclas_especiais(int, int, int);
+void interacao_mouse(int, int, int, int);
 void funcao_exibicao();
 
 #endif

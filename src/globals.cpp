@@ -18,5 +18,4 @@
  */
 #include "globals.hpp"
 
-Mundo estado_do_mundo;
-Menu  menu_principal;
+Mundo mundo;

@@ -14,10 +14,18 @@
  * - Interação com o Mouse (se houver)
  * - Função principal de exibição
  * - Função de animação, se necessária.
+ *
+ * Obs: As implementações foram passadas para a classe Mundo.
+ * Como o OpenGL exige que as funções a serem passadas para glutKeyboardFunc(),
+ * glutMouseFunc(), etc. sejam *estáticas* ou "standalone", então as implemen-
+ * tações aqui apenas chamarão suas funções correspondentes no objeto global
+ * mundo. Ou seja, aqui elas são apenas um "Wrap".
+ *
+ * Isso permitirá acessar todas as propriedades do mundo.
+ * https://stackoverflow.com/questions/23774223/cannot-convert-classnameglutkeyboard-from-type-void-classnameunsigned
  */
-#include "constantes.hpp"
-#include "globals.hpp"
 #include "interacoes.hpp"
+#include "globals.hpp"
 
 /**
  * Função responsável pela exibição dos itens na tela. É provavelmente a principal
@@ -27,28 +35,7 @@
  */
 void funcao_exibicao()
 {
-    switch (estado_do_mundo.tela_atual)
-    {
-        case TELA_INICIAL:
-        // TODO
-        break;
-
-        case TELA_RENOMEAR_JOGADORES:
-        // TODO
-        break;
-
-        case TELA_RODADA:
-        // TODO
-        break;
-
-        case TELA_RESULTADO_PARCIAL:
-        // TODO
-        break;
-
-        case TELA_COMPRAS:
-        // TODO
-        break;
-    }
+    mundo.funcao_exibicao();
 }
 
 
@@ -57,58 +44,16 @@ void funcao_exibicao()
  */
 void interacao_teclado(unsigned char tecla, int x, int y)
 {
-    switch (estado_do_mundo.tela_atual)
-    {
-        case TELA_INICIAL:
-        // TODO
-        break;
-
-        case TELA_RENOMEAR_JOGADORES:
-        // TODO
-        break;
-
-        case TELA_RODADA:
-        // TODO
-        break;
-
-        case TELA_RESULTADO_PARCIAL:
-        // TODO
-        break;
-
-        case TELA_COMPRAS:
-        // TODO
-        break;
-    }
+    mundo.interacao_teclado(tecla, x, y);
 }
 
 
 /**
  * Descreve a interação com as teclas especiais em cada parte do jogo, se houver.
  */
-void interacao_teclas_especiais(int key, int x, int y)
+void interacao_teclas_especiais(int tecla, int x, int y)
 {
-    switch (estado_do_mundo.tela_atual)
-    {
-        case TELA_INICIAL:
-        // TODO
-        break;
-
-        case TELA_RENOMEAR_JOGADORES:
-        // TODO
-        break;
-
-        case TELA_RODADA:
-        // TODO
-        break;
-
-        case TELA_RESULTADO_PARCIAL:
-        // TODO
-        break;
-
-        case TELA_COMPRAS:
-        // TODO
-        break;
-    }
+    mundo.interacao_teclas_especiais(tecla, x, y);
 }
 
 
@@ -117,26 +62,6 @@ void interacao_teclas_especiais(int key, int x, int y)
  */
 void interacao_mouse(int botao, int estado, int x, int y)
 {
-    switch (estado_do_mundo.tela_atual)
-    {
-        case TELA_INICIAL:
-        // TODO
-        break;
-
-        case TELA_RENOMEAR_JOGADORES:
-        // TODO
-        break;
-
-        case TELA_RODADA:
-        // TODO
-        break;
-
-        case TELA_RESULTADO_PARCIAL:
-        // TODO
-        break;
-
-        case TELA_COMPRAS:
-        // TODO
-        break;
-    }
+    mundo.interacao_mouse(botao, estado, x, y);
 }
+;
