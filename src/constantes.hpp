@@ -18,8 +18,9 @@
 #define PI 3.14159265358979
 
 /* Configuração padrão do jogo */
-#define PADRAO_N_JOGADORES 2
-#define PADRAO_N_RODADAS   10
+#define PADRAO_N_JOGADORES  2
+#define PADRAO_N_RODADAS    10
+#define MAX_CARACTERES_NOME 15
 
 /* Dimensões e posição da janela */
 #define JANELA_LARGURA     800

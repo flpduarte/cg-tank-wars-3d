@@ -34,11 +34,12 @@ public:
     void reagir_a_teclado(unsigned char);  // Botões reagem à tecla Enter.
 
     Botao(std::string, void (void));
+    ~Botao();
 };
 
 
 /**
- * Cria uma entrada do menu que permite alterar um valor com as teclas para
+ * Cria uma opção do menu que permite alterar um valor com as teclas para
  * a esquerda ou para a direita. Algo do tipo:
  *
  * +-------------------------------+
@@ -62,8 +63,41 @@ class OpcaoAlterarValorNumerico : public OpcaoMenu
 
 public:
     OpcaoAlterarValorNumerico(std::string, int, int, int &);
+    ~OpcaoAlterarValorNumerico();
 };
 
+/**
+ * Cria uma classe de opção do menu no qual o título está relacionado a uma va-
+ * riável string. Ela é utilizada para renomear jogadores. Pode também ser usado
+ * para renomear outros objetos. Terá um formato parecido com este:
+ *
+ * +-------------------------------+
+ * | Jogador 1                     |
+ + +-------------------------------+
+ *
+ * Clicar Enter sobre a caixa muda a cor de seu fundo para um azul escuro e
+ * apresenta um cursor à frente da última letra. O botão estará no modo edição,
+ * e teclas normais do teclado modificarão o string título.
+ *
+ * Um segundo enter desativará o modo edição e salvará o string título na variá-
+ * vel a que se refere o botão.
+ *
+ * O botão terá um limite de número de caracteres, bem como aceitará somente
+ * caracteres alfanumericos, espaços e backspace. Não aceitará tabs.
+ *
+ */
+class OpcaoEditarNome : public OpcaoMenu
+{
+    unsigned int max_caracteres;
+    std::string &referencia;
+    bool modo_edicao;
+
+public:
+    OpcaoEditarNome(std::string &, unsigned int);
+    ~OpcaoEditarNome();
+    void desenhar();
+    void reagir_a_teclado(unsigned char);
+};
 
 
 #endif

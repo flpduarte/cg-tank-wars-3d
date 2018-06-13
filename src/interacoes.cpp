@@ -90,7 +90,7 @@ void renomear_jogadores()
  * Executa as ações de iniciar um jogo do zero. Executada após clicar "INICIAR"
  * na tela de renomear os jogadores.
  */
-void inicia_jogo()
+void iniciar_jogo()
 {
     mundo.inicia_jogo();
 }
@@ -98,18 +98,17 @@ void inicia_jogo()
 /**
  * Inicia o loop de uma rodada atual
  */
-void inicia_rodada()
+void iniciar_rodada()
 {
     mundo.inicia_rodada();
 }
 
 /**
  * Apresenta a tela de resultados parciais, após o término de uma rodada.
- * Recebe como entrada o número do jogador vencedor da última partida.
  */
-void resultado_parcial(int vencedor)
+void resultado_parcial()
 {
-    mundo.resultado_parcial(vencedor);
+    mundo.resultado_parcial();
 }
 
 /**
@@ -117,7 +116,7 @@ void resultado_parcial(int vencedor)
  * Recebe como entrada o número do jogador. Deve ser executado com cada jogador
  * ativo.
  */
-void tela_compras(int jogador)
+void tela_compras(unsigned int jogador)
 {
     mundo.tela_compras(jogador);
 }

@@ -37,6 +37,7 @@ Municao     *obter_objeto_municao(TipoMunicao tipo);
 struct Jogador
 {
     // Propriedades do tanque
+    int njogador;       // Número do jogador: 1, 2, ..., MAX_JOGADORES.
     float cor[3];       // em RGB
     std::string nome;
 
@@ -53,7 +54,7 @@ struct Jogador
 
     // Métodos
     Jogador(int i);
-    //void re
+    ~Jogador();
 };
 
 #endif

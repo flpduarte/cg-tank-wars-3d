@@ -24,8 +24,10 @@
  * - tit: título do botão
  * - fn : Ação a executar quando o botão é selecionado e Enter é pressionado.
  *
+ * ~Botao(): função destrutora da classe botão; nada a fazer.
  */
 Botao::Botao(std::string tit, void fn()) : OpcaoMenu(tit), acao(fn) {}
+Botao::~Botao() {}
 
 /**
  * desenhar()

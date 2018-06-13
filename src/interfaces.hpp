@@ -39,6 +39,7 @@ public:
     float cor_titulo[3];
 
     OpcaoMenu(std::string titulo);                          // Cria objeto com altura e largura padrão. Pode ser modificado depois.
+    virtual ~OpcaoMenu() = 0;                               // Obriga classes filhas a definirem um destrutor
     virtual void desenhar() = 0;                            // Virtual puro, classes filhas DEVEM implementá-lo.
     virtual void reagir_a_tecla_especial(int tecla) {}      // se não implementado, esta opção não reage a teclas especiais.
     virtual void reagir_a_teclado(unsigned char) {}         // retorna true se precisar atualizar a tela após a ação.
@@ -65,6 +66,7 @@ class Menu
 
 public:
     Menu(int, int);                             // Recebe a origem do Menu como entrada
+    ~Menu();                                    // Libera a memória usada pelas opções
     void inserir_opcao(OpcaoMenu *);
     void exibir();
     void gerenciar_teclado(unsigned char);

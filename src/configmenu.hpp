@@ -16,10 +16,11 @@
 #define CONFIGMENU_HPP
 
 #include "menu.hpp"
+#include "jogador.hpp"
 
 Menu *criar_menu_principal();
 Menu *criar_menu_renomear_jogadores();
 Menu *criar_menu_resultado_parcial();
-Menu *criar_menu_compras(int);
+Menu *criar_menu_compras(Jogador *);
 
 #endif

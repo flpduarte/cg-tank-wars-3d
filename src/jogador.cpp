@@ -21,9 +21,10 @@
 void definir_cor(float *, const int);     // função local para definir a cor do tanque
 
 /**
- * Cria um novo jogador. A cor do jogador é definida pelo seu índice i.
+ * Cria um novo jogador.
+ * Entrada: número do jogador: 1, 2, ..., MAX_JOGADORES.
  */
-Jogador::Jogador(int i)
+Jogador::Jogador(int i): njogador(i)
 {
     // define a cor do tanque:
     definir_cor(this->cor, i);
@@ -40,6 +41,14 @@ Jogador::Jogador(int i)
     this->potencia = 200;
 }
 
+/**
+ * Libera a memória utilizada pelo objeto Jogador
+ */
+Jogador::~Jogador()
+{
+    // TODO: apagar lista_municoes. Preciso ajudar a função nova_lista_municoes(),
+    // que está criando a lista sem fornecer o seu tamanho.
+}
 
 /**
  * Define a cor do tanque de acordo com o número do jogador.

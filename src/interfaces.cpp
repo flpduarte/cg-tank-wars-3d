@@ -84,6 +84,18 @@ void Menu::gerenciar_teclas_especiais(int tecla)
 }
 
 /**
+ * Libera a memória usada pelas opções do Menu antes de destruí-lo.
+ */
+Menu::~Menu()
+{
+    for (unsigned int i = 0; i < this->opcoes.size(); i++)
+    {
+        delete this->opcoes[i];
+    }
+    // Vector declarado no stack, não é preciso destruí-lo.
+}
+
+/**
  * Teclas comuns do teclado - inclusive enter
  * Transfere ação para a opção ativa.
  */
