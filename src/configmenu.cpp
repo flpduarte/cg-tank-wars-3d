@@ -65,6 +65,13 @@ Menu *criar_menu_renomear_jogadores()
     return novo;
 }
 
-Menu *criar_menu_resultado_parcial();
+/**
+ *
+ */
+Menu *criar_menu_resultado_parcial()
+{
+    // TODO
+    return NULL;
+}
 
 Menu *criar_menu_compras(Jogador *);
