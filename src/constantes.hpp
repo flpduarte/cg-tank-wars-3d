@@ -28,6 +28,13 @@
 #define JANELA_POSICAO_Y   100
 #define JANELA_TITULO      "Tank Wars 3D"
 
+/* Dimensões padrão das opções de menu */
+#define OPCAOMENU_LARGURA_PADRAO 200
+#define OPCAOMENU_ALTURA_PADRAO  30         // inclui borda
+#define OPCAOMENU_POSX_PADRAO    0
+#define OPCAOMENU_POSY_PADRAO    JANELA_ALTURA - OPCAOMENU_ALTURA_PADRAO
+#define OPCAOMENU_LARGURA_BORDA  5
+
 /* Constantes utilizadas por municao.cpp e armas.cpp */
 #define MASSA_MUNICAO       100.0
 #define RAIO_INCINERADOR    100     // Raio do incinerador; os outros são baseados nesta.
@@ -39,6 +46,24 @@
 
 /* Constantes utilizadas por mundo.hpp e mundo.c */
 #define MAX_JOGADORES 10
+
+/* Definição de algumas cores padrão */
+namespace cor
+{
+    const float PRETO[]    = {0, 0, 0};
+    const float VERMELHO[] = {1, 0, 0};
+    const float VERDE[]    = {0, 1, 0};
+    const float AZUL[]     = {0, 0, 1};
+    const float AMARELO[]  = {1, 1, 0};
+    const float CIANO[]    = {0, 1, 1};
+    const float LILAS[]    = {1, 0, 1};
+    const float BRANCO[]   = {1, 1, 1};
+    const float CINZA_MEDIO[] = {0.5, 0.5, 0.5};
+
+    // Função auxiliar que copia os valores de cor da variável origem à variável dest.
+    void definir_cor(float *dest, const float *origem);
+}
+
 
 /* Tipos enumerados */
 /**

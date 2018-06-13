@@ -13,6 +13,8 @@
  * Elas instanciam as classes implementadas em menu.cpp.
  */
 #include "configmenu.hpp"
+#include "interacoes.hpp"
+#include "interfaces.hpp"
 #include "menu.hpp"
 #include "mundo.hpp"
 #include "jogador.hpp"
@@ -25,15 +27,15 @@ Menu *criar_menu_compras(int);
 */
 
 
-
 /**
  * Cria um menu principal. Retorna o ponteiro para o objeto Menu.
  */
 Menu *criar_menu_principal()
 {
-    Menu *novo = new Menu;
+    Menu *novo = new Menu(200, 600);    // TODO: converter para constantes
 
     // adiciona opções - TODO
-    //novo->insere_opcao(new OpcaoAlterarValorNumerico());
+    Botao *iniciar = new Botao("INICIAR", renomear_jogadores);
+    novo->inserir_opcao(iniciar);
     return novo;
 }

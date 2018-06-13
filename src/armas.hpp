@@ -22,6 +22,17 @@
 #define N_ARMAMENTOS 4
 
 /**
+ * Define tipo enumerado para se referir a um armamento especifico
+ */
+enum TipoMunicao
+{
+    INCINERADOR,
+    INCINERADORM2,
+    BOMBA20KILOTONS,
+    BOMBA5MEGATONS
+};
+
+/**
  * Incinerador: Armamento básico
  */
 class Incinerador : public MunicaoExplosiva
@@ -73,32 +84,5 @@ public:
     Bomba5Megatons();
 };
 
-/* ------------------------- */
-/* Funções auxiliares        */
-
-/**
- * Define tipo enumerado para se referir a um armamento especifico
- */
-enum TipoMunicao
-{
-    INCINERADOR,
-    INCINERADORM2,
-    BOMBA20KILOTONS,
-    BOMBA5MEGATONS
-};
-
-
-/**
- * Estrutura MunicaoEQtd: Agrupa uma munição e sua respectiva quantidade,
- * para uso na classe Jogador, ao criar a lista de munições.
- */
-struct MunicaoEQtd
-{
-    TipoMunicao tipo;
-    int         qtd;
-};
-
-MunicaoEQtd *nova_lista_municoes();
-Municao     *obter_objeto_municao(TipoMunicao tipo);
 
 #endif

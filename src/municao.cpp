@@ -14,69 +14,9 @@
  */
 
 /* Bibliotecas */
-#include <cmath>
 #include "constantes.hpp"
 #include "municao.hpp"
 #include "explosoes.hpp"
-
-/* Implementação das funções da classe Municao */
-
-/**
- * Valor da derivada do i-ésima variável de estado,
- * no instante atual. O tempo foi desprezado porque
- * não há nenhuma grandeza que dependa do tempo.
- */
-double Municao::derivada(int i)
-{
-    // Derivada da posição = velocidade
-    if (i < 3)
-    {
-        return X[i + 3];
-    }
-
-    // Derivada da velocidade = aceleração.
-    // Aceleração = Força / Massa.
-    // Esta função calcula a aceleração componente por componente.
-    else
-    {
-        return F[i - 3]/massa;
-    }
-}
-
-/**
- * atualizar_posicao()
- * Usa o método de integração de Euler para atualizar as variáveis de estado
- */
-void Municao::atualizar_posicao()
-{
-    for (int i = 0; i < 6; i++)
-    {
-        X[i] += derivada(i) * DT;
-    }
-}
-
-
-/**
- * lancar(X0, V0, angulo, vento)
- * Define as coordenadas iniciais do projétil na tela ao ser lançado.
- */
-void Municao::lancar(int X0[3], int V0, int ang, int vento)
-{
-    // Posição
-    X[0] = X0[0];
-    X[1] = X0[1];
-    X[2] = X0[2];
-
-    // Velocidade
-    X[3] = V0*cos(ang);     // Vx
-    X[4] = 0;               // Vy
-    X[5] = V0*sin(ang);     // Vz
-
-    // Forças
-    F[0] =  massa*vento;        // Efeito do vento
-    F[1] =  0.;
-    F[2] = -massa*GRAVIDADE;    // Efeito da gravidade
-}
 
 
 /* Implementação das funções da classe MunicaoExplosiva */

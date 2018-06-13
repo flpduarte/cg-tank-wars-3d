@@ -64,4 +64,60 @@ void interacao_mouse(int botao, int estado, int x, int y)
 {
     mundo.interacao_mouse(botao, estado, x, y);
 }
-;
+
+/**
+ * Vai para a tela inicial do jogo.
+ * Chega-se nessa tela:
+ * - Ao iniciar o jogo
+ * - Ao clicar voltar da tela de renomear jogadores;
+ * - Ao terminar um jogo.
+ */
+void tela_inicial()
+{
+    mundo.tela_inicial();
+}
+
+/**
+ * Transiciona para a tela de renomear jogadores. Executado após clicar "INICIAR"
+ * na tela inicial.
+ */
+void renomear_jogadores()
+{
+    mundo.renomear_jogadores();
+}
+
+/**
+ * Executa as ações de iniciar um jogo do zero. Executada após clicar "INICIAR"
+ * na tela de renomear os jogadores.
+ */
+void inicia_jogo()
+{
+    mundo.inicia_jogo();
+}
+
+/**
+ * Inicia o loop de uma rodada atual
+ */
+void inicia_rodada()
+{
+    mundo.inicia_rodada();
+}
+
+/**
+ * Apresenta a tela de resultados parciais, após o término de uma rodada.
+ * Recebe como entrada o número do jogador vencedor da última partida.
+ */
+void resultado_parcial(int vencedor)
+{
+    mundo.resultado_parcial(vencedor);
+}
+
+/**
+ * Apresenta o menu contendo os itens que o jogador pode comprar.
+ * Recebe como entrada o número do jogador. Deve ser executado com cada jogador
+ * ativo.
+ */
+void tela_compras(int jogador)
+{
+    mundo.tela_compras(jogador);
+}

@@ -56,16 +56,20 @@ void Mundo::tela_inicial()
     // Configura a tela para ser a tela inicial e muda
     // o fundo da janela para preto
     this->tela_atual = TELA_INICIAL;
+    glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(0, 0, 0, 0);
-    // glDisable(GL_DEPTH_TEST) // não sei se é o caso de precisar aqui
+    glDisable(GL_LIGHTING);     // desativa efeitos de iluminação
+    glDisable(GL_DEPTH_TEST);
 
     // Configura janela de recorte 2D para ocupar a janela inteira
     // Permite que o menu seja desenhado em relação ao centro da tela.
-    glMatrixMode(GL_MODELVIEW);
+    glMatrixMode(GL_PROJECTION);    // usa matriz de projeção para definir janela recorte
     glLoadIdentity();
     gluOrtho2D(-JANELA_LARGURA/2, JANELA_LARGURA/2, -JANELA_ALTURA/2, JANELA_ALTURA/2);
 
-    // Cria e exibe menu atual
+    // inicia matriz model-view para exibir menu
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     this->menu_ativo = criar_menu_principal();
     this->menu_ativo->exibir();
 }

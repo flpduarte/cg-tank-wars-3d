@@ -19,6 +19,19 @@
 #include "armas.hpp"
 
 /**
+ * Estrutura MunicaoEQtd: Agrupa uma munição e sua respectiva quantidade,
+ * para uso na classe Jogador, ao criar a lista de munições.
+ */
+struct MunicaoEQtd
+{
+    TipoMunicao tipo;
+    int         qtd;
+};
+
+MunicaoEQtd *nova_lista_municoes();
+Municao     *obter_objeto_municao(TipoMunicao tipo);
+
+/**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
  */
 struct Jogador

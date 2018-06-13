@@ -17,7 +17,7 @@
 
 #include "constantes.hpp"
 #include "jogador.hpp"
-#include "menu.hpp"
+#include "interfaces.hpp"
 
 /**
  * Mundo: Contém as variáveis de estado do mundo tais como tela atual, no. de
@@ -43,7 +43,7 @@ public:
 
     // Métodos que transicionam de uma tela para outra e realizam o loop do jogo
     void tela_inicial();            // Vai para a tela inicial
-    void escolher_jogadores();      // Tela inicial -> Escolha jogadores
+    void renomear_jogadores();      // Tela inicial -> Escolha jogadores
     void inicia_jogo();             // Escolha jogadores -> jogo
     void inicia_rodada();           // Inicia o loop de uma rodada_atual
     void resultado_parcial(int);    // Vai para TELA_RESULTADO_PARCIAL e exibe placares. Recebe o n° do vencedor da última rodada

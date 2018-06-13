@@ -13,11 +13,12 @@
  *
  */
 #include <string>
+#include <iostream>
+#include "constantes.hpp"
 #include "armas.hpp"
 #include "jogador.hpp"
 
-using namespace std;
-void definir_cor(float *, const int);     // função auxiliar para definir a cor do tanque
+void definir_cor(float *, const int);     // função local para definir a cor do tanque
 
 /**
  * Cria um novo jogador. A cor do jogador é definida pelo seu índice i.
@@ -26,11 +27,11 @@ Jogador::Jogador(int i)
 {
     // define a cor do tanque:
     definir_cor(this->cor, i);
-    this->nome = "Jogador " + to_string(i);
+    this->nome = "Jogador " + std::to_string(i);
     this->pontos = 0;
     this->dolares = 0;
     this->lista_municoes = nova_lista_municoes();
-    
+
     this->homens = 100;
     this->pos[0] = 0;
     this->pos[1] = 0;
@@ -109,4 +110,47 @@ void definir_cor(float *cor, const int i)
         cor[2] = 0.5;
         break;
     }
+}
+
+/* ------------------------- */
+/* Funções auxiliares        */
+
+/**
+ * Dado um TipoMunicao, retorna um novo objeto correspondente ao tipo recebido.
+ */
+Municao *obter_objeto_municao(TipoMunicao tipo)
+{
+    switch (tipo)
+    {
+        case INCINERADOR:
+            return new Incinerador;
+
+        case INCINERADORM2:
+            return new IncineradorM2;
+
+        case BOMBA20KILOTONS:
+            return new Bomba20Kilotons;
+
+        case BOMBA5MEGATONS:
+            return new Bomba5Megatons;
+
+        default:
+            std::cerr << "Tipo de municao nao esperada - obter_objeto_municao()." << std::endl;
+            exit(-1);
+    }
+}
+
+/**
+ * nova_lista_municoes(): retorna uma lista de estruturas MunicaoEQtd, contendo
+ * todas as municoes existentes no jogo, porém com quantidades = 0 (exceto incinerador).
+ */
+MunicaoEQtd *nova_lista_municoes()
+{
+    MunicaoEQtd *lista = new MunicaoEQtd[N_ARMAMENTOS];
+    for (int i = 0; i < N_ARMAMENTOS; i++)
+    {
+        lista->tipo = (TipoMunicao) i;
+        lista->qtd  = (i == INCINERADOR) ? QTD_INCINERADOR : 0;
+    }
+    return lista;
 }
