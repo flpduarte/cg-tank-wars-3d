@@ -19,22 +19,15 @@
 #include "mundo.hpp"
 #include "jogador.hpp"
 
-/*
-Menu *criar_menu_principal();
-Menu *criar_menu_renomear_jogadores();
-Menu *criar_menu_resultado_parcial();
-Menu *criar_menu_compras(Jogador *);
-*/
-
-
 /**
  * Cria um menu principal. Retorna o ponteiro para o objeto Menu.
  */
 Menu *criar_menu_principal()
 {
-    Menu *novo = new Menu(200, 600);    // TODO: converter para constantes
+    Menu *novo = new Menu(300, 300);    // TODO: converter para constantes
 
     // adiciona opções - TODO
+    novo->inserir_opcao(new OpcaoAlterarValorNumerico("Numero de Jogadores", 2, MAX_JOGADORES, mundo.n_jogadores));
     novo->inserir_opcao(new Botao("INICIAR", renomear_jogadores));
     return novo;
 }
@@ -70,8 +63,21 @@ Menu *criar_menu_renomear_jogadores()
  */
 Menu *criar_menu_resultado_parcial()
 {
-    // TODO
-    return NULL;
+    Menu *novo = new Menu(200, 600);
+
+    // Configura o quadro resultado parcial
+
+
+    return novo;
 }
 
-Menu *criar_menu_compras(Jogador *);
+/**
+ * Exibe o menu de compras para o jogador dado.
+ * O jogador é passado como argumento para facilitar a escrita da
+ * função.
+ */
+Menu *criar_menu_compras(Jogador *)
+{
+    Menu *menu = new Menu(200, 600);
+    return menu;
+}

@@ -31,7 +31,7 @@
 
 /* Dimensões padrão das opções de menu */
 #define OPCAOMENU_LARGURA_PADRAO 200
-#define OPCAOMENU_ALTURA_PADRAO  30         // inclui borda
+#define OPCAOMENU_ALTURA_PADRAO  50         // inclui borda
 #define OPCAOMENU_POSX_PADRAO    0
 #define OPCAOMENU_POSY_PADRAO    JANELA_ALTURA - OPCAOMENU_ALTURA_PADRAO
 #define OPCAOMENU_LARGURA_BORDA  5
@@ -60,6 +60,7 @@ namespace cor
     const float LILAS[]    = {1, 0, 1};
     const float BRANCO[]   = {1, 1, 1};
     const float CINZA_MEDIO[] = {0.5, 0.5, 0.5};
+    const float CINZA_ESCURO[] = {0.2, 0.2, 0.2};
 
     // Função auxiliar que copia os valores de cor da variável origem à variável dest.
     void definir_cor(float *dest, const float *origem);

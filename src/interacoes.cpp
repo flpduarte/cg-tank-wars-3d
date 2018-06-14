@@ -92,7 +92,7 @@ void renomear_jogadores()
  */
 void iniciar_jogo()
 {
-    mundo.inicia_jogo();
+    mundo.iniciar_jogo();
 }
 
 /**
@@ -100,7 +100,7 @@ void iniciar_jogo()
  */
 void iniciar_rodada()
 {
-    mundo.inicia_rodada();
+    mundo.iniciar_rodada();
 }
 
 /**

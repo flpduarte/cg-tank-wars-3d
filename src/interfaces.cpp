@@ -32,19 +32,39 @@ OpcaoMenu::OpcaoMenu(std::string tit):
     cor::definir_cor(cor_titulo, cor::BRANCO);
 }
 
+/* É estranho, mas é preciso definir o destrutor */
+OpcaoMenu::~OpcaoMenu() {}
 
 /* --- Implementação das funções da classe Menu --- */
 /**
  * Inicia objeto Menu
  */
-Menu::Menu(int x0, int y0): posx0(x0), posy0(y0), opcao_ativa(0) {}
+Menu::Menu(int x0, int y0):
+    posx0(x0), posy0(y0), opcao_ativa(0), _possui_opcao_selecionada(false) {}
 
 /**
  * Insere uma opção de menu.
  */
 void Menu::inserir_opcao(OpcaoMenu *opcao)
 {
+    // Ao inserir opções, muda a propriedade selecionado para
+    // true ao encontrar a primeira opção "selecionável" -
+    // uma que o cursor possa selecionar.
     this->opcoes.push_back(opcao);
+    if (!_possui_opcao_selecionada)
+    {
+        if ((this->opcao_ativa == (this->opcoes.size() - 1)) && opcao->selecionavel)
+        {
+            opcao->selecionado = true;
+            _possui_opcao_selecionada = true;   // não precisa mais fazer esta verificação
+        }
+
+        // Se a opção inserida não for selecionável, tenta o próximo
+        else
+        {
+            this->opcao_ativa++;
+        }
+    }
 }
 
 /**

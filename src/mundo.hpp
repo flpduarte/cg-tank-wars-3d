@@ -44,8 +44,8 @@ public:
     // Métodos que transicionam de uma tela para outra e realizam o loop do jogo
     void tela_inicial();            // Vai para a tela inicial
     void renomear_jogadores();      // Tela inicial -> Escolha jogadores
-    void inicia_jogo();             // Escolha jogadores -> jogo
-    void inicia_rodada();           // Inicia o loop de uma rodada_atual
+    void iniciar_jogo();             // Escolha jogadores -> jogo
+    void iniciar_rodada();           // Inicia o loop de uma rodada_atual
     void resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
     void tela_compras(unsigned int);// Exibe o menu de compras de cada jogador
 

@@ -33,7 +33,8 @@ public:
     int largura;
     int altura;
     std::string titulo;
-    bool selecionado;     // Indica se o cursor encontra-se nesta opção.
+    bool selecionavel;      // Indica se o quadro é selecionavel ou não.
+    bool selecionado;       // Indica se o cursor encontra-se nesta opção.
     float cor_borda[3];
     float cor_fundo[3];
     float cor_titulo[3];
@@ -63,6 +64,7 @@ class Menu
     int posx0, posy0;                           // Origem do Menu, Coordenadas da Tela
     std::vector<OpcaoMenu *> opcoes;
     unsigned int opcao_ativa;                   // Índice da opcao do menu atualmente ativa
+    bool _possui_opcao_selecionada;             // Um flag para indicar se o menu já possui uma opção->selecionado = true.
 
 public:
     Menu(int, int);                             // Recebe a origem do Menu como entrada

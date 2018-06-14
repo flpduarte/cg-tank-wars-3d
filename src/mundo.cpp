@@ -80,7 +80,7 @@ void Mundo::tela_inicial()
     // Configura a tela para ser a tela inicial e muda
     // o fundo da janela para preto
     this->tela_atual = TELA_INICIAL;
-    preparar_tela_para_menu();
+    //preparar_tela_para_menu();
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -88,7 +88,11 @@ void Mundo::tela_inicial()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_principal();
-    this->menu_ativo->exibir();
+    //this->menu_ativo->exibir();
+
+    // Avisa que é preciso redesenhar a tela.
+    // Isto provoca uma chamada ao glutDisplayFunc.
+    glutPostRedisplay();
 }
 
 
@@ -100,7 +104,7 @@ void Mundo::renomear_jogadores()
     // Configura a tela para ser a tela inicial e muda
     // o fundo da janela para preto
     this->tela_atual = TELA_RENOMEAR_JOGADORES;
-    preparar_tela_para_menu();
+    //preparar_tela_para_menu();
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -108,8 +112,30 @@ void Mundo::renomear_jogadores()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_renomear_jogadores();
-    this->menu_ativo->exibir();
+    //this->menu_ativo->exibir();
+    glutPostRedisplay();
 }
+
+/**
+ * Configura o mundo para iniciar o jogo
+ */
+void Mundo::iniciar_jogo()
+{
+    // TODO
+
+    // Inicia a primeira rodada
+    this->iniciar_rodada();
+}
+
+/**
+ * Inicia a rodada - configura o cenário
+ */
+void Mundo::iniciar_rodada()
+{
+    // TODO
+    this->resultado_parcial();
+}
+
 
 /**
  * Exibe a tela de resultados parciais.
@@ -120,7 +146,7 @@ void Mundo::resultado_parcial()
 {
     // Configura a tela para ser a tela inicial e muda o fundo da janela para preto
     this->tela_atual = TELA_RESULTADO_PARCIAL;
-    preparar_tela_para_menu();
+    //preparar_tela_para_menu();
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -128,7 +154,8 @@ void Mundo::resultado_parcial()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_resultado_parcial();
-    this->menu_ativo->exibir();
+    //this->menu_ativo->exibir();
+    glutPostRedisplay();
 }
 
 
@@ -148,15 +175,16 @@ void Mundo::tela_compras(unsigned int njogador)
     // Enquanto njogador for um jogador válido, exibe menu de compras
     if (njogador <= this->n_jogadores)
     {
-        preparar_tela_para_menu();
+        //preparar_tela_para_menu();
         this->menu_ativo = criar_menu_compras(jogadores[njogador - 1]);
-        this->menu_ativo->exibir();
+        //this->menu_ativo->exibir();
+        glutPostRedisplay();
     }
 
     // Senão, inicia a próxima rodada
     else
     {
-        this->inicia_rodada();
+        this->iniciar_rodada();
     }
 }
 
@@ -170,21 +198,38 @@ void Mundo::tela_compras(unsigned int njogador)
  */
 void Mundo::funcao_exibicao()
 {
+    glClearColor(0, 0, 0, 0);
+    preparar_tela_para_menu();
+    //glColor3f(1, 1, 0);
+    /*glPushMatrix();
+    glTranslatef(50, 200, 0);
+    glColor3fv(cor::AZUL);
+    glBegin(GL_TRIANGLES);
+        glVertex2f(0, 0);
+        glVertex2f(100, 100);
+        glVertex2f(0, 100);
+    glEnd();
+    glPopMatrix();
+    glColor3fv(cor::AMARELO);
+    glRectf(400, 0, 500, 300);
+    */
     switch (this->tela_atual)
     {
         // Exibe menu principal na tela inicial
         case TELA_INICIAL:
-        case TELA_RODADA:
+        case TELA_RESULTADO_PARCIAL:
         case TELA_RENOMEAR_JOGADORES:
         case TELA_COMPRAS:
-        this->menu_ativo->exibir();
+            this->menu_ativo->exibir();
         break;
 
-        case TELA_RESULTADO_PARCIAL:
+        case TELA_RODADA:
         // TODO
         break;
     }
-    glutPostRedisplay();
+
+    // redesenha a tela
+    glFlush();
 }
 
 
@@ -207,6 +252,7 @@ void Mundo::interacao_teclado(unsigned char tecla, int x, int y)
         break;
 
     }
+    glFlush();
 }
 
 

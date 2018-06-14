@@ -39,6 +39,7 @@ public:
 
 
 /**
+ * OpcaoAlterarValorNumerico
  * Cria uma opção do menu que permite alterar um valor com as teclas para
  * a esquerda ou para a direita. Algo do tipo:
  *
@@ -57,16 +58,19 @@ public:
  */
 class OpcaoAlterarValorNumerico : public OpcaoMenu
 {
-    int min;
-    int max;
-    int &referencia;
+    unsigned int min;
+    unsigned int max;
+    unsigned int &referencia;
 
 public:
-    OpcaoAlterarValorNumerico(std::string, int, int, int &);
+    OpcaoAlterarValorNumerico(std::string, unsigned int, unsigned int, unsigned int &);
     ~OpcaoAlterarValorNumerico();
+    void reagir_a_tecla_especial(int tecla);
+    void desenhar();
 };
 
 /**
+ * OpcaoEditarNome
  * Cria uma classe de opção do menu no qual o título está relacionado a uma va-
  * riável string. Ela é utilizada para renomear jogadores. Pode também ser usado
  * para renomear outros objetos. Terá um formato parecido com este:
@@ -99,5 +103,14 @@ public:
     void reagir_a_teclado(unsigned char);
 };
 
+/**
+ * QuadroInformativo
+ * Define um quadro que apenas exibe informações e não é selecionável.
+ *
+ * Utilizado para exibir o resultado parcial.
+ */
+class QuadroInformativo
+{
 
+};
 #endif
