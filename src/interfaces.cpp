@@ -13,6 +13,7 @@
  */
 #include <cmath>
 #include <GL/glut.h>
+#include <iostream>
 #include "interfaces.hpp"
 #include "constantes.hpp"
 
@@ -24,7 +25,9 @@ OpcaoMenu::OpcaoMenu(std::string tit):
     largura(OPCAOMENU_LARGURA_PADRAO),
     altura(OPCAOMENU_ALTURA_PADRAO),
     titulo(tit),
+    selecionavel(true),
     selecionado(false)
+
 {
     // define cores padrão
     cor::definir_cor(cor_borda, cor::BRANCO);
@@ -39,8 +42,15 @@ OpcaoMenu::~OpcaoMenu() {}
 /**
  * Inicia objeto Menu
  */
-Menu::Menu(int x0, int y0):
-    posx0(x0), posy0(y0), opcao_ativa(0), _possui_opcao_selecionada(false) {}
+//Menu::Menu(int x0, int y0):
+Menu::Menu():
+    largura(0),
+    altura(0),
+    posx0(0),
+    posy0(0),
+    opcao_ativa(0),
+    _possui_opcao_selecionada(false),
+    posicionamento_automatico(true) {}
 
 /**
  * Insere uma opção de menu.
@@ -65,6 +75,25 @@ void Menu::inserir_opcao(OpcaoMenu *opcao)
             this->opcao_ativa++;
         }
     }
+
+    // Recalcula as dimensões do menu e a sua origem
+    this->altura += opcao->altura;
+    if (opcao->largura > this->largura)
+        this->largura = opcao->largura;
+
+    if (this->posicionamento_automatico)
+        this->recalcular_origem();
+}
+
+/**
+ * Recalcula a origem do menu de forma que ele seja exibido no centro da tela.
+ * É chamada a cada inserção de linhas ao menu, desde que posicionamento_automatico
+ * = true.
+ */
+void Menu::recalcular_origem()
+{
+    this->posx0 = (glutGet(GLUT_WINDOW_WIDTH) - this->largura)/2;
+    this->posy0 = (glutGet(GLUT_WINDOW_HEIGHT) + this->altura)/2;
 }
 
 /**
@@ -143,7 +172,7 @@ void Menu::exibir()
     {
         // translada para baixo, pois a origem de cada caixa é em seu canto
         // inferior esquerdo.
-        glTranslatef(0, -this->opcoes[i]->altura, 0);   // translações somam-se propositalmente
+        glTranslatef(0, -(float)this->opcoes[i]->altura, 0);   // CUIDADO: converter unsigned int para float!
         this->opcoes[i]->desenhar();
     }
 

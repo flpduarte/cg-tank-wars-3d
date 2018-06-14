@@ -104,7 +104,6 @@ void Mundo::renomear_jogadores()
     // Configura a tela para ser a tela inicial e muda
     // o fundo da janela para preto
     this->tela_atual = TELA_RENOMEAR_JOGADORES;
-    //preparar_tela_para_menu();
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -198,21 +197,6 @@ void Mundo::tela_compras(unsigned int njogador)
  */
 void Mundo::funcao_exibicao()
 {
-    glClearColor(0, 0, 0, 0);
-    preparar_tela_para_menu();
-    //glColor3f(1, 1, 0);
-    /*glPushMatrix();
-    glTranslatef(50, 200, 0);
-    glColor3fv(cor::AZUL);
-    glBegin(GL_TRIANGLES);
-        glVertex2f(0, 0);
-        glVertex2f(100, 100);
-        glVertex2f(0, 100);
-    glEnd();
-    glPopMatrix();
-    glColor3fv(cor::AMARELO);
-    glRectf(400, 0, 500, 300);
-    */
     switch (this->tela_atual)
     {
         // Exibe menu principal na tela inicial
@@ -220,7 +204,29 @@ void Mundo::funcao_exibicao()
         case TELA_RESULTADO_PARCIAL:
         case TELA_RENOMEAR_JOGADORES:
         case TELA_COMPRAS:
+            preparar_tela_para_menu();
             this->menu_ativo->exibir();
+            /*glPushMatrix();
+            glTranslatef(50, 200, 0);
+            glColor3fv(cor::AZUL);
+            glBegin(GL_TRIANGLES);
+                glVertex2f(0, 0);
+                glVertex2f(100, 100);
+                glVertex2f(0, 100);
+            glEnd();
+            glPopMatrix();
+            glColor3fv(cor::AMARELO);
+            glRectf(400, 0, 500, 300);
+
+            glLineWidth(OPCAOMENU_LARGURA_BORDA);
+
+            glBegin(GL_LINE_LOOP);
+                glVertex3f(0, 0, 0);
+                glVertex3f(50, 0, 0);
+                glVertex3f(50, 50, 0);
+                glVertex3f(0, 50, 0);
+            glEnd();
+            */
         break;
 
         case TELA_RODADA:

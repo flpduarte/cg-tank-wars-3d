@@ -24,12 +24,13 @@
  */
 Menu *criar_menu_principal()
 {
-    Menu *novo = new Menu(300, 300);    // TODO: converter para constantes
+    //Menu *menu = new Menu(300, 300);    // TODO: converter para constantes
+    Menu *menu = new Menu;
 
     // adiciona opções - TODO
-    novo->inserir_opcao(new OpcaoAlterarValorNumerico("Numero de Jogadores", 2, MAX_JOGADORES, mundo.n_jogadores));
-    novo->inserir_opcao(new Botao("INICIAR", renomear_jogadores));
-    return novo;
+    menu->inserir_opcao(new OpcaoAlterarValorNumerico("Numero de Jogadores", 2, MAX_JOGADORES, mundo.n_jogadores));
+    menu->inserir_opcao(new Botao("INICIAR", renomear_jogadores));
+    return menu;
 }
 
 /**
@@ -44,18 +45,19 @@ Menu *criar_menu_principal()
 Menu *criar_menu_renomear_jogadores()
 {
     // TODO: ajustar posição
-    Menu *novo = new Menu(200, 600);
+    //Menu *menu = new Menu(200, 600);
+    Menu *menu = new Menu();
 
     // Insere as opções de renomear cada jogador
     for (unsigned int i = 0; i < mundo.n_jogadores; i++)
     {
-        novo->inserir_opcao(new OpcaoEditarNome(mundo.jogadores[i]->nome, MAX_CARACTERES_NOME));
+        menu->inserir_opcao(new OpcaoEditarNome(mundo.jogadores[i]->nome, MAX_CARACTERES_NOME));
     }
 
     // Insere botões INICIAR e voltar
-    novo->inserir_opcao(new Botao("INICIAR JOGO", iniciar_jogo));
-    novo->inserir_opcao(new Botao("Voltar", tela_inicial));
-    return novo;
+    menu->inserir_opcao(new Botao("INICIAR JOGO", iniciar_jogo));
+    menu->inserir_opcao(new Botao("Voltar", tela_inicial));
+    return menu;
 }
 
 /**
@@ -63,12 +65,13 @@ Menu *criar_menu_renomear_jogadores()
  */
 Menu *criar_menu_resultado_parcial()
 {
-    Menu *novo = new Menu(200, 600);
+    //Menu *menu = new Menu(200, 600);
+    Menu *menu = new Menu;
 
     // Configura o quadro resultado parcial
 
 
-    return novo;
+    return menu;
 }
 
 /**
@@ -78,6 +81,7 @@ Menu *criar_menu_resultado_parcial()
  */
 Menu *criar_menu_compras(Jogador *)
 {
-    Menu *menu = new Menu(200, 600);
-    return menu;
+    //Menu *menu = new Menu(200, 600);
+    //return menu;
+    return new Menu();
 }

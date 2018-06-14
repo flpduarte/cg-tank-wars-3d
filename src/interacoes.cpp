@@ -26,6 +26,7 @@
  */
 #include "interacoes.hpp"
 #include "globals.hpp"
+#include <iostream>
 
 /**
  * Função responsável pela exibição dos itens na tela. É provavelmente a principal

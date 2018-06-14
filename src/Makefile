@@ -19,7 +19,7 @@ LDLIBS   = -lm -lglut32cu -lglu32 -lopengl32
 # Arquivos fonte
 FONTES = bomb.cpp armas.cpp constantes.cpp configmenu.o explosoes.cpp globals.cpp \
 		 interfaces.cpp interacoes.cpp jogador.cpp menu.cpp mundo.cpp municao.cpp \
-		 objetos3D.cpp
+		 objetos2D.cpp objetos3D.cpp
 OBJS = $(FONTES:.cpp=.o)
 
 # Headers comuns a todos os arquivos. Headers específicos serão gravados em suas respectivas regras
@@ -40,6 +40,7 @@ configmenu.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
 configmenu.o mundo.o: mundo.hpp
 jogador.o municao.o mundo.o armas.o: municao.hpp
+menu.o: objetos2D.hpp
 
 
 objetos3D.o: objetos3D.cpp

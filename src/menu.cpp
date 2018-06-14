@@ -12,8 +12,10 @@
  * Contém a implementação das classes que implementam a interface OpcaoMenu.
  */
 #include <GL/glut.h>
+#include <iostream>
 #include "menu.hpp"
 #include "constantes.hpp"
+#include "objetos2D.hpp"
 
 /* --- Classe Botao --- */
 /**
@@ -49,6 +51,7 @@ void Botao::desenhar()
     glRectf(0, 0, this->largura, this->altura);
 
     // desenha borda
+    /*
     glColor3fv(this->cor_borda);
     glLineWidth(OPCAOMENU_LARGURA_BORDA);
     glBegin(GL_LINE_LOOP);
@@ -57,9 +60,16 @@ void Botao::desenhar()
         glVertex3f(largura, altura, 0);
         glVertex3f(0, altura, 0);
     glEnd();
+    */
+    desenhar_borda(largura, altura, this->cor_borda);
 
-    // TODO: escrever texto dentro da caixa
-    return;
+    // TODO: Se possível, centralizar texto na horizontal
+    glPushMatrix();
+    std::cout << largura_string(this->titulo, altura, GLUT_STROKE_MONO_ROMAN);
+    //glTranslatef((largura - largura_string(this->titulo, altura, GLUT_STROKE_MONO_ROMAN)), altura/10., 0);
+    glTranslatef(0, altura/2, 0);
+    desenhar_string(this->titulo, 4*altura/5., GLUT_STROKE_MONO_ROMAN, this->cor_titulo);
+    glPopMatrix();
 }
 
 /**
@@ -69,7 +79,7 @@ void Botao::desenhar()
  */
 void Botao::reagir_a_teclado(unsigned char tecla)
 {
-    if (tecla == '\n' && this->selecionado)
+    if ((tecla == '\n' || tecla == '\r') && this->selecionado)
     {
         this->acao();
     }
@@ -113,7 +123,7 @@ void OpcaoAlterarValorNumerico::desenhar()
     // desenha fundo do quadro como cinza se selecionado
     if (this->selecionado)
     {
-        glColor3fv(cor::CINZA_MEDIO);
+        glColor3fv(cor::CINZA_ESCURO);
     }
 
     // desenha na cor original, caso contrário
@@ -190,19 +200,10 @@ void OpcaoEditarNome::reagir_a_teclado(unsigned char tecla)
  */
 void OpcaoEditarNome::desenhar()
 {
-    // desenha borda
-    glLineWidth(OPCAOMENU_LARGURA_BORDA);
-    glBegin(GL_LINE_LOOP);
-        glVertex3f(0, 0, 0);
-        glVertex3f(largura, 0, 0);
-        glVertex3f(largura, altura, 0);
-        glVertex3f(0, altura, 0);
-    glEnd();
-
     // desenha fundo do quadro como cinza se selecionado
     if (this->selecionado)
     {
-        glColor3fv(cor::CINZA_MEDIO);
+        glColor3fv(cor::CINZA_ESCURO);
     }
 
     // desenha na cor original, caso contrário
@@ -211,6 +212,16 @@ void OpcaoEditarNome::desenhar()
         glColor3fv(this->cor_fundo);
     }
     glRectf(0, 0, this->largura, this->altura);
+
+    // desenha borda
+    glColor3fv(this->cor_borda);
+    glLineWidth(OPCAOMENU_LARGURA_BORDA);
+    glBegin(GL_LINE_LOOP);
+        glVertex3f(0, 0, 0);
+        glVertex3f(largura, 0, 0);
+        glVertex3f(largura, altura, 0);
+        glVertex3f(0, altura, 0);
+    glEnd();
 
     // TODO: escrever texto dentro da caixa
     std::string texto = this->titulo + "|"; // acrescenta um cursor
