@@ -24,10 +24,10 @@
  */
 Menu *criar_menu_principal()
 {
-    //Menu *menu = new Menu(300, 300);    // TODO: converter para constantes
     Menu *menu = new Menu;
 
-    // adiciona opções - TODO
+    // adiciona opções
+    menu->inserir_opcao(new OpcaoAlterarValorNumerico("Numero de Rodadas", 1, 100, mundo.n_rodadas));
     menu->inserir_opcao(new OpcaoAlterarValorNumerico("Numero de Jogadores", 2, MAX_JOGADORES, mundo.n_jogadores));
     menu->inserir_opcao(new Botao("INICIAR", renomear_jogadores));
     return menu;

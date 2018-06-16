@@ -15,6 +15,7 @@
 #ifndef MUNDO_HPP
 #define MUNDO_HPP
 
+#include "cenario.hpp"
 #include "constantes.hpp"
 #include "jogador.hpp"
 #include "interfaces.hpp"
@@ -71,7 +72,8 @@ public:
     void funcao_exibicao();
 
 private:
-    Menu *menu_ativo;            // Armazena o menu atualmente ativo
+    Menu    *menu_ativo;            // Armazena o menu atualmente ativo
+    Cenario *cenario;               // Armazena o cenário atual
 
 };
 

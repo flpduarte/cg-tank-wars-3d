@@ -17,9 +17,9 @@ CXXFLAGS = -Wall -Werror -O0 -ggdb3
 LDLIBS   = -lm -lglut32cu -lglu32 -lopengl32
 
 # Arquivos fonte
-FONTES = bomb.cpp armas.cpp constantes.cpp configmenu.o explosoes.cpp globals.cpp \
-		 interfaces.cpp interacoes.cpp jogador.cpp menu.cpp mundo.cpp municao.cpp \
-		 objetos2D.cpp objetos3D.cpp
+FONTES = bomb.cpp armas.cpp auxiliares.cpp cenario.cpp constantes.cpp configmenu.o \
+		 explosoes.cpp globals.cpp interfaces.cpp interacoes.cpp jogador.cpp menu.cpp \
+		 mundo.cpp municao.cpp objetos2D.cpp objetos3D.cpp terreno.cpp
 OBJS = $(FONTES:.cpp=.o)
 
 # Headers comuns a todos os arquivos. Headers específicos serão gravados em suas respectivas regras
@@ -33,15 +33,18 @@ bomb: $(OBJS)
 $(OBJS): $(DEP_COMUNS)
 
 # dependencias especificas
+auxiliares.o terreno.o: auxiliares.hpp
+cenario.o mundo.o: cenario.hpp
 armas.o jogador.o: armas.hpp
 explosoes.o municao.o: explosoes.hpp
 interacoes.o: interacoes.hpp
-configmenu.o jogador.o mundo.o: jogador.hpp
+cenario.o configmenu.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
 configmenu.o mundo.o: mundo.hpp
 jogador.o municao.o mundo.o armas.o: municao.hpp
 menu.o objetos2D.o: objetos2D.hpp
 objetos3D.o: objetos3D.cpp
+terreno.o cenario.o: terreno.hpp
 
 
 
