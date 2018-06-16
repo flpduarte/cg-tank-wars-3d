@@ -61,11 +61,12 @@ class OpcaoAlterarValorNumerico : public OpcaoMenu
     unsigned int min;
     unsigned int max;
     unsigned int &referencia;
+    float cor_referencia[3];
 
 public:
     OpcaoAlterarValorNumerico(std::string, unsigned int, unsigned int, unsigned int &);
     ~OpcaoAlterarValorNumerico();
-    void reagir_a_tecla_especial(int tecla);
+    void reagir_a_tecla_especial(int tecla);    // reage às teclas esquerda e direita
     void desenhar();
 };
 
@@ -86,6 +87,11 @@ public:
  * Um segundo enter desativará o modo edição e salvará o string título na variá-
  * vel a que se refere o botão.
  *
+ * O "modo edição" é implementado usando a propriedade de OpcaoMenu
+ * bloqueia_cursor. Quando true, ela impede o cursor de mudar de posição com as
+ * teclas para cima e para baixo. É o que se deseja fazer quando se estiver edi-
+ * tando um nome.
+ *
  * O botão terá um limite de número de caracteres, bem como aceitará somente
  * caracteres alfanumericos, espaços e backspace. Não aceitará tabs.
  *
@@ -94,7 +100,6 @@ class OpcaoEditarNome : public OpcaoMenu
 {
     unsigned int max_caracteres;
     std::string &referencia;
-    bool modo_edicao;
 
 public:
     OpcaoEditarNome(std::string &, unsigned int);

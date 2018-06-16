@@ -68,8 +68,6 @@ float largura_string(std::string str, float altura, void *font)
     {
  	      compr += escala*glutStrokeWidth(font, *c);
     }
-
-    glPopMatrix();
     return compr;
 }
 

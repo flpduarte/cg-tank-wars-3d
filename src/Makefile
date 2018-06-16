@@ -40,11 +40,10 @@ configmenu.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
 configmenu.o mundo.o: mundo.hpp
 jogador.o municao.o mundo.o armas.o: municao.hpp
-menu.o: objetos2D.hpp
-
-
+menu.o objetos2D.o: objetos2D.hpp
 objetos3D.o: objetos3D.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $< $(LDLIBS)
+
+
 
 clean:
 	del *.exe *.o *.gch

@@ -51,7 +51,9 @@ Menu *criar_menu_renomear_jogadores()
     // Insere as opções de renomear cada jogador
     for (unsigned int i = 0; i < mundo.n_jogadores; i++)
     {
-        menu->inserir_opcao(new OpcaoEditarNome(mundo.jogadores[i]->nome, MAX_CARACTERES_NOME));
+        OpcaoEditarNome *nova = new OpcaoEditarNome(mundo.jogadores[i]->nome, MAX_CARACTERES_NOME);
+        cor::definir_cor(nova->cor_titulo, mundo.jogadores[i]->cor);
+        menu->inserir_opcao(nova);
     }
 
     // Insere botões INICIAR e voltar

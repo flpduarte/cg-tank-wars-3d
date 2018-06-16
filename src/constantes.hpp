@@ -17,10 +17,12 @@
 /* Constantes gerais */
 #define PI 3.14159265358979
 
-/* Constantes da fonte GLUT_STROKE_MONO_ROMAN */
+/* Constantes da fonte utilizada nos menus */
+//#define FONTE            GLUT_STROKE_MONO_ROMAN
+#define FONTE            GLUT_STROKE_ROMAN
 #define FONTE_ESPESSURA  2
-#define FONTE_ALTURA   152.38
-#define FONTE_Y0        33.33
+#define FONTE_ALTURA     152.38
+#define FONTE_Y0         33.33
 
 /* Configuração padrão do jogo */
 #define PADRAO_N_JOGADORES  2
@@ -35,11 +37,11 @@
 #define JANELA_TITULO      "Tank Wars 3D"
 
 /* Dimensões padrão das opções de menu */
-#define OPCAOMENU_LARGURA_PADRAO 400
+#define OPCAOMENU_LARGURA_PADRAO 600
 #define OPCAOMENU_ALTURA_PADRAO  50         // inclui borda
 #define OPCAOMENU_POSX_PADRAO    0
 #define OPCAOMENU_POSY_PADRAO    JANELA_ALTURA - OPCAOMENU_ALTURA_PADRAO
-#define OPCAOMENU_LARGURA_BORDA  5
+#define OPCAOMENU_LARGURA_BORDA  4
 
 /* Constantes utilizadas por municao.cpp e armas.cpp */
 #define MASSA_MUNICAO       100.0

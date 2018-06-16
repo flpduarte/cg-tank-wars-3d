@@ -26,8 +26,8 @@ OpcaoMenu::OpcaoMenu(std::string tit):
     altura(OPCAOMENU_ALTURA_PADRAO),
     titulo(tit),
     selecionavel(true),
-    selecionado(false)
-
+    selecionado(false),
+    bloqueia_cursor(false)
 {
     // define cores padrão
     cor::definir_cor(cor_borda, cor::BRANCO);
@@ -37,6 +37,11 @@ OpcaoMenu::OpcaoMenu(std::string tit):
 
 /* É estranho, mas é preciso definir o destrutor */
 OpcaoMenu::~OpcaoMenu() {}
+
+/* Reações padrão às funções reagir_a_tecla_especial() e reagir_a_teclado() */
+void OpcaoMenu::reagir_a_teclado(unsigned char) {}
+void OpcaoMenu::reagir_a_tecla_especial(int tecla) {}
+
 
 /* --- Implementação das funções da classe Menu --- */
 /**
@@ -104,27 +109,29 @@ void Menu::recalcular_origem()
  */
 void Menu::gerenciar_teclas_especiais(int tecla)
 {
+    OpcaoMenu *opcao_atual = this->opcoes[this->opcao_ativa];
     switch (tecla)
     {
+        // Menu reage às teclas para cima e para baixo - desde que a opção ativa não bloqueou o cursor
         case GLUT_KEY_UP:
-            if (this->opcao_ativa > 0)
+            if (!(opcao_atual->bloqueia_cursor) && (this->opcao_ativa > 0))
             {
-                this->opcoes[this->opcao_ativa--]->selecionado = false; // usa valor, depois decrementa
+                this->opcoes[this->opcao_ativa--]->selecionado = false;
                 this->opcoes[this->opcao_ativa]  ->selecionado = true;
             }
             break;
 
         case GLUT_KEY_DOWN:
-            if (this->opcao_ativa < this->opcoes.size() - 1)
+            if (!(opcao_atual->bloqueia_cursor) && (this->opcao_ativa < this->opcoes.size() - 1))
             {
                 this->opcoes[this->opcao_ativa++]->selecionado = false;
                 this->opcoes[this->opcao_ativa]  ->selecionado = true;
             }
             break;
 
-        case GLUT_KEY_LEFT:
-        case GLUT_KEY_RIGHT:
-            this->opcoes[this->opcao_ativa]->reagir_a_tecla_especial(tecla);
+        // Todos os outros casos: deixa a cargo da opção ativa
+        default:
+            opcao_atual->reagir_a_tecla_especial(tecla);
             break;
 
     }

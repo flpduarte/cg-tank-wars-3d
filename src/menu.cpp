@@ -28,7 +28,8 @@
  *
  * ~Botao(): função destrutora da classe botão; nada a fazer.
  */
-Botao::Botao(std::string tit, void fn()) : OpcaoMenu(tit), acao(fn) {}
+Botao::Botao(std::string tit, void fn()) :
+    OpcaoMenu(tit), acao(fn) { cor::definir_cor(cor_titulo, cor::LILAS); }
 Botao::~Botao() {}
 
 /**
@@ -51,24 +52,13 @@ void Botao::desenhar()
     glRectf(0, 0, this->largura, this->altura);
 
     // desenha borda
-    /*
-    glColor3fv(this->cor_borda);
-    glLineWidth(OPCAOMENU_LARGURA_BORDA);
-    glBegin(GL_LINE_LOOP);
-        glVertex3f(0, 0, 0);
-        glVertex3f(largura, 0, 0);
-        glVertex3f(largura, altura, 0);
-        glVertex3f(0, altura, 0);
-    glEnd();
-    */
     desenhar_borda(largura, altura, this->cor_borda);
 
-    // TODO: Se possível, centralizar texto na horizontal
+    // Imprime texto no centro do botão
     glPushMatrix();
-    std::cout << largura_string(this->titulo, altura, GLUT_STROKE_MONO_ROMAN);
-    //glTranslatef((largura - largura_string(this->titulo, altura, GLUT_STROKE_MONO_ROMAN)), altura/10., 0);
-    glTranslatef(0, altura/2, 0);
-    desenhar_string(this->titulo, 4*altura/5., GLUT_STROKE_MONO_ROMAN, this->cor_titulo);
+    float x = ((float)largura - largura_string(this->titulo, 0.8*altura, FONTE))/2;
+    glTranslatef(x, altura/2, 0);
+    desenhar_string(this->titulo, 0.8*altura, FONTE, this->cor_titulo);
     glPopMatrix();
 }
 
@@ -90,7 +80,10 @@ void Botao::reagir_a_teclado(unsigned char tecla)
  * Construtor e destrutor
  */
 OpcaoAlterarValorNumerico::OpcaoAlterarValorNumerico(std::string tit, unsigned int mn, unsigned int mx, unsigned int &ref):
-    OpcaoMenu(tit), min(mn), max(mx), referencia(ref) {}
+    OpcaoMenu(tit), min(mn), max(mx), referencia(ref)
+{
+    cor::definir_cor(cor_referencia, cor::VERDE);
+}
 
 OpcaoAlterarValorNumerico::~OpcaoAlterarValorNumerico() {}
 
@@ -134,17 +127,20 @@ void OpcaoAlterarValorNumerico::desenhar()
     glRectf(0, 0, this->largura, this->altura);
 
     // desenha borda
-    glColor3fv(this->cor_borda);
-    glLineWidth(OPCAOMENU_LARGURA_BORDA);
-    glBegin(GL_LINE_LOOP);
-        glVertex3f(0, 0, 0);
-        glVertex3f(largura, 0, 0);
-        glVertex3f(largura, altura, 0);
-        glVertex3f(0, altura, 0);
-    glEnd();
+    desenhar_borda(this->largura, this->altura, this->cor_borda);
 
-    // TODO: escrever texto dentro da caixa
-    return;
+    // Escrever texto
+    std::string texto = this->titulo + ": - " + std::to_string(referencia) + " +";
+    glPushMatrix();
+    /*
+    glTranslatef(5, (double) this->altura/2, 0);
+    desenhar_string(texto, 0.8*this->altura, FONTE, this->cor_titulo);
+    */
+    float x = ((float)largura - largura_string(texto, 0.8*altura, FONTE))/2;
+    glTranslatef(x, altura/2, 0);
+    desenhar_string(texto, 0.8*altura, FONTE, this->cor_referencia);
+    glPopMatrix();
+
 }
 
 /* --- Funções da classe OpcaoEditarNome --- */
@@ -152,7 +148,7 @@ void OpcaoAlterarValorNumerico::desenhar()
  * Construtor e destrutor
  */
 OpcaoEditarNome::OpcaoEditarNome(std::string &nome, unsigned int max):
-    OpcaoMenu(nome),  max_caracteres(max), referencia(nome), modo_edicao(false) {}
+    OpcaoMenu(nome),  max_caracteres(max), referencia(nome) {}
 OpcaoEditarNome::~OpcaoEditarNome() {}
 
 /**
@@ -160,12 +156,12 @@ OpcaoEditarNome::~OpcaoEditarNome() {}
  */
 void OpcaoEditarNome::reagir_a_teclado(unsigned char tecla)
 {
-    // Se não estiver no modo edição, reage apenas a enter
-    if (modo_edicao == false)
+    // Se não estiver no modo edição, reage apenas a enter.
+    if (bloqueia_cursor == false)
     {
         if ((tecla == '\n') || (tecla == '\r'))
         {
-            modo_edicao = true;
+            bloqueia_cursor = true;
         }
     }
 
@@ -175,18 +171,18 @@ void OpcaoEditarNome::reagir_a_teclado(unsigned char tecla)
         // Enter: desativa modo edição e salva string na referência
         if ((tecla == '\n') || (tecla == '\r'))
         {
-            modo_edicao = false;
+            bloqueia_cursor = false;
             referencia = titulo;
         }
 
-        // Backspace: apaga o último caractere
-        else if (tecla == '\b')
+        // Backspace: apaga o último caractere - enquanto existirem caracteres
+        else if ((tecla == '\b') && (titulo.size() > 0))
         {
             titulo.erase(titulo.end() - 1);
         }
 
         // Teclas alfanuméricas e espaço: Acrescenta ao string
-        else if (isalnum(tecla) || tecla == ' ')
+        else if ((isalnum(tecla) || tecla == ' ') && titulo.size() < max_caracteres)
         {
             titulo += tecla;
         }
@@ -223,7 +219,9 @@ void OpcaoEditarNome::desenhar()
         glVertex3f(0, altura, 0);
     glEnd();
 
-    // TODO: escrever texto dentro da caixa
-    std::string texto = this->titulo + "|"; // acrescenta um cursor
-    return;
+    // Imprime texto alinhado à esquerda
+    glPushMatrix();
+    glTranslatef(10, altura/2, 0);
+    desenhar_string(bloqueia_cursor ? this->titulo + "|" : this->titulo, 4*altura/5., FONTE, this->cor_titulo);
+    glPopMatrix();
 }

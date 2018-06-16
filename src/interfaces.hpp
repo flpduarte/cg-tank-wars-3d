@@ -35,6 +35,10 @@ public:
     std::string titulo;
     bool selecionavel;      // Indica se o quadro é selecionavel ou não.
     bool selecionado;       // Indica se o cursor encontra-se nesta opção.
+
+    bool bloqueia_cursor;   // Um estado que indica se ele impede a mudança para
+                            // outras opções por meio das setas para cima e para baixo
+
     float cor_borda[3];
     float cor_fundo[3];
     float cor_titulo[3];
@@ -42,8 +46,8 @@ public:
     OpcaoMenu(std::string titulo);                          // Cria objeto com altura e largura padrão. Pode ser modificado depois.
     virtual ~OpcaoMenu() = 0;                               // Obriga classes filhas a definirem um destrutor
     virtual void desenhar() = 0;                            // Virtual puro, classes filhas DEVEM implementá-lo.
-    virtual void reagir_a_tecla_especial(int tecla) {}      // se não implementado, esta opção não reage a teclas especiais.
-    virtual void reagir_a_teclado(unsigned char) {}         // retorna true se precisar atualizar a tela após a ação.
+    virtual void reagir_a_tecla_especial(int tecla);        // se não implementado, esta opção não reage a teclas especiais.
+    virtual void reagir_a_teclado(unsigned char);           // retorna true se precisar atualizar a tela após a ação.
 };
 
 /**
