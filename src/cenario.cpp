@@ -29,7 +29,12 @@ Cenario::Cenario()
     camera  = new Camera(CAMERA_POS, CAMERA_LOOKAT, CAMERA_VIEWUP);
     terreno = new Terreno;
 
-    // Configura iluminação do sol.
+    // Configura modelo de luz
+    glEnable(GL_LIGHTING);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    
+
+    // Iluminação do Sol.
     // Obs: Posso futuramente fazer essas configurações mudarem aleatoriamente,
     // para criar cenários noturnos, por exemplo. Mas isto está fora do escopo
     // do trabalho atual.

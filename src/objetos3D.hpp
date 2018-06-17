@@ -19,4 +19,10 @@
 #ifndef OBJETOS3D_HPP
 #define OBJETOS3D_HPP
 
+#include <GL/glut.h>
+
+void desenhar_tanque(const GLfloat *cor, int homens);
+void desenhar_esteira_tanque(const GLfloat *cor);
+void desenhar_corpo_tanque(const GLfloat *cor);
+
 #endif

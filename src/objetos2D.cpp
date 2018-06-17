@@ -42,7 +42,7 @@ void desenhar_string(std::string str, float altura, void *font, float cor[3])
     glScalef(escala, escala, escala);
 
     // Escreve o texto
-    glColor3fv(cor);
+    glColor4fv(cor);
     glLineWidth(FONTE_ESPESSURA);
     for (std::string::iterator c=str.begin(); c != str.end(); c++)
     {
@@ -76,7 +76,7 @@ float largura_string(std::string str, float altura, void *font)
   */
 void desenhar_borda(unsigned int largura, unsigned int altura, float cor[3])
 {
-    glColor3fv(cor);
+    glColor4fv(cor);
     glLineWidth(OPCAOMENU_LARGURA_BORDA);
     glBegin(GL_LINE_LOOP);
         glVertex3f(0, 0, 0);

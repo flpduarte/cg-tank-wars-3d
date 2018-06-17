@@ -80,8 +80,6 @@ void Terreno::desenhar()
 {
 	const int nx = NMALHA_X, ny = NMALHA_Y - 1;
 	int i, j;
-
-	glColor3f(0, 0.5, 0);
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_TERRENO);
 	for (j = 0; j < ny; j++)
 	{
@@ -100,7 +98,6 @@ void Terreno::desenhar()
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_BORDA);
 
 	// Borda Sul (y = YMIN)
-    //glBegin(GL_LINES);
 	glBegin(GL_QUAD_STRIP);
 	glNormal3f(0, -1, 0);
 	for (i = 0; i < NMALHA_X; i++)
@@ -111,7 +108,6 @@ void Terreno::desenhar()
 	glEnd();
 
 	// Borda Norte (y = YMAX)
-	//glBegin(GL_LINES);
 	glBegin(GL_QUAD_STRIP);
 	glNormal3f(0, 1, 0);
 	for (i = 0; i < NMALHA_X; i++)
@@ -122,7 +118,6 @@ void Terreno::desenhar()
 	glEnd();
 
 	// Borda oeste: x = XMIN
-	//glBegin(GL_LINES);
 	glBegin(GL_QUAD_STRIP);
 	glNormal3f(0, -1, 0);
 	for (j = 0; j < NMALHA_Y; j++)
@@ -133,7 +128,6 @@ void Terreno::desenhar()
 	glEnd();
 
 	// Borda leste: x = XMAX
-	//glBegin(GL_LINES);
 	glBegin(GL_QUAD_STRIP);
 	glNormal3f(0, -1, 0);
 	for (j = 0; j < NMALHA_Y; j++)

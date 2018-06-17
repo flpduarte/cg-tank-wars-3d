@@ -38,7 +38,7 @@ struct Jogador
 {
     // Propriedades do tanque
     int njogador;       // Número do jogador: 1, 2, ..., MAX_JOGADORES.
-    float cor[3];       // em RGB
+    float cor[4];       // em RGBA
     std::string nome;
 
     // Pontuação, dinheiro e armamentos disponíveis

@@ -41,13 +41,13 @@ void Botao::desenhar()
     // desenha fundo do quadro como cinza se selecionado
     if (this->selecionado)
     {
-        glColor3fv(cor::CINZA_ESCURO);
+        glColor4fv(cor::CINZA_ESCURO);
     }
 
     // desenha na cor original, caso contrário
     else
     {
-        glColor3fv(this->cor_fundo);
+        glColor4fv(this->cor_fundo);
     }
     glRectf(0, 0, this->largura, this->altura);
 
@@ -116,13 +116,13 @@ void OpcaoAlterarValorNumerico::desenhar()
     // desenha fundo do quadro como cinza se selecionado
     if (this->selecionado)
     {
-        glColor3fv(cor::CINZA_ESCURO);
+        glColor4fv(cor::CINZA_ESCURO);
     }
 
     // desenha na cor original, caso contrário
     else
     {
-        glColor3fv(this->cor_fundo);
+        glColor4fv(this->cor_fundo);
     }
     glRectf(0, 0, this->largura, this->altura);
 
@@ -199,18 +199,18 @@ void OpcaoEditarNome::desenhar()
     // desenha fundo do quadro como cinza se selecionado
     if (this->selecionado)
     {
-        glColor3fv(cor::CINZA_ESCURO);
+        glColor4fv(cor::CINZA_ESCURO);
     }
 
     // desenha na cor original, caso contrário
     else
     {
-        glColor3fv(this->cor_fundo);
+        glColor4fv(this->cor_fundo);
     }
     glRectf(0, 0, this->largura, this->altura);
 
     // desenha borda
-    glColor3fv(this->cor_borda);
+    glColor4fv(this->cor_borda);
     glLineWidth(OPCAOMENU_LARGURA_BORDA);
     glBegin(GL_LINE_LOOP);
         glVertex3f(0, 0, 0);
