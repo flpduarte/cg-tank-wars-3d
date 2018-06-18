@@ -52,9 +52,12 @@ Jogador::Jogador(int i): njogador(i)
  * início de jogo:
  * - Pontos = 0
  * - Dolares = 0
- * - Armas: Apenas Incinerador, com MUNICAO_INICIAL tiros
+ * - Armas: Apenas Incinerador, com QTD_INCINERADOR tiros
  */
-void condicao_inicial();
+void Jogador::condicao_inicial()
+{
+
+}
 void reiniciar();
 
 
