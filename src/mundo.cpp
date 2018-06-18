@@ -122,7 +122,12 @@ void Mundo::renomear_jogadores()
  */
 void Mundo::iniciar_jogo()
 {
-    // TODO
+    // Zera todas as variáveis do jogo
+    rodada_atual = 1;
+    for (int i = 0; i < n_jogadores; i++)
+    {
+        jogadores[i]->zerar();
+    }
 
     // Inicia a primeira rodada
     this->iniciar_rodada();

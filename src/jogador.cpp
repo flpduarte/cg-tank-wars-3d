@@ -48,6 +48,17 @@ Jogador::Jogador(int i): njogador(i)
 }
 
 /**
+ * condicao_inicial(): Restaura as configurações do jogador para a condição de
+ * início de jogo:
+ * - Pontos = 0
+ * - Dolares = 0
+ * - Armas: Apenas Incinerador, com MUNICAO_INICIAL tiros
+ */
+void condicao_inicial();
+void reiniciar();
+
+
+/**
  * Libera a memória utilizada pelo objeto Jogador
  */
 Jogador::~Jogador()

@@ -30,11 +30,16 @@
 #define MAX_CARACTERES_NOME 15
 
 /* Dimensões e posição da janela */
-#define JANELA_LARGURA     800
-#define JANELA_ALTURA      600
-#define JANELA_POSICAO_X   50
-#define JANELA_POSICAO_Y   100
-#define JANELA_TITULO      "Tank Wars 3D"
+const int JANELA_LARGURA   =  800;
+const int JANELA_ALTURA    =  600;
+const int JANELA_POSICAO_X =   50;
+const int JANELA_POSICAO_Y =  100;
+#define   JANELA_TITULO      "Tank Wars 3D";
+
+/* Dimensões das Viewports durante as rodadas */
+const int ALTURA_VP2D      =  100;
+const int ALTURA_VP3D      = JANELA_ALTURA - ALTURA_VP2D;
+
 
 /* Dimensões padrão das opções de menu */
 #define OPCAOMENU_LARGURA_PADRAO 600
@@ -44,16 +49,16 @@
 #define OPCAOMENU_LARGURA_BORDA  4
 
 /* Constantes utilizadas por municao.cpp e armas.cpp */
-#define MASSA_MUNICAO       100.0
-#define RAIO_INCINERADOR    100     // Raio do incinerador; os outros são baseados nesta.
+#define MASSA_MUNICAO       100.0   // TBD
+#define RAIO_INCINERADOR    5       // Raio de explosão do incinerador; os outros são baseados nesta.
 #define QTD_INCINERADOR     100     // Qtd inicial de incineradores por jogador
 
-#define FRACAO_RAIO_DANO    1.25    // Raio de dano / Raio de Explosao
-#define GRAVIDADE           200.0
+#define FRACAO_RAIO_DANO    1.25    // Raio de dano / Raio de Explosao no modelo de explosão
+#define GRAVIDADE           200.0   // TBD
 #define DT                  0.05    // Passo de integração.
 
 /* Constantes utilizadas por mundo.hpp e mundo.c */
-#define MAX_JOGADORES 10
+const int MAX_JOGADORES     = 10;
 
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE = 3.0;  // largura do tanque

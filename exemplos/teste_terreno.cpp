@@ -105,6 +105,7 @@ void init()
 	cout << terreno.z(10, 0) << endl;
 	jogador1.definir_normal(terreno.normal(10, 0));
 	jogador1.angulo = 45;
+	jogador1.homens = 12;
 	
 	jogador2.pos[0] = 37;
 	jogador2.pos[1] = 0;
@@ -119,6 +120,7 @@ void init()
 	jogador3.definir_normal(terreno.normal(64, 0));
 	cout << terreno.z(64, 0) << endl;
 	jogador3.angulo = 90;
+	jogador3.homens = 50;
 	
 	jogador4.pos[0] = 91;
 	jogador4.pos[1] = 0;
@@ -126,6 +128,7 @@ void init()
 	jogador4.definir_normal(terreno.normal(91, 0));
 	cout << terreno.z(91, 0) << endl;
 	jogador4.angulo = 150;
+	jogador4.homens = 77;
 }
 
 void cube(){

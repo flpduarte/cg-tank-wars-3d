@@ -59,8 +59,10 @@ struct Jogador
     // Métodos
     Jogador(int i);
     ~Jogador();
-    void desenhar();
+    void condicao_inicial();
+    void reiniciar();
 
+    void desenhar();
     void posicionar(double nova_pos[3]);
     void definir_normal(GLfloat normal[3]);
 };

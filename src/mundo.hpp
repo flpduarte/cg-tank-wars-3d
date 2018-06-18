@@ -31,8 +31,8 @@ public:
     Jogador *jogadores[MAX_JOGADORES];
 
     // configurações do jogo
-    unsigned int n_jogadores;    // 2, ..., MAX_JOGADORES <= 10
-    unsigned int n_rodadas;      // > 0
+    int n_jogadores;    // 2, ..., MAX_JOGADORES <= 10
+    int n_rodadas;      // > 0
 
     // estado atual do mundo
     Tela tela_atual;
