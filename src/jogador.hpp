@@ -16,21 +16,22 @@
 #define JOGADOR_HPP
 
 #include <string>
+#include <vector>
 #include <GL/glut.h>
-#include "armas.hpp"
+#include "interfaces.hpp"
 
 /**
- * Estrutura MunicaoEQtd: Agrupa uma munição e sua respectiva quantidade,
- * para uso na classe Jogador, ao criar a lista de munições.
+ * MunicaoEQtd: armazena um ponteiro para uma munição e sua respectiva
+ * quantidade que o jogador atual contém.
  */
 struct MunicaoEQtd
 {
-    TipoMunicao tipo;
-    int         qtd;
+    Municao *arma;  // ponteiro para a arma
+    int qtd;
+
+    MunicaoEQtd();
 };
 
-MunicaoEQtd *nova_lista_municoes();
-Municao     *obter_objeto_municao(TipoMunicao tipo);
 
 /**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
@@ -45,7 +46,8 @@ struct Jogador
     // Pontuação, dinheiro e armamentos disponíveis
     int pontos;
     int dolares;
-    MunicaoEQtd *lista_municoes;
+    std::vector <MunicaoEQtd> *armas;   // uma lista dinâmica de armas e quantidades
+    int indice_arma_atual;         // índice da arma ativa
 
     // Estado atual do tanque
     int homens;

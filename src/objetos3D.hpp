@@ -26,6 +26,7 @@ void desenhar_tanque(const GLfloat *cor, int homens);
 void desenhar_esteira_tanque(const GLfloat *cor);
 void desenhar_corpo_tanque(const GLfloat *cor);
 void desenhar_roda_tanque(const GLfloat *cor);
+void desenhar_canhao();
 
 /* Funções básicas */
 void desenhar_circulo(const GLfloat r);

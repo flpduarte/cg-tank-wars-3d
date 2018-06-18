@@ -30,7 +30,7 @@
  * 100% de dano      | Raio de dano = aprox. 125% do raio de explosão
  *                   | (configurado como a constante FRACAO_RAIO_DANO)
  */
-void efeito_explosao(int epicentro[3], int raio_explosao)
+void efeito_explosao(double epicentro[3], int raio_explosao)
 {
     // TODO
     // Usar a constante FRACAO_RAIO_DANO

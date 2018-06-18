@@ -15,9 +15,10 @@
 #define AUXILIARES_HPP
 namespace aux
 {
-    /* Declaração de funções */
+    /* Declaração de classes */
     class ParOrdenado;
     class Polinomio;
+    class ListaCircular;
 
     /* operações sobre vetores */
     double prod_escalar(const double A[3], const double B[3]);
@@ -75,5 +76,6 @@ namespace aux
         Polinomio *derivada();
         void imprimir();
     };
+
 };
 #endif

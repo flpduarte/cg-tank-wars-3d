@@ -30,8 +30,10 @@ protected:
                                         // forçar a implementação por classes filhas
 public:
     MunicaoExplosiva();         // Construtor define a massa do projétil.
-    void detonar();             // Executa o efeito de explosão no local atual
+    void detonar(double [3]);             // Executa o efeito de explosão no local atual
                                 // do armamento
+    virtual void desenhar();    // Desenha um projétil padrão. Método pode ser
+                                // substituído, se desejado.
 };
 
 

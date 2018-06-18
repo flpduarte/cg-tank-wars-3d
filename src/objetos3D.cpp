@@ -35,9 +35,6 @@ const float BRILHO_ESTEIRA      = 48.0f;                // constante usado com G
 const float SPECULAR_TANQUE[4]  = {0.4, 0.4, 0.4, 1};
 const float BRILHO_TANQUE       = 32.0f;
 
-const float COR_ARMA[]          = {0.5, 0.5, 0.5, 1};
-const float SPECULAR_ARMA[4]    = {1.0, 1.0, 1.0, 1};   // cor especular
-const float BRILHO_ARMA         = 24.0f;                // constante usado com GL_SHININESS
 
 /**
  * Desenha um tanque individual. O
@@ -319,6 +316,22 @@ void desenhar_roda_tanque(const GLfloat *cor)
     glTranslatef(0., -1/8., 0.);
     glRotatef(180, 0, 0, 1);            // gira 180° em torno de z
     desenhar_circulo(1/20.);
+    glPopMatrix();
+}
+
+
+/**
+ * Desenha o canhão como um cilindro em torno do eixo X.
+ * Parte do pressuposto que o canhão é desenhado com as características do corpo
+ * do tanque, pois foi a última operação realizada.
+ * TODO: salvar diâmetro e comprimento do canhâo como uma constante.
+ */
+void desenhar_canhao()
+{
+    glPushMatrix();
+    glRotated(90, 0, 0, 1);
+    glTranslated(0, -.75/2, 0);
+    desenhar_faixa_circular(1/32., 0.75);
     glPopMatrix();
 }
 

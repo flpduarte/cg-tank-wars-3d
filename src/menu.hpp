@@ -58,13 +58,13 @@ public:
  */
 class OpcaoAlterarValorNumerico : public OpcaoMenu
 {
-    unsigned int min;
-    unsigned int max;
-    unsigned int &referencia;
+    int min;
+    int max;
+    int &referencia;
     float cor_referencia[3];
 
 public:
-    OpcaoAlterarValorNumerico(std::string, unsigned int, unsigned int, unsigned int &);
+    OpcaoAlterarValorNumerico(std::string, int, int, int &);
     ~OpcaoAlterarValorNumerico();
     void reagir_a_tecla_especial(int tecla);    // reage às teclas esquerda e direita
     void desenhar();

@@ -36,7 +36,7 @@ public:
 
     // estado atual do mundo
     Tela tela_atual;
-    unsigned int rodada_atual;   // 1, 2, ..., n_rodadas
+    int rodada_atual;   // 1, 2, ..., n_rodadas
 
     // Construtor e destrutor
     Mundo();
@@ -45,10 +45,10 @@ public:
     // Métodos que transicionam de uma tela para outra e realizam o loop do jogo
     void tela_inicial();            // Vai para a tela inicial
     void renomear_jogadores();      // Tela inicial -> Escolha jogadores
-    void iniciar_jogo();             // Escolha jogadores -> jogo
-    void iniciar_rodada();           // Inicia o loop de uma rodada_atual
+    void iniciar_jogo();            // Escolha jogadores -> jogo
+    void iniciar_rodada();          // Inicia o loop de uma rodada_atual
     void resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
-    void tela_compras(unsigned int);// Exibe o menu de compras de cada jogador
+    void tela_compras(int);         // Exibe o menu de compras de cada jogador
 
     // Métodos de interação com o usuário. São passados às funções do OpenGL
     // Estes métodos deveriam ser estáticos para poderem ser utilizados pelo

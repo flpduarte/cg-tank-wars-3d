@@ -15,10 +15,10 @@
 #include <cmath>
 #include <string>
 #include <iostream>
-#include "armas.hpp"
+#include "jogador.hpp"
+#include "globals.hpp"
 #include "auxiliares.hpp"
 #include "constantes.hpp"
-#include "jogador.hpp"
 #include "objetos3D.hpp"
 
 void definir_cor(float *, const int);     // função local para definir a cor do tanque
@@ -34,7 +34,7 @@ Jogador::Jogador(int i): njogador(i)
     this->nome = "Jogador " + std::to_string(i);
     this->pontos = 0;
     this->dolares = 0;
-    this->lista_municoes = nova_lista_municoes();
+    this->armas = NULL;
 
     this->homens = 100;
     this->pos[0] = 0;
@@ -56,8 +56,20 @@ Jogador::Jogador(int i): njogador(i)
  */
 void Jogador::condicao_inicial()
 {
+    // zera pontuação e dolares
+    pontos = 0;
+    dolares = 0;
 
+    // Refaz lista de armamentos
+    //if (armas != NULL)
+    //while (armas->size > 0)
+    //    armas->erase(armas->back());
 }
+
+/**
+ * Redefine o status do jogador para a condição de início de rodada:
+ * - homens = 100
+ */
 void reiniciar();
 
 
@@ -106,14 +118,7 @@ void Jogador::desenhar()
 
     // Gira os eixos para o eixo X do canhão apontar para o ângulo certo
     glRotated(this->angulo, 0, -1, 0);
-
-    // Desenha o canhão: cilindro ao longo do eixo X
-    // (este bloco de comandos é como se fosse uma função separada)
-    glPushMatrix();
-    glRotated(90, 0, 0, 1);
-    glTranslated(0, -.75/2, 0);
-    desenhar_faixa_circular(1/32., 0.75);
-    glPopMatrix();
+    desenhar_canhao();
 
     // Desempilhar a matriz
     glPopMatrix();
@@ -206,47 +211,4 @@ void definir_cor(float *cor, const int i)
         cor[2] = 0.5;
         break;
     }
-}
-
-/* ------------------------- */
-/* Funções auxiliares        */
-
-/**
- * Dado um TipoMunicao, retorna um novo objeto correspondente ao tipo recebido.
- */
-Municao *obter_objeto_municao(TipoMunicao tipo)
-{
-    switch (tipo)
-    {
-        case INCINERADOR:
-            return new Incinerador;
-
-        case INCINERADORM2:
-            return new IncineradorM2;
-
-        case BOMBA20KILOTONS:
-            return new Bomba20Kilotons;
-
-        case BOMBA5MEGATONS:
-            return new Bomba5Megatons;
-
-        // Este caso nunca ocorrerá, devido à enumeração.
-        default:
-            return NULL;
-    }
-}
-
-/**
- * nova_lista_municoes(): retorna uma lista de estruturas MunicaoEQtd, contendo
- * todas as municoes existentes no jogo, porém com quantidades = 0 (exceto incinerador).
- */
-MunicaoEQtd *nova_lista_municoes()
-{
-    MunicaoEQtd *lista = new MunicaoEQtd[N_ARMAMENTOS];
-    for (int i = 0; i < N_ARMAMENTOS; i++)
-    {
-        lista->tipo = (TipoMunicao) i;
-        lista->qtd  = (i == INCINERADOR) ? QTD_INCINERADOR : 0;
-    }
-    return lista;
 }

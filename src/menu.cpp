@@ -79,7 +79,7 @@ void Botao::reagir_a_teclado(unsigned char tecla)
 /**
  * Construtor e destrutor
  */
-OpcaoAlterarValorNumerico::OpcaoAlterarValorNumerico(std::string tit, unsigned int mn, unsigned int mx, unsigned int &ref):
+OpcaoAlterarValorNumerico::OpcaoAlterarValorNumerico(std::string tit, int mn, int mx, int &ref):
     OpcaoMenu(tit), min(mn), max(mx), referencia(ref)
 {
     cor::definir_cor(cor_referencia, cor::VERDE);

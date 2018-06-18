@@ -126,7 +126,7 @@ void Mundo::iniciar_jogo()
     rodada_atual = 1;
     for (int i = 0; i < n_jogadores; i++)
     {
-        jogadores[i]->zerar();
+        jogadores[i]->condicao_inicial();
     }
 
     // Inicia a primeira rodada
@@ -173,7 +173,7 @@ void Mundo::resultado_parcial()
  * Exibe o menu de compras para cada jogador.
  * Entrada: número do jogador: 1, 2, ..., n_jogadores
  */
-void Mundo::tela_compras(unsigned int njogador)
+void Mundo::tela_compras(int njogador)
 {
     // Transiciona para a tela de compras. Usa as mesmas Configurações
     // que a tela de resultado parcial.

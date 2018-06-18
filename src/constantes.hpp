@@ -34,7 +34,7 @@ const int JANELA_LARGURA   =  800;
 const int JANELA_ALTURA    =  600;
 const int JANELA_POSICAO_X =   50;
 const int JANELA_POSICAO_Y =  100;
-#define   JANELA_TITULO      "Tank Wars 3D";
+#define   JANELA_TITULO      "Tank Wars 3D"
 
 /* Dimensões das Viewports durante as rodadas */
 const int ALTURA_VP2D      =  100;
@@ -49,7 +49,7 @@ const int ALTURA_VP3D      = JANELA_ALTURA - ALTURA_VP2D;
 #define OPCAOMENU_LARGURA_BORDA  4
 
 /* Constantes utilizadas por municao.cpp e armas.cpp */
-#define MASSA_MUNICAO       100.0   // TBD
+#define MASSA_MUNICAO       1.0   // TBD
 #define RAIO_INCINERADOR    5       // Raio de explosão do incinerador; os outros são baseados nesta.
 #define QTD_INCINERADOR     100     // Qtd inicial de incineradores por jogador
 
@@ -57,11 +57,16 @@ const int ALTURA_VP3D      = JANELA_ALTURA - ALTURA_VP2D;
 #define GRAVIDADE           200.0   // TBD
 #define DT                  0.05    // Passo de integração.
 
-/* Constantes utilizadas por mundo.hpp e mundo.c */
-const int MAX_JOGADORES     = 10;
-
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE = 3.0;  // largura do tanque
+
+const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
+const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};
+const float BRILHO_PROJETIL      = 20.0f;
+const float RAIO_PROJETIL        = 1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
+
+/* Constantes utilizadas por mundo.hpp e mundo.c */
+const int MAX_JOGADORES     = 10;
 
 /* Definição de algumas cores padrão, em RGBA */
 namespace cor

@@ -72,7 +72,7 @@ class Menu
     unsigned int largura, altura;               // dimensões totais do menu. Usado p/ centralizá-lo na tela
     int posx0, posy0;                         // Origem do Menu, Coordenadas da Tela
     std::vector<OpcaoMenu *> opcoes;
-    unsigned int opcao_ativa;                   // Índice da opcao do menu atualmente ativa
+    unsigned int opcao_ativa;                            // Índice da opcao do menu atualmente ativa
     bool _possui_opcao_selecionada;             // Um flag para indicar se o menu já possui uma opção->selecionado = true.
     bool posicionamento_automatico;
 
@@ -92,8 +92,44 @@ public:
 
 
 /**
- * Municao: interface para munições. Cada munição implementada no jogo seguirá
- * esta interface.
+ * Municao: Representa as características de uma munição:
+ * - Massa (por enquanto, todas constantes)
+ * - nome
+ * - preço
+ * - quantidade adquirida por lote
+ *
+ * Interface:
+ * - desenhar: Desenha o projétil correspondente à munição atual. O desenho é
+ *             em coordenadas do objeto; transladá-lo posteriormente para o mundo.
+ * - lançar  : Cria um objeto Projetil, o qual é responsável pelos cálculos ba-
+ *             lísticos. O objeto carregará as características da municção atual.
+ * - detonar(): Desenha o efeito de detonação da munição, incluindo animação. Deve
+ *              ser transladado para o local onde se localiza o objeto Projetil.
+ */
+class Projetil;
+class Municao
+{
+    // Propredades da municao.
+protected:
+    std::string nome_arma;  // Nome da arma
+    int id_arma;            // Id do armamento, para ordená-los.
+    int preco;
+    int qtd_por_lote;
+    double m;               // massa do armamento específico.
+
+public:
+    double massa();
+    Projetil *lancar(double pos[3], int power, int angle, int vento);
+    virtual void desenhar() = 0;                // desenha munição em coordenadas do objeto
+    virtual void detonar(double pos[3]) = 0;    // Realiza os efeitos da detonação da munição no local indicado
+
+    // leitura das propriedades
+    std::string nome();
+    int id();
+};
+
+/**
+ * Representa uma munição *em voo*.
  * Sistemas de Coordenadas do mundo:
  *
  * X: Alinhado norte-sul
@@ -123,21 +159,17 @@ public:
  *                        Classes derivadas devem implementar esta função.
  *
  */
-class Municao
+class Projetil
 {
-    // Propredades da municao.
-protected:
-    std::string nome;       // Nome da arma
-    double massa;           // Massa do projétil
+    Municao *municao;
     double X[6];            // Variáveis de estado: [x, y, z, vx, vy, vz]
     double F[3];            // Componentes da força resultante sobre o projétil.
                             // [Fx, Fy, Fz]
+    double derivada(int);
 
-    double derivada(int i);
-
-public:
-    void lancar(int pos[3], int power, int angle, int vento);
+    public:
+    Projetil(Municao *, double X0[3], int V0, int ang, int vento);
+    void desenhar();
     void atualizar_posicao();
-    virtual void detonar() = 0;
 };
 #endif

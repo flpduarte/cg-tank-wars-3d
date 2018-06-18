@@ -14,9 +14,11 @@
  */
 
 /* Bibliotecas */
+#include <GL/glut.h>
 #include "constantes.hpp"
 #include "municao.hpp"
 #include "explosoes.hpp"
+#include "objetos3D.hpp"
 
 
 /* Implementação das funções da classe MunicaoExplosiva */
@@ -26,15 +28,30 @@
  */
 MunicaoExplosiva::MunicaoExplosiva()
 {
-    this->massa = MASSA_MUNICAO;
+    this->m = MASSA_MUNICAO;
+}
+
+/**
+ * Desenha uma munição padrão: uma esfera relativamente brilhosa
+ * e cinza.
+ *
+ * Classes filhas podem implementar seus próprios desenhos, que subs-
+ * tituirão esta função.
+ */
+void MunicaoExplosiva::desenhar()
+{
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, COR_PROJETIL);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_PROJETIL);
+    glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, BRILHO_PROJETIL);
+
+    desenhar_esfera(RAIO_PROJETIL);
 }
 
 /**
  * detonar(): Executa a função que produz o efeito de explosão na posição
  * atual do armamento.
  */
-void MunicaoExplosiva::detonar()
+void MunicaoExplosiva::detonar(double pos[3])
 {
-    int pos[3] = {(int) X[0], (int) X[1], (int) X[2]};
     efeito_explosao(pos, this->raio_explosao());
 }

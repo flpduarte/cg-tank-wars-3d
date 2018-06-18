@@ -16,6 +16,16 @@
 #include "armas.hpp"
 
 /**
+ * Cria a lista global de armamentos
+ */
+std::array <Municao *, N_ARMAMENTOS> *criar_lista_armamentos()
+{
+    std::array<Municao *, N_ARMAMENTOS> *lista = new std::array<Municao *, N_ARMAMENTOS>;
+    return lista;
+}
+
+
+/**
  * Incinerador: Armamento básico
  */
 Incinerador::Incinerador()
