@@ -21,16 +21,15 @@
 #include "configmenu.hpp"
 
 /* Funções auxiliares */
+
 /**
  * Deixa a tela preta e ajusta janela de recorte de forma que as Coordenadas do
  * Mundo coincidam com as Coordenadas da Tela.
  */
 void preparar_tela_para_menu()
 {
+    // Limpa a tela
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0, 0, 0, 0);
-    glDisable(GL_LIGHTING);     // desativa efeitos de iluminação
-    glDisable(GL_DEPTH_TEST);
 
     // Configura janela de recorte 2D para fazer coordenadas do mundo coincidir
     // com as coordenadas da tela
@@ -73,14 +72,18 @@ Mundo::~Mundo()
 }
 
 /**
- * Exibe a tela inicial do jogo.
+ * Transiciona para a tela inicial
  */
 void Mundo::tela_inicial()
 {
-    // Configura a tela para ser a tela inicial e muda
-    // o fundo da janela para preto
+    // Muda a tela atual
     this->tela_atual = TELA_INICIAL;
-    //preparar_tela_para_menu();
+
+    // Configura a tela do menu principal
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_SCISSOR_TEST);         // funcionalidade q permite desenhar em apenas parte da tela
+    glClearColor(0, 0, 0, 0);
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -88,7 +91,6 @@ void Mundo::tela_inicial()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_principal();
-    //this->menu_ativo->exibir();
 
     // Avisa que é preciso redesenhar a tela.
     // Isto provoca uma chamada ao glutDisplayFunc.
@@ -97,12 +99,13 @@ void Mundo::tela_inicial()
 
 
 /**
- * Exibe a tela de renomear jogadores
+ * Transiciona para a tela de renomear jogadores.
+ * Não é preciso mudar configurações de exibição: isto já foi feito para o menu
+ * principal.
  */
 void Mundo::renomear_jogadores()
 {
-    // Configura a tela para ser a tela inicial e muda
-    // o fundo da janela para preto
+    // Muda a tela atual
     this->tela_atual = TELA_RENOMEAR_JOGADORES;
 
     // Apaga menu antigo e cria menu novo
@@ -111,7 +114,6 @@ void Mundo::renomear_jogadores()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_renomear_jogadores();
-    //this->menu_ativo->exibir();
     glutPostRedisplay();
 }
 
@@ -143,9 +145,14 @@ void Mundo::iniciar_rodada()
  */
 void Mundo::resultado_parcial()
 {
-    // Configura a tela para ser a tela inicial e muda o fundo da janela para preto
+    // Transiciona para a tela de resultado parcial
     this->tela_atual = TELA_RESULTADO_PARCIAL;
-    //preparar_tela_para_menu();
+
+    // Configura a tela de resultado parcial
+    glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_SCISSOR_TEST);
+    glClearColor(0, 0, 0, 0);
 
     // Apaga menu antigo e cria menu novo
     if (this->menu_ativo != NULL)
@@ -153,7 +160,6 @@ void Mundo::resultado_parcial()
         delete this->menu_ativo;
     }
     this->menu_ativo = criar_menu_resultado_parcial();
-    //this->menu_ativo->exibir();
     glutPostRedisplay();
 }
 
@@ -164,7 +170,8 @@ void Mundo::resultado_parcial()
  */
 void Mundo::tela_compras(unsigned int njogador)
 {
-    // Configura a tela para ser a tela inicial e muda o fundo da janela para preto
+    // Transiciona para a tela de compras. Usa as mesmas Configurações
+    // que a tela de resultado parcial.
     this->tela_atual = TELA_COMPRAS;
     if (this->menu_ativo != NULL)
     {
@@ -174,9 +181,7 @@ void Mundo::tela_compras(unsigned int njogador)
     // Enquanto njogador for um jogador válido, exibe menu de compras
     if (njogador <= this->n_jogadores)
     {
-        //preparar_tela_para_menu();
         this->menu_ativo = criar_menu_compras(jogadores[njogador - 1]);
-        //this->menu_ativo->exibir();
         glutPostRedisplay();
     }
 
@@ -206,31 +211,11 @@ void Mundo::funcao_exibicao()
         case TELA_COMPRAS:
             preparar_tela_para_menu();
             this->menu_ativo->exibir();
-            /*glPushMatrix();
-            glTranslatef(50, 200, 0);
-            glColor3fv(cor::AZUL);
-            glBegin(GL_TRIANGLES);
-                glVertex2f(0, 0);
-                glVertex2f(100, 100);
-                glVertex2f(0, 100);
-            glEnd();
-            glPopMatrix();
-            glColor3fv(cor::AMARELO);
-            glRectf(400, 0, 500, 300);
-
-            glLineWidth(OPCAOMENU_LARGURA_BORDA);
-
-            glBegin(GL_LINE_LOOP);
-                glVertex3f(0, 0, 0);
-                glVertex3f(50, 0, 0);
-                glVertex3f(50, 50, 0);
-                glVertex3f(0, 50, 0);
-            glEnd();
-            */
         break;
 
+        // Exibe o cenário
         case TELA_RODADA:
-        // TODO
+            this->cenario->exibir();
         break;
     }
 

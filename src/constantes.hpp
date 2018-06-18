@@ -55,6 +55,9 @@
 /* Constantes utilizadas por mundo.hpp e mundo.c */
 #define MAX_JOGADORES 10
 
+/* Dimensões de referência para desenhar objetos */
+const double TAMANHO_TANQUE = 3.0;  // largura do tanque
+
 /* Definição de algumas cores padrão, em RGBA */
 namespace cor
 {
@@ -68,6 +71,7 @@ namespace cor
     const float BRANCO[]   = {1, 1, 1, 1};
     const float CINZA_MEDIO[] = {0.5, 0.5, 0.5, 1};
     const float CINZA_ESCURO[] = {0.2, 0.2, 0.2, 1};
+    const float AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
 
     // Função auxiliar que copia os valores de cor da variável origem à variável dest.
     void definir_cor(float *dest, const float *origem);

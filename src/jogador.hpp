@@ -16,6 +16,7 @@
 #define JOGADOR_HPP
 
 #include <string>
+#include <GL/glut.h>
 #include "armas.hpp"
 
 /**
@@ -48,13 +49,20 @@ struct Jogador
 
     // Estado atual do tanque
     int homens;
-    double pos[3];
-    int angulo;
+    int angulo;         // em graus. Intervalo: [0, 180]. 0° = positivo eixo X (direita).
     int potencia;
+
+    // Posicionamento do tanque
+    double pos[3];      // posição (x, y, z) do tanque
+    double normal[3];   // orientação para cima do tanque.
 
     // Métodos
     Jogador(int i);
     ~Jogador();
+    void desenhar();
+
+    void posicionar(double nova_pos[3]);
+    void definir_normal(GLfloat normal[3]);
 };
 
 #endif

@@ -162,6 +162,32 @@ double Terreno::z(double x, double y)
     return mapa[i][j][2];
 }
 
+/**
+ * Dadas coordenadas (x, y), retorna o vetor normal ao terreno naquele ponto.
+ * Por enquanto estou retornando o vetor normal mais próximo. Um refinamento
+ * possível é fazer uma interpolação entre os 4 vetores normais próximos na
+ * malha.
+ */
+GLfloat *Terreno::normal(double x, double y)
+{
+    // Determina os índices i e j da matriz mapa correspondentes às coordenadas x e y
+    int i = (int) round( (x - XMIN)/REFINAMENTO_MALHA );
+    int j = (int) round( (y - YMIN)/REFINAMENTO_MALHA );
+
+    // Certifica que i e j estão dentro dos limites da matriz
+    if (i < 0)
+        i = 0;
+    else if (i >= NMALHA_X)
+        i = NMALHA_X - 1;
+
+    if (j < 0)
+        j = 0;
+    else if (j >= NMALHA_Y)
+        j = NMALHA_Y - 1;
+
+    return normais[i][j];
+}
+
 /* ---- Métodos Protegidos ---- */
 
 /**

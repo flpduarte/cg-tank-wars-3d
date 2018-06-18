@@ -21,8 +21,17 @@
 
 #include <GL/glut.h>
 
+/* Funções de desenhar o tanque */
 void desenhar_tanque(const GLfloat *cor, int homens);
 void desenhar_esteira_tanque(const GLfloat *cor);
 void desenhar_corpo_tanque(const GLfloat *cor);
+void desenhar_roda_tanque(const GLfloat *cor);
 
+/* Funções básicas */
+void desenhar_circulo(const GLfloat r);
+void desenhar_faixa_circular(const GLfloat r, const GLfloat L);
+void desenhar_faixa_circular(const GLfloat r, const GLfloat L, int sinal);
+void desenhar_anel(const GLfloat r, const GLfloat R);
+void desenhar_esfera(GLfloat r);
+void desenhar_esfera(GLfloat r, GLfloat teta0, GLfloat teta1);
 #endif

@@ -12,11 +12,14 @@
  * Implementa os métodos da classe Jogador.
  *
  */
+#include <cmath>
 #include <string>
 #include <iostream>
-#include "constantes.hpp"
 #include "armas.hpp"
+#include "auxiliares.hpp"
+#include "constantes.hpp"
 #include "jogador.hpp"
+#include "objetos3D.hpp"
 
 void definir_cor(float *, const int);     // função local para definir a cor do tanque
 
@@ -37,6 +40,9 @@ Jogador::Jogador(int i): njogador(i)
     this->pos[0] = 0;
     this->pos[1] = 0;
     this->pos[2] = 0;
+    this->normal[0] = 0;
+    this->normal[1] = 0;
+    this->normal[2] = 1;
     this->angulo = 90;
     this->potencia = 200;
 }
@@ -51,7 +57,74 @@ Jogador::~Jogador()
 }
 
 /**
- * Define a cor do tanque de acordo com o número do jogador.
+ * Desenha o tanque correspondente ao jogador.
+ * Utiliza o estado atual do objeto para posicioná-lo. Objeto tanque possuirá
+ * atualizados: coordenadas (x, y, z) e o vetor normal do terreno no local onde
+ * o tanque se situa.
+ *
+ * Assume que a matriz ativa é a MODELVIEW.
+ * Assume que normal já está normalizado (módulo = 1). É válido, desde que tenha
+ * sido obtido a partir da matriz de vetores normais do cenário.
+ */
+void Jogador::desenhar()
+{
+    // Calcula o vetor eixo de rotação do tanque
+    const double cima[3] = {0, 0, 1};
+    double eixo[3] = {0};
+    aux::prod_vetorial(cima, normal, eixo);
+    double angulo = acos(aux::prod_escalar(cima, normal)) * 180/PI;
+    //std::cout << "(" << eixo[0] << ", " << eixo[1] << ", " << eixo[2] << ")" << std::endl;
+    //std::cout << angulo << std::endl;
+
+    // Translada o tanque para a sua posição no mundo
+    glPushMatrix();
+    glTranslated(pos[0], pos[1], pos[2]);
+    glScaled(TAMANHO_TANQUE, TAMANHO_TANQUE, TAMANHO_TANQUE);
+
+    // Rotaciona o tanque e o desenha
+    glPushMatrix();
+    glRotated(angulo, eixo[0], eixo[1], eixo[2]);
+    desenhar_tanque(cor, homens);
+    glPopMatrix();
+
+    // Prepara para desenhar o canhão: translada centro dos eixos para a esfera
+    glTranslated(.75/4*normal[0], .75/4*normal[1], .75/4*normal[2]);
+
+    // Gira os eixos para o eixo X do canhão apontar para o ângulo certo
+    glRotated(this->angulo, 0, -1, 0);
+
+    // Desenha o canhão: cilindro ao longo do eixo X
+    // (este bloco de comandos é como se fosse uma função separada)
+    glPushMatrix();
+    glRotated(90, 0, 0, 1);
+    glTranslated(0, -.75/2, 0);
+    desenhar_faixa_circular(1/32., 0.75);
+    glPopMatrix();
+
+    // Desempilhar a matriz
+    glPopMatrix();
+}
+
+/**
+ * Atalhos para atualizar posição e inclinação do tanque
+ */
+void Jogador::posicionar(double nova_pos[3])
+{
+    for (int i = 0; i < 3; i++)
+    {
+        this->pos[i] = nova_pos[i];
+    }
+}
+void Jogador::definir_normal(GLfloat normal[3])
+{
+    for (int i = 0; i < 3; i++)
+    {
+        this->normal[i] = normal[i];
+    }
+}
+/* -------------------------------------------------------------------------- */
+/**
+ * Função auxiliar que define a cor do tanque de acordo com o número do jogador.
  * A definição da cor segue a mesma sequência que no Tank Wars original.
  * A alteração da cor é realizada por referência.
  */
@@ -143,9 +216,9 @@ Municao *obter_objeto_municao(TipoMunicao tipo)
         case BOMBA5MEGATONS:
             return new Bomba5Megatons;
 
+        // Este caso nunca ocorrerá, devido à enumeração.
         default:
-            std::cerr << "Tipo de municao nao esperada - obter_objeto_municao()." << std::endl;
-            exit(-1);
+            return NULL;
     }
 }
 

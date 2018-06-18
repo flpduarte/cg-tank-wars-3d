@@ -22,6 +22,7 @@
 
 /**
  * Cria um novo cenário: Terreno, câmera e ordem de aparecimento dos jogadores.
+ * // TODO - ainda em construção
  */
 Cenario::Cenario()
 {
@@ -32,7 +33,6 @@ Cenario::Cenario()
     // Configura modelo de luz
     glEnable(GL_LIGHTING);
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-    
 
     // Iluminação do Sol.
     // Obs: Posso futuramente fazer essas configurações mudarem aleatoriamente,
@@ -41,8 +41,57 @@ Cenario::Cenario()
     glLightfv(GL_LIGHT0, GL_AMBIENT, SOMBRA); //contribuição ambiente
     glLightfv(GL_LIGHT0, GL_DIFFUSE, COR_SOL); //contribuição difusa
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
+    glEnable(GL_LIGHT0);
+
+    // Configura projeção perspectiva
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
+
+    // Muda para matriz ModelView e mantém-se nela
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    camera->posicionar();
 }
 
+/**
+ * Destroi cenário após o fim da rodada
+ */
+Cenario::~Cenario()
+{
+    delete camera;
+    delete terreno;
+}
+
+/**
+ * Exibe o cenario na tela:
+ * Cria viewport para exibir o cenario 3D
+ * Sobre o cenario, cria um viewport 2D para exibir informações do jogador atual
+ * No cenario 3D, mostrar:
+ * - Terreno
+ * - Tanques
+ * - Tiro e Explosões, se for o caso.
+ *
+ * Note que aqui precisarei lidar com 2 viewports diferentes.
+ *
+ * Posso usar glScissor(left, bottom, width, height) para definir uma região em
+ * Coordenadas da Tela que receberá desenhos. Isso permitirá limpar somente par-
+ * te da tela, por exemplo. Usarei glScissor para limpar cada viewport com uma
+ * cor diferente.
+ *
+ * Ideia:
+ * 1. Definir o viewport inferior e desenhar o cenário 3D.
+ * 2. Definir o viewport superior e desenhar as informações em 2D.
+ * TODO!
+ */
+void Cenario::exibir()
+{
+    // TODO
+    // limpa a tela
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //glMatrixMode(GL_MODELVIEW);
+    //terreno->desenhar();
+}
 
 /* --- Implementação da classe Camera --- */
 Camera::Camera(const double p[3], const double la[3], const double vu[3])

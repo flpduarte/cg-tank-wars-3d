@@ -36,7 +36,7 @@ class Terreno
     const double ALTURA_MAXIMA = 0.70;
 
     /* Características do terreno */
-    const GLfloat COR_TERRENO[4] = {0.1, 0.5, 0.1, 1};
+    const GLfloat COR_TERRENO[4] = {0.2, 0.5, 0.2, 1};
     const GLfloat COR_BORDA[4]   = {0.25, 0.125, 0, 1};
 
     /* Definição do número de pontos da malha - para desenhar o relevo */
@@ -71,7 +71,8 @@ public:
     Terreno();
     ~Terreno();
     void desenhar();
-    double z(double x, double y);   // retorna a altura no ponto (x, y)
+    double z(double x, double y);           // retorna a altura no ponto (x, y)
+    GLfloat *normal(double x, double y);     // Retorna o vetor normal ao terreno em (x, y)
 
     /* Métodos protegidos */
 protected:

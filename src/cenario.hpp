@@ -30,14 +30,20 @@ class Cenario
 {
     /* Constantes */
     /* Constantes da Cãmera */
-    const double CAMERA_POS[3]    = {50, 100, 80};
-    const double CAMERA_LOOKAT[3] = {50, 0, 20};
+    const double CAMERA_POS[3]    = {50, -100, 50};
+    const double CAMERA_LOOKAT[3] = {50, 0, 23};
     const double CAMERA_VIEWUP[3] = {0, 0, 1};
 
+    /* Constantes da projeção perspectiva */
+    const double FOV          = 40.0;
+    const double ASPECT_RATIO = 1.3333; // 800 x 600
+    const double DNEAR        = 50;
+    const double DFAR         = 500;
+
     /* Características da iluminação do sol */
-    const GLfloat SOMBRA[4] = {0.6f, 0.6f, 0.6f, 1.0f};
-    const GLfloat POSICAO_SOL[4] = {-150, 50, 200, 1};
-    const GLfloat COR_SOL[4] = {1.0f, 1.0f, 1.0f,1.0f};
+    const GLfloat SOMBRA[4]      = {0.4f, 0.4f, 0.4f, 1.0f};
+    const GLfloat POSICAO_SOL[4] = {-50, 0, 0, 1};
+    const GLfloat COR_SOL[4]     = {1.0f, 1.0f, 1.0f,1.0f};
 
     /* Propriedades */
     Camera  *camera;                    // Camera principal
@@ -47,6 +53,8 @@ class Cenario
 public:
     Cenario();
     ~Cenario();
+
+    void exibir();                      // Exibe o cenário atual na tela
 };
 
 /* Agrupamento das informações da câmera em uma estrutura */

@@ -6,18 +6,26 @@
 #include <GL/glut.h>
 #include "..\src\terreno.hpp"
 #include "..\src\cenario.hpp"
+#include "..\src\jogador.hpp"
 
 using namespace std;
 
 /* Características da iluminação do sol */
-const GLfloat SOMBRA[] = {0.6f, 0.6f, 0.6f, 1.0f};
-const GLfloat POSICAO_SOL[] = {-150, 50, 200, 1};
+const GLfloat SOMBRA[] = {0.4f, 0.4f, 0.4f, 1.0f};
+const GLfloat POSICAO_SOL[] = {-50, 0, 0, 1};
 const GLfloat COR_SOL[] = {1.0f, 1.0f, 1.0f,1.0f};
 
+const GLfloat VERDE[]    = {0, 1, 0, 1};
+const GLfloat VERMELHO[] = {1, 0, 0, 1};
+const GLfloat AZUL[]     = {0, 0, 1, 1};
+const GLfloat AMARELO[]  = {1, 1, 0, 1};
+
 /* Constantes da Cãmera */
-const double CAMERA_POS[]    = {50, 100, 80};
-const double CAMERA_LOOKAT[] = {50, 0, 20};
+const double CAMERA_POS[]    = {50, -100, 50};
+const double CAMERA_LOOKAT[] = {50, 0, 24};
 const double CAMERA_VIEWUP[] = {0, 0, 1};
+
+const float AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
 
 void imprime_matriz(double **A, int n, int m)
 {
@@ -49,10 +57,15 @@ void imprime_matriz(double **A, int n)
 Camera camera(CAMERA_POS, CAMERA_LOOKAT, CAMERA_VIEWUP);
 Terreno terreno;
 
+Jogador jogador1(1);
+Jogador jogador2(2);
+Jogador jogador3(3);
+Jogador jogador4(4);
 
 void init()
 {
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f); //define a cor de fundo
+    //glClearColor(0.0f, 0.0f, 0.0f, 1.0f); //define a cor de fundo
+	glClearColor(0.0f, 0.668f, 0.8984f, 1.0f);
 	//terreno = new Terreno();
     
     //glLightfv(GL_LIGHT0,GL_POSITION,light1_pos); //dene posição da luz
@@ -65,8 +78,7 @@ void init()
 	//glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	
-	
+	glEnable(GL_NORMALIZE);
 	
     glMatrixMode(GL_MODELVIEW); //define que a matrix é a model view
     glLoadIdentity(); //carrega a matrix de identidade
@@ -84,11 +96,36 @@ void init()
 		  - dist_near    : Distância da câmera ao plano de recorte. Este é o plano de projeção.
 		  - dist_far     : Distância da câmera ao plano de recorte mais afastado.
 	*/
-    gluPerspective(45.0, 1.0, 50.0, 500.0); 
+    gluPerspective(40.0, 1.3333, 50.0, 500.0);
+
+	// Posiciona os tanques
+	jogador1.pos[0] = 10;
+	jogador1.pos[1] = 0;
+	jogador1.pos[2] = terreno.z(10, 0);
+	cout << terreno.z(10, 0) << endl;
+	jogador1.definir_normal(terreno.normal(10, 0));
+	jogador1.angulo = 45;
 	
-    //glFrustum(-1.0, 1.0, -1.0, 1.0, 2.0, 8.0); //define uma projeção perspectiva simétrica
-    //glFrustum(-2.0, 1.0, -1.0, 2.0, 2.0, 8.0); //define uma projeção perspectiva obliqua
-    //glViewport(0, 0, 500, 500);
+	jogador2.pos[0] = 37;
+	jogador2.pos[1] = 0;
+	jogador2.pos[2] = terreno.z(37, 0);
+	jogador2.definir_normal(terreno.normal(37, 0));
+	cout << terreno.z(40, 0) << endl;
+	jogador2.angulo = 75;
+	
+	jogador3.pos[0] = 64;
+	jogador3.pos[1] = 0;
+	jogador3.pos[2] = terreno.z(64, 0);
+	jogador3.definir_normal(terreno.normal(64, 0));
+	cout << terreno.z(64, 0) << endl;
+	jogador3.angulo = 90;
+	
+	jogador4.pos[0] = 91;
+	jogador4.pos[1] = 0;
+	jogador4.pos[2] = terreno.z(91, 0);
+	jogador4.definir_normal(terreno.normal(91, 0));
+	cout << terreno.z(91, 0) << endl;
+	jogador4.angulo = 150;
 }
 
 void cube(){
@@ -143,10 +180,45 @@ void displayFunc() {
 	glMatrixMode(GL_MODELVIEW); //define que a matrix é a de modelo
 	terreno.desenhar();
 	
+	
+	/*
+	// Cubos
+	glPushMatrix();
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, VERMELHO);
+	glTranslatef(10, 0, terreno.z(10, 0));
+	cube();
+	glPopMatrix();
+	
+	glPushMatrix();
+	glTranslatef(30, 0, terreno.z(30, 0));
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, VERDE);
+	cube();
+	glPopMatrix();
+	
 	glPushMatrix();
 	glTranslatef(50, 0, terreno.z(50, 0));
-	cube(); //desenha um cubo
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, AZUL);
+	cube();
 	glPopMatrix();
+	
+	glPushMatrix();
+	glTranslatef(70, 0, terreno.z(70, 0));
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, AMARELO);
+	cube();
+	glPopMatrix();
+	
+	glPushMatrix();
+	glTranslatef(90, 0, terreno.z(90, 0));
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, AMARELO);
+	cube();
+	glPopMatrix();
+	*/
+	
+	// desenha jogadores
+	jogador1.desenhar();
+	jogador2.desenhar();
+	jogador3.desenhar();
+	jogador4.desenhar();
 	
 	glFlush(); //força o desenho das primitivas
 	//glutSwapBuffers();

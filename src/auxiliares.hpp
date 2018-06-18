@@ -18,7 +18,18 @@ namespace aux
     /* Declaração de funções */
     class ParOrdenado;
     class Polinomio;
-    
+
+    /* operações sobre vetores */
+    double prod_escalar(const double A[3], const double B[3]);
+    double *prod_vetorial(const double A[3], const double B[3], double *res);
+
+
+    /* conversão de coordenadas esféricas para cartesianas */
+    double x_esfericas(double, double, double);
+    double y_esfericas(double, double, double);
+    double z_esfericas(double, double, double);
+
+    /* Resolução de Sistemas de Equações de 1o grau e polinômios */
     double *solucao_sistema_linear(double **A, double *B, int n);   // retorna a solução de Ax = B.
     double *linha_matriz(double x, int n);
     Polinomio *interpolar(ParOrdenado p[], int n);

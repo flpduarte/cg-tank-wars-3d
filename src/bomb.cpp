@@ -32,6 +32,9 @@ int main()
     glutInitWindowSize(JANELA_LARGURA, JANELA_ALTURA);
 	glutCreateWindow(JANELA_TITULO);
 
+    // Configurações que valem para o jogo inteiro
+    glEnable(GL_NORMALIZE);
+
     // Define interações
     glutKeyboardFunc(interacao_teclado);
     glutSpecialFunc(interacao_teclas_especiais);

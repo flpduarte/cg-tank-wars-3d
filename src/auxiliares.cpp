@@ -10,10 +10,54 @@
  * Glauber Prado                    RA:
  *
  * Implementa classes auxiliares para realizar operações matemáticas.
+ * NOTA: as funções aqui estão dentro do namespace aux.
  */
 #include <cmath>
 #include <iostream>
 #include "auxiliares.hpp"
+
+/**
+ * Retorna o produto escalar entre dois vetores.
+ * Ambos devem ter dimensão = 3.
+ */
+double aux::prod_escalar(const double A[3], const double B[3])
+{
+	return A[0]*B[0] + A[1]*B[1] + A[2]*B[2];
+}
+
+/**
+ * Salva o resultado do produto vetorial entre dois vetores no vetor res.
+ * Ambas os fatores devem ter dimensão = 3.
+ *
+ * Retorna: o próprio ponteiro res.
+ */
+double *aux::prod_vetorial(const double A[3], const double B[3], double *res)
+{
+	res[0] = A[1]*B[2] - A[2]*B[1];
+	res[1] = A[2]*B[0] - A[0]*B[2];
+	res[2] = A[0]*B[1] - A[1]*B[0];
+	return res;
+}
+
+/**
+ * Convertem coordenadas esféricas para cartesianas.
+ *
+ * teta: latitude.  [-pi/2, pi/2].  Latitude é o ângulo em relação ao plano XY.
+ * phi : longitude. [0, 2pi]        Longitude é o ângulo em relação ao eixo X, rotacionando em torno do eixo z.
+ * r   : distância radial.
+ */
+double aux::x_esfericas(double r, double teta, double phi)
+{
+	return r*cos(teta)*cos(phi);
+}
+double aux::y_esfericas(double r, double teta, double phi)
+{
+	return r*cos(teta)*sin(phi);
+}
+double aux::z_esfericas(double r, double teta, double phi)
+{
+	return r*sin(teta);
+}
 
 /**
  * solucao_sistema_linear()
