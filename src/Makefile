@@ -33,14 +33,14 @@ bomb: $(OBJS)
 $(OBJS): $(DEP_COMUNS)
 
 # dependencias especificas
-auxiliares.o objetos3D.o terreno.o: auxiliares.hpp
+auxiliares.o objetos3D.o terreno.o interfaces.o: auxiliares.hpp
 cenario.o mundo.o: cenario.hpp
-armas.o jogador.o: armas.hpp
+armas.o globals.o jogador.o: armas.hpp
 explosoes.o municao.o: explosoes.hpp
 interacoes.o: interacoes.hpp
 cenario.o configmenu.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
-configmenu.o mundo.o: mundo.hpp
+configmenu.o globals.o mundo.o: mundo.hpp
 jogador.o municao.o mundo.o armas.o: municao.hpp
 menu.o objetos2D.o: objetos2D.hpp
 jogador.o objetos3D.o: objetos3D.hpp

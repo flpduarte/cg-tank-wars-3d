@@ -54,14 +54,10 @@ Jogador::Jogador(int i): njogador(i)
  */
 void Jogador::condicao_inicial()
 {
-    // zera pontuação e dolares
+    // zera pontuação e dolares e reseta lista de armamentos
     pontos = 0;
     dolares = 0;
-
-    // Refaz lista de armamentos
-    //if (armas != NULL)
-    //while (armas->size > 0)
-    //    armas->erase(armas->back());
+    lista_armas.condicao_inicial();
 }
 
 /**
@@ -100,8 +96,6 @@ void Jogador::desenhar()
     double eixo[3] = {0};
     aux::prod_vetorial(cima, normal, eixo);
     double angulo = acos(aux::prod_escalar(cima, normal)) * 180/PI;
-    //std::cout << "(" << eixo[0] << ", " << eixo[1] << ", " << eixo[2] << ")" << std::endl;
-    //std::cout << angulo << std::endl;
 
     // Translada o tanque para a sua posição no mundo
     glPushMatrix();

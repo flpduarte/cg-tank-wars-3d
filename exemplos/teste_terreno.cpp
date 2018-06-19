@@ -7,6 +7,7 @@
 #include "..\src\terreno.hpp"
 #include "..\src\cenario.hpp"
 #include "..\src\jogador.hpp"
+#include "..\src\globals.hpp"
 
 using namespace std;
 
@@ -181,6 +182,8 @@ void cube(){
 void displayFunc() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa o buffer
 	glMatrixMode(GL_MODELVIEW); //define que a matrix é a de modelo
+	
+	glDisable(GL_LIGHT0);
 	terreno.desenhar();
 	
 	
@@ -218,6 +221,7 @@ void displayFunc() {
 	*/
 	
 	// desenha jogadores
+	glEnable(GL_LIGHT0);
 	jogador1.desenhar();
 	jogador2.desenhar();
 	jogador3.desenhar();

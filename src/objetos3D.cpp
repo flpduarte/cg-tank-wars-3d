@@ -418,12 +418,10 @@ void desenhar_esfera(GLfloat r, GLfloat t0, GLfloat tf)
     {
         glBegin(GL_TRIANGLE_STRIP);
         float teta0 = t0 + deltaTeta * i/NPONTOS;   // i
-        float teta1 = teta0 + deltaTeta/NPONTOS;       // i + 1
+        float teta1 = teta0 + deltaTeta/NPONTOS;    // i + 1
         for (int j = 0; j <= NPONTOS; j++)
         {
-            float phi0 = deltaPhi * j/NPONTOS;      // j
-            //float phi1 = phi0 + 2*PI/NPONTOS;   // j + 1
-            //std::cout << "(" << aux::x_esfericas(r, teta0, phi0) << "," << aux::y_esfericas(r, teta0, phi0) << "," << aux::z_esfericas(r, teta0, phi0) << ")" << std::endl;
+            float phi0 = deltaPhi * j/NPONTOS;
             glNormal3f(aux::x_esfericas(r, teta0, phi0), aux::y_esfericas(r, teta0, phi0), aux::z_esfericas(r, teta0, phi0));
             glVertex3f(aux::x_esfericas(r, teta0, phi0), aux::y_esfericas(r, teta0, phi0), aux::z_esfericas(r, teta0, phi0));
             glNormal3f(aux::x_esfericas(r, teta1, phi0), aux::y_esfericas(r, teta1, phi0), aux::z_esfericas(r, teta1, phi0));

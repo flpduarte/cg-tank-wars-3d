@@ -48,13 +48,21 @@ class Cenario
     /* Propriedades */
     Camera  *camera;                    // Camera principal
     Terreno *terreno;                   // Terreno atual
-    std::vector<Jogador *> jogadores;   // Lista dos jogadores em ordem aleatória
+    Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
+    Projetil *projetil;                 // Projétil em voo
 
 public:
     Cenario();
     ~Cenario();
-
     void exibir();                      // Exibe o cenário atual na tela
+
+private:
+    void misturar_jogadores();
+    void posicionar_jogadores();
+    void desenhar_na_viewport2D();      // Configura VP 2D e desenha informações
+    void desenhar_na_viewport3D();      // Configura VP 3D e desenha cenário
+
+    bool existe_elemento(Jogador **, int, Jogador *);    // verifica se um jogador pertence à lista
 };
 
 /* Agrupamento das informações da câmera em uma estrutura */

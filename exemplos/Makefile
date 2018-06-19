@@ -2,8 +2,8 @@
 CXXFLAGS = -O0 -ggdb3
 LDLIBS   = -lm -lglut32cu -lglu32 -lopengl32
 
-DEPS_TANQUE  = ..\src\objetos3D.o ..\src\auxiliares.o ..\src\constantes.o ..\src\jogador.o ..\src\armas.o ..\src\municao.o ..\src\explosoes.o
-DEPS_TERRENO = ..\src\objetos3D.o ..\src\auxiliares.o ..\src\constantes.o ..\src\jogador.o ..\src\armas.o ..\src\municao.o ..\src\explosoes.o ..\src\cenario.o ..\src\terreno.o
+DEPS_TANQUE  = ..\src\objetos3D.o ..\src\auxiliares.o ..\src\constantes.o ..\src\jogador.o ..\src\armas.o ..\src\municao.o ..\src\explosoes.o ..\src\globals.o ..\src\mundo.o
+DEPS_TERRENO = ..\src\objetos3D.o ..\src\auxiliares.o ..\src\constantes.o ..\src\jogador.o ..\src\armas.o ..\src\municao.o ..\src\explosoes.o ..\src\cenario.o ..\src\terreno.o ..\src\globals.o ..\src\mundo.o ..\src\menu.o ..\src\interfaces.o ..\src\configmenu.o ..\src\objetos2D.o ..\src\interacoes.o
 
 # default target
 terreno: Makefile teste_terreno.o $(DEPS_TERRENO)

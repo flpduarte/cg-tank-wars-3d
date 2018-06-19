@@ -127,6 +127,8 @@ void ListaArmamentos::condicao_inicial()
 
 
 /* ---- Implementação dos armamentos ---- */
+// TODO: Definir constantes para todos os valores:
+// preço, qtd por lote, qtd inicial, etc.
 /**
  * Incinerador: Armamento básico
  */

@@ -13,6 +13,7 @@
  *
  */
 #include <GL/glut.h>
+#include <cassert>
 #include <cstdlib>
 #include <iostream>
 #include "mundo.hpp"
@@ -20,6 +21,8 @@
 #include "constantes.hpp"
 #include "globals.hpp"
 #include "configmenu.hpp"
+
+//#define NDEBUG            // para desativar asserts, ativar este comando
 
 /* Funções auxiliares */
 
@@ -48,6 +51,9 @@ void preparar_tela_para_menu()
  */
 Mundo::Mundo()
 {
+    // Cria lista global de armamentos
+    criar_lista_global_armamentos();
+
     // Inicia os jogadores
     for (int i = 0; i < MAX_JOGADORES; i++)
     {
@@ -58,6 +64,8 @@ Mundo::Mundo()
     this->tela_atual  = TELA_INICIAL;
     this->n_jogadores = PADRAO_N_JOGADORES;
     this->n_rodadas   = PADRAO_N_RODADAS;
+    this->menu_ativo  = NULL;
+    this->cenario     = NULL;
 }
 
 /**
@@ -140,8 +148,24 @@ void Mundo::iniciar_jogo()
  */
 void Mundo::iniciar_rodada()
 {
-    // TODO
-    this->resultado_parcial();
+    // Muda a tela ativa
+    this->tela_atual = TELA_RODADA;
+
+    // Remove menus da memória
+    std::cout << "Iniciando rodada..." << '\n';
+    if (this->menu_ativo != NULL)
+    {
+        delete this->menu_ativo;
+        this->menu_ativo = NULL;
+    }
+
+    // Cenário deve estar desativado
+    assert(cenario == NULL);
+    rodada_atual++;
+
+    // Cria um novo cenário
+    cenario = new Cenario;
+    glutPostRedisplay();
 }
 
 
@@ -152,6 +176,13 @@ void Mundo::iniciar_rodada()
  */
 void Mundo::resultado_parcial()
 {
+    // Remove cenário
+    if (this->cenario != NULL)
+    {
+        delete this->cenario;
+        this->cenario = NULL;
+    }
+
     // Transiciona para a tela de resultado parcial
     this->tela_atual = TELA_RESULTADO_PARCIAL;
 

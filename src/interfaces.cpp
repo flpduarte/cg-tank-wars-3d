@@ -16,6 +16,7 @@
 #include <iostream>
 #include "interfaces.hpp"
 #include "constantes.hpp"
+#include "auxiliares.hpp"
 
 /* --- Implementação do construtor de OpcaoMenu --- */
 /**
@@ -259,4 +260,30 @@ void Projetil::atualizar_posicao()
     {
         X[i] += derivada(i) * DT;
     }
+}
+
+/**
+ * Desenha o projétil conforme modelo definido pela munição.
+ * Translada o desenho para a localização do projétil.
+ */
+void Projetil::desenhar()
+{
+    // Transladar o projétil e alinhá-lo com o vetor velocidade.
+    // Primeiro normalizar o vetor velocidade
+    const double V = sqrt(X[3]*X[3] + X[4]*X[4] + X[5]*X[5]);
+    const double vetorV[3] = {X[3]/V, X[4]/V, X[5]/V};
+
+    // Agora encontrar o ângulo entre o eixo X do projétil (longitudinal) e o
+    // vetor velocidade
+    const double frente[3] = {1, 0, 0};
+    double eixo[3] = {0};
+    aux::prod_vetorial(frente, vetorV, eixo);
+    double angulo = acos(aux::prod_escalar(frente, vetorV)) * 180/PI;
+
+    // Desenha o projétil
+    glPushMatrix();
+    glTranslated(X[0], X[1], X[2]);
+    glRotated(angulo, eixo[0], eixo[1], eixo[2]);
+    municao->desenhar();
+    glPopMatrix();
 }

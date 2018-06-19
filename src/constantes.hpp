@@ -37,9 +37,10 @@ const int JANELA_POSICAO_Y =  100;
 #define   JANELA_TITULO      "Tank Wars 3D"
 
 /* Dimensões das Viewports durante as rodadas */
-const int ALTURA_VP2D      =  100;
-const int ALTURA_VP3D      = JANELA_ALTURA - ALTURA_VP2D;
-
+const int VP3D_ALTURA      = JANELA_ALTURA - 100;   // 100 pixels p/ informações
+const int VP3D_LARGURA     = JANELA_LARGURA;
+const int VP3D_XMIN        = 0;
+const int VP3D_YMIN        = 0;
 
 /* Dimensões padrão das opções de menu */
 #define OPCAOMENU_LARGURA_PADRAO 600

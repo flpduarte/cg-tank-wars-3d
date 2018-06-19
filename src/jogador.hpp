@@ -52,8 +52,8 @@ struct Jogador
     void reiniciar();
 
     void desenhar();
-    void posicionar(double nova_pos[3]);
-    void definir_normal(GLfloat normal[3]);
+    void posicionar(double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
+    void definir_normal(GLfloat normal[3]); // Define o sentido "para cima" do tanque
 };
 
 #endif

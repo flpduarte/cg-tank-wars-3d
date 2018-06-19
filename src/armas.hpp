@@ -42,8 +42,7 @@ struct MunicaoEQtd
     int qtd;
 
     MunicaoEQtd();                  // Cria um elemento vazio
-    MunicaoEQtd(Municao *);         // Armazena a munição e a *quantidade por lote*
-    MunicaoEQtd(Municao *, int);    // Armazena a munição e a quantidade especificada
+    MunicaoEQtd(Municao *);         // Cria elemento com munição e sua *quantidade por lote*
 
     /**
      * Define operador = para uso com MunicaoEQtd

@@ -27,11 +27,8 @@ using namespace std;
 /* Função Principal */
 int main(int argc, char *argv[])
 {
-    // Configurações iniciais
-    criar_lista_global_armamentos();
-
     // Configurações da tela do jogo
-    glutInit(&argc, argv);
+    //glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_DEPTH | GLUT_ALPHA);
     glutInitWindowPosition(JANELA_POSICAO_X, JANELA_POSICAO_Y);
     glutInitWindowSize(JANELA_LARGURA, JANELA_ALTURA);
