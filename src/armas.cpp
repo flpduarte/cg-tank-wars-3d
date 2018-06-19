@@ -21,10 +21,10 @@
  */
 void criar_lista_global_armamentos()
 {
-    armamentos[0] = MunicaoEQtd(new Incinerador);
-    armamentos[1] = MunicaoEQtd(new IncineradorM2);
-    armamentos[2] = MunicaoEQtd(new Bomba20Kilotons);
-    armamentos[3] = MunicaoEQtd(new Bomba5Megatons);
+    lista_global_armamentos[0] = MunicaoEQtd(new Incinerador);
+    lista_global_armamentos[1] = MunicaoEQtd(new IncineradorM2);
+    lista_global_armamentos[2] = MunicaoEQtd(new Bomba20Kilotons);
+    lista_global_armamentos[3] = MunicaoEQtd(new Bomba5Megatons);
 }
 
 /* --- implementa as funções das classes MunicaoEQtd e ListaArmamentos --- */
@@ -48,7 +48,7 @@ ListaArmamentos::ListaArmamentos()
     // Copia a lista de armamentos global
     for (int i = 0; i < N_ARMAMENTOS; i++)
     {
-        lista[i] = armamentos[i];
+        lista[i] = lista_global_armamentos[i];
     }
 
     // Define o armamento atual como sendo o de índice 0

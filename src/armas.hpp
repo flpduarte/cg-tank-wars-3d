@@ -81,10 +81,6 @@ public:
                                         // (qtd padrão de tiros)
 };
 
-/**
- * Cria a lista global de armamentos
- */
-std::array <Municao *, N_ARMAMENTOS> *criar_lista_armamentos();
 
 /**
  * Incinerador: Armamento básico

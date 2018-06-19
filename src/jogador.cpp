@@ -43,6 +43,7 @@ Jogador::Jogador(int i): njogador(i)
     this->normal[2] = 1;
     this->angulo = 90;
     this->potencia = 200;
+    this->lista_armas = new ListaArmamentos;
 }
 
 /**
@@ -57,7 +58,7 @@ void Jogador::condicao_inicial()
     // zera pontuação e dolares e reseta lista de armamentos
     pontos = 0;
     dolares = 0;
-    lista_armas.condicao_inicial();
+    lista_armas->condicao_inicial();
 }
 
 /**

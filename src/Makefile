@@ -14,6 +14,7 @@
 
 # Variáveis utilizadas pelas instruções implícitas
 CXXFLAGS = -Wall -Werror -O0 -ggdb3
+#CXXFLAGS = -O3
 LDLIBS   = -lm -lglut32cu -lglu32 -lopengl32
 
 # Arquivos fonte
@@ -26,7 +27,7 @@ OBJS = $(FONTES:.cpp=.o)
 DEP_COMUNS = constantes.hpp globals.hpp interfaces.hpp objetos3D.hpp Makefile
 
 # default target
-bomb: $(OBJS)
+bomb: $(OBJS) Makefile
 	$(CXX) $(CXXFLAGS) -o bomb $(OBJS) $(LDLIBS)
 
 # dependencias comuns

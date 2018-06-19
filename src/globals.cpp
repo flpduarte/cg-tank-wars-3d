@@ -19,5 +19,5 @@
 #include "globals.hpp"
 #include "armas.hpp"
 
+MunicaoEQtd lista_global_armamentos[N_ARMAMENTOS];
 Mundo mundo;
-MunicaoEQtd armamentos[N_ARMAMENTOS]; // cria uma lista vazia

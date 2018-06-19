@@ -28,29 +28,6 @@ const double CAMERA_VIEWUP[] = {0, 0, 1};
 
 const float AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
 
-void imprime_matriz(double **A, int n, int m)
-{
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < m; j++)
-		{
-			printf("%7.3f   ", A[i][j]);
-		}
-		std::cout << std::endl;
-	}
-	std::cout << std::endl;
-}
-
-void imprime_matriz(double *A, int n)
-{
-	imprime_matriz(&A, 1, n);
-}
-
-void imprime_matriz(double **A, int n)
-{
-	imprime_matriz(A, n, n);
-}
-
 // Cenário: em princípio, definido como um cubo 100 x 100 x 100.
 // Posicionar câmera *atrás* do cenário: y = -150. Com isso, posso definir o plano
 // de projeção aprox. na fronteira do cenário, fazendo d_near = 50 (50 unidades à frente da câmera).

@@ -17,6 +17,6 @@
 #include "mundo.hpp"
 
 extern Mundo mundo;
-extern MunicaoEQtd armamentos[N_ARMAMENTOS];
+extern MunicaoEQtd lista_global_armamentos[N_ARMAMENTOS];
 
 #endif

@@ -34,7 +34,7 @@ struct Jogador
     // Pontuação, dinheiro e armamentos disponíveis
     int pontos;
     int dolares;
-    ListaArmamentos lista_armas;    // armazena a lista de armas que o jogador possui
+    ListaArmamentos *lista_armas;    // armazena a lista de armas que o jogador possui
 
     // Estado atual do tanque
     int homens;
