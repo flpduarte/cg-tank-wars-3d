@@ -41,11 +41,13 @@ Cenario::Cenario()
     // Obs: Posso futuramente fazer essas configurações mudarem aleatoriamente,
     // para criar cenários noturnos, por exemplo. Mas isto está fora do escopo
     // do trabalho atual.
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    //glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glLightfv(GL_LIGHT0, GL_AMBIENT, SOMBRA);           //contribuição ambiente
     glLightfv(GL_LIGHT0, GL_DIFFUSE, COR_SOL);          //contribuição difusa
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
     glEnable(GL_LIGHT0);
+
+    glEnable(GL_NORMALIZE);
 
     // Cria lista aleatória de jogadores
     jogadores = new Jogador *[mundo.n_jogadores]();
@@ -83,7 +85,6 @@ void Cenario::misturar_jogadores()
 
         // Insere-o no final da lista
         jogadores[i] = mundo.jogadores[n];
-        std::cout << "inserido jogador " << n + 1 << '\n';
     }
 }
 
@@ -104,19 +105,20 @@ void Cenario::misturar_jogadores()
  */
 void Cenario::posicionar_jogadores()
 {
-    double passo = (mundo.n_jogadores - 1) / 80;
-    double x0    = 8 + rand() % 4;
+    double passo = 80. / (mundo.n_jogadores - 1);
+    double x0    = (double) 8 + rand() % 4;
 
     for (int i = 0; i < mundo.n_jogadores; i++)
     {
         double x = x0 + i*passo;
-        //double pos[3] = {x, 0, terreno->z(x, 0)};
-        jogadores[i]->pos[0] = x;
-        jogadores[i]->pos[1] = 0;
-        jogadores[i]->pos[2] = terreno->z(x, 0);
-        // jogadores[i]->posicionar(pos);
+        double pos[3] = {x, 0, terreno->z(x, 0)};
+        jogadores[i]->posicionar(pos);
         jogadores[i]->definir_normal(terreno->normal(x, 0));
     }
+
+    // ajusta ângulo inicial dos canhoes dos jogadores nas extremidades
+    jogadores[0]->angulo = 75;
+    jogadores[mundo.n_jogadores - 1]->angulo = 105;
 }
 
 /**
@@ -170,13 +172,14 @@ void Cenario::desenhar_na_viewport3D()
     // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
     // cor azul celeste
     glEnable(GL_LIGHTING);
-    //glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
-    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
+    glEnable(GL_DEPTH_TEST);    // não desenha polígonos encobertoss por outros à sua frente
 
-    // Limpar região do viewport
-    //glEnable(GL_SCISSOR_TEST);
+    // Pintar viewport de azul celeste
+    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    glEnable(GL_SCISSOR_TEST);
+    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //glDisable(GL_SCISSOR_TEST);
+    glDisable(GL_SCISSOR_TEST);
 
     // Muda para matriz ModelView e mantém-se nela
     glMatrixMode(GL_MODELVIEW);
@@ -221,6 +224,7 @@ void Cenario::desenhar_na_viewport2D()
     glClearColor(0, 0, 0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
 
     // TODO: imprimir as informações
 }

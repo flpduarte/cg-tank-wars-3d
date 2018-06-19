@@ -46,7 +46,6 @@ void init()
 	glClearColor(0.0f, 0.668f, 0.8984f, 1.0f);
 	//terreno = new Terreno();
     
-    //glLightfv(GL_LIGHT0,GL_POSITION,light1_pos); //dene posição da luz
     glLightfv(GL_LIGHT0,GL_AMBIENT, SOMBRA); //contribuição ambiente
     glLightfv(GL_LIGHT0, GL_DIFFUSE, COR_SOL); //contribuição difusa
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
@@ -160,7 +159,7 @@ void displayFunc() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //limpa o buffer
 	glMatrixMode(GL_MODELVIEW); //define que a matrix é a de modelo
 	
-	glDisable(GL_LIGHT0);
+	//glDisable(GL_LIGHT0);
 	terreno.desenhar();
 	
 	

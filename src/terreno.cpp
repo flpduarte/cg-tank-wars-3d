@@ -82,9 +82,9 @@ void Terreno::desenhar()
 {
 	const int nx = NMALHA_X, ny = NMALHA_Y - 1;
 	int i, j;
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_TERRENO);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, cor::PRETO);
-    //std::cout << "Cor ajustada" << '\n';
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, COR_TERRENO);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, cor::PRETO);
+    
 	for (j = 0; j < ny; j++)
 	{
 		glBegin(GL_TRIANGLE_STRIP);
@@ -98,7 +98,7 @@ void Terreno::desenhar()
 
 
 	// Desenhar bordas
-	/*glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_BORDA);
+	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_BORDA);
 
 	// Borda Sul (y = YMIN)
 	glBegin(GL_QUAD_STRIP);
@@ -139,7 +139,6 @@ void Terreno::desenhar()
 		glVertex3fv(mapa[NMALHA_X - 1][j]);
 	}
 	glEnd();
-    */
 }
 
 /**
@@ -297,6 +296,6 @@ void Terreno::calcular_vetores_normais()
  */
 void Terreno::insere_vertice(int i, int j)
 {
-	glNormal3fv(normais[i][j]);
+	glNormal3d(normais[i][j][0], normais[i][j][1], normais[i][j][2]);
 	glVertex3fv(mapa[i][j]);
 }
