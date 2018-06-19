@@ -30,7 +30,10 @@
  * ~Botao(): função destrutora da classe botão; nada a fazer.
  */
 Botao::Botao(std::string tit, void fn()) :
-    OpcaoMenu(tit), acao(fn) { cor::definir_cor(cor_titulo, cor::LILAS); }
+    OpcaoMenu(tit), acao(fn)
+{
+    cor::definir_cor(cor_titulo, cor::LILAS);
+}
 Botao::~Botao() {}
 
 /**

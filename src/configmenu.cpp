@@ -18,6 +18,7 @@
 #include "menu.hpp"
 #include "mundo.hpp"
 #include "jogador.hpp"
+#include <iostream>
 
 /**
  * Cria um menu principal. Retorna o ponteiro para o objeto Menu.

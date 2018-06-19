@@ -61,7 +61,7 @@ class OpcaoAlterarValorNumerico : public OpcaoMenu
     int min;
     int max;
     int &referencia;
-    float cor_referencia[3];
+    float cor_referencia[4];
 
 public:
     OpcaoAlterarValorNumerico(std::string, int, int, int &);
