@@ -39,9 +39,10 @@ public:
     bool bloqueia_cursor;   // Um estado que indica se ele impede a mudança para
                             // outras opções por meio das setas para cima e para baixo
 
-    float cor_borda[3];
-    float cor_fundo[3];
-    float cor_titulo[3];
+    // cores em RGBA
+    float cor_borda[4];
+    float cor_fundo[4];
+    float cor_titulo[4];
 
     OpcaoMenu(std::string titulo);                          // Cria objeto com altura e largura padrão. Pode ser modificado depois.
     virtual ~OpcaoMenu() = 0;                               // Obriga classes filhas a definirem um destrutor
@@ -110,22 +111,18 @@ class Projetil;
 class Municao
 {
     // Propredades da municao.
-protected:
-    std::string nome_arma;  // Nome da arma
-    int id_arma;            // Id do armamento, para ordená-los.
+public:
+    double m;               // massa do armamento específico.
+    double massa();
+
+    std::string nome;       // Nome da arma.
     int preco;
     int qtd_por_lote;
-    double m;               // massa do armamento específico.
+    int qtd_inicial;        // Qtd que os jogadores possuem ao iniciar o jogo
 
-public:
-    double massa();
     Projetil *lancar(double pos[3], int power, int angle, int vento);
     virtual void desenhar() = 0;                // desenha munição em coordenadas do objeto
     virtual void detonar(double pos[3]) = 0;    // Realiza os efeitos da detonação da munição no local indicado
-
-    // leitura das propriedades
-    std::string nome();
-    int id();
 };
 
 /**

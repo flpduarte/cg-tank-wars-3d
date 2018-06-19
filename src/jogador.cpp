@@ -34,8 +34,6 @@ Jogador::Jogador(int i): njogador(i)
     this->nome = "Jogador " + std::to_string(i);
     this->pontos = 0;
     this->dolares = 0;
-    this->armas = NULL;
-
     this->homens = 100;
     this->pos[0] = 0;
     this->pos[1] = 0;
@@ -70,7 +68,10 @@ void Jogador::condicao_inicial()
  * Redefine o status do jogador para a condição de início de rodada:
  * - homens = 100
  */
-void reiniciar();
+void Jogador::reiniciar()
+{
+    this->homens = 100;
+}
 
 
 /**

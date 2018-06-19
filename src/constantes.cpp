@@ -16,5 +16,9 @@
 
 void cor::definir_cor(float *dest, const float *origem)
 {
-    memcpy(dest, origem, 4*sizeof(float));
+    //memcpy(dest, origem, 4*sizeof(float));
+    for (int i = 0; i < 4; i++)
+    {
+        dest[i] = origem[i];
+    }
 }

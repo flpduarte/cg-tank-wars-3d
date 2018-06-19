@@ -19,19 +19,7 @@
 #include <vector>
 #include <GL/glut.h>
 #include "interfaces.hpp"
-
-/**
- * MunicaoEQtd: armazena um ponteiro para uma munição e sua respectiva
- * quantidade que o jogador atual contém.
- */
-struct MunicaoEQtd
-{
-    Municao *arma;  // ponteiro para a arma
-    int qtd;
-
-    MunicaoEQtd();
-};
-
+#include "armas.hpp"
 
 /**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
@@ -46,8 +34,7 @@ struct Jogador
     // Pontuação, dinheiro e armamentos disponíveis
     int pontos;
     int dolares;
-    std::vector <MunicaoEQtd> *armas;   // uma lista dinâmica de armas e quantidades
-    int indice_arma_atual;         // índice da arma ativa
+    ListaArmamentos lista_armas;    // armazena a lista de armas que o jogador possui
 
     // Estado atual do tanque
     int homens;

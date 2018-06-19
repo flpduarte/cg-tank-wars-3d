@@ -39,7 +39,7 @@ OpcaoMenu::OpcaoMenu(std::string tit):
 OpcaoMenu::~OpcaoMenu() {}
 
 /* Reações padrão às funções reagir_a_tecla_especial() e reagir_a_teclado() */
-void OpcaoMenu::reagir_a_teclado(unsigned char) {}
+void OpcaoMenu::reagir_a_teclado(unsigned char tecla) {}
 void OpcaoMenu::reagir_a_tecla_especial(int tecla) {}
 
 
@@ -148,7 +148,6 @@ Menu::~Menu()
     {
         delete this->opcoes[i];
     }
-    // Vector declarado no stack, não é preciso destruí-lo.
 }
 
 /**

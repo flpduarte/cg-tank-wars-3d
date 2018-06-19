@@ -14,6 +14,7 @@
  */
 #include <GL/glut.h>
 #include <cstdlib>
+#include <iostream>
 #include "mundo.hpp"
 #include "jogador.hpp"
 #include "constantes.hpp"
@@ -115,6 +116,7 @@ void Mundo::renomear_jogadores()
     }
     this->menu_ativo = criar_menu_renomear_jogadores();
     glutPostRedisplay();
+
 }
 
 /**

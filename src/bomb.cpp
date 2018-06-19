@@ -20,20 +20,26 @@
 #include "globals.hpp"
 #include "mundo.hpp"
 #include "interacoes.hpp"
+#include "armas.hpp"
 
 using namespace std;
 
 /* Função Principal */
-int main()
+int main(int argc, char *argv[])
 {
+    // Configurações iniciais
+    criar_lista_global_armamentos();
+
     // Configurações da tela do jogo
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_DEPTH | GLUT_ALPHA);
     glutInitWindowPosition(JANELA_POSICAO_X, JANELA_POSICAO_Y);
     glutInitWindowSize(JANELA_LARGURA, JANELA_ALTURA);
 	glutCreateWindow(JANELA_TITULO);
 
     // Configurações que valem para o jogo inteiro
     glEnable(GL_NORMALIZE);
+    glClearColor(0, 0, 0, 0);
 
     // Define interações
     glutKeyboardFunc(interacao_teclado);
@@ -46,6 +52,7 @@ int main()
 
     // Inicia loop do jogo
     mundo.tela_inicial();
+    //mundo.renomear_jogadores();
 	glutMainLoop();
     return 0;
 }

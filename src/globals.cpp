@@ -17,5 +17,7 @@
  * (2015).
  */
 #include "globals.hpp"
+#include "armas.hpp"
 
 Mundo mundo;
+MunicaoEQtd armamentos[N_ARMAMENTOS]; // cria uma lista vazia

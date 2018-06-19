@@ -16,6 +16,7 @@
 #include "menu.hpp"
 #include "constantes.hpp"
 #include "objetos2D.hpp"
+#include "interacoes.hpp"
 
 /* --- Classe Botao --- */
 /**
@@ -132,10 +133,6 @@ void OpcaoAlterarValorNumerico::desenhar()
     // Escrever texto
     std::string texto = this->titulo + ": - " + std::to_string(referencia) + " +";
     glPushMatrix();
-    /*
-    glTranslatef(5, (double) this->altura/2, 0);
-    desenhar_string(texto, 0.8*this->altura, FONTE, this->cor_titulo);
-    */
     float x = ((float)largura - largura_string(texto, 0.8*altura, FONTE))/2;
     glTranslatef(x, altura/2, 0);
     desenhar_string(texto, 0.8*altura, FONTE, this->cor_referencia);

@@ -15,8 +15,8 @@
 #define GLOBALS_HPP
 
 #include "mundo.hpp"
-#include "menu.hpp"
 
 extern Mundo mundo;
+extern MunicaoEQtd armamentos[N_ARMAMENTOS];
 
 #endif
