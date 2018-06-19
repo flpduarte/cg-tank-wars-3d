@@ -110,8 +110,11 @@ void Cenario::posicionar_jogadores()
     for (int i = 0; i < mundo.n_jogadores; i++)
     {
         double x = x0 + i*passo;
-        double pos[3] = {x, 0, terreno->z(x, 0)};
-        jogadores[i]->posicionar(pos);
+        //double pos[3] = {x, 0, terreno->z(x, 0)};
+        jogadores[i]->pos[0] = x;
+        jogadores[i]->pos[1] = 0;
+        jogadores[i]->pos[2] = terreno->z(x, 0);
+        // jogadores[i]->posicionar(pos);
         jogadores[i]->definir_normal(terreno->normal(x, 0));
     }
 }
@@ -166,27 +169,28 @@ void Cenario::desenhar_na_viewport3D()
 {
     // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
     // cor azul celeste
-    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    glEnable(GL_LIGHTING);
+    //glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
     glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
 
     // Limpar região do viewport
-    glEnable(GL_SCISSOR_TEST);
+    //glEnable(GL_SCISSOR_TEST);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_SCISSOR_TEST);
-
-    // Configura Viewport e Projeção Perspectiva
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
-    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    //glDisable(GL_SCISSOR_TEST);
 
     // Muda para matriz ModelView e mantém-se nela
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     camera->posicionar();
 
+    // Configura Viewport e Projeção Perspectiva
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
+    //glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+
     // Ativa efeitos de iluminação e desenha o terreno
-    glEnable(GL_LIGHTING);
+    glMatrixMode(GL_MODELVIEW);
     terreno->desenhar();
 
     // Desenha os jogadores

@@ -30,7 +30,8 @@ class Cenario
 {
     /* Constantes */
     /* Constantes da Cãmera */
-    const double CAMERA_POS[3]    = {50, -100, 50};
+    //const double CAMERA_POS[3]    = {50, -100, 50};
+    const double CAMERA_POS[3]    = {50, 0, 200};
     const double CAMERA_LOOKAT[3] = {50, 0, 23};
     const double CAMERA_VIEWUP[3] = {0, 0, 1};
 

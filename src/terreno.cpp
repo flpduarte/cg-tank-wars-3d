@@ -17,9 +17,11 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <GL/glut.h>
 #include "auxiliares.hpp"
 #include "terreno.hpp"
+#include "constantes.hpp"
 
 // Usar namespace aux, pois a classe terreno utiliza muito as funções auxiliares!
 using namespace aux;
@@ -81,9 +83,10 @@ void Terreno::desenhar()
 	const int nx = NMALHA_X, ny = NMALHA_Y - 1;
 	int i, j;
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_TERRENO);
+    glMaterialfv(GL_FRONT, GL_SPECULAR, cor::PRETO);
+    //std::cout << "Cor ajustada" << '\n';
 	for (j = 0; j < ny; j++)
 	{
-		//glBegin(GL_LINES);
 		glBegin(GL_TRIANGLE_STRIP);
 		for (i = 0; i < nx; i++)
 		{
@@ -95,7 +98,7 @@ void Terreno::desenhar()
 
 
 	// Desenhar bordas
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_BORDA);
+	/*glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, COR_BORDA);
 
 	// Borda Sul (y = YMIN)
 	glBegin(GL_QUAD_STRIP);
@@ -136,7 +139,7 @@ void Terreno::desenhar()
 		glVertex3fv(mapa[NMALHA_X - 1][j]);
 	}
 	glEnd();
-
+    */
 }
 
 /**
@@ -225,7 +228,9 @@ void Terreno::gerar_relevo()
 			double z = P->valor(mapa[i][j][0]);
 			if (z < 1) z = 1;
 			else mapa[i][j][2] = z;
+            //std::cout << mapa[i][j][0] << ", " << mapa[i][j][1] << ", " << mapa[i][j][2] << '\n';
 		}
+
 	}
 }
 

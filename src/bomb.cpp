@@ -48,8 +48,9 @@ int main(int argc, char *argv[])
     //glutTimerFunc(10,timerFunc,1);
 
     // Inicia loop do jogo
-    mundo.tela_inicial();
+    //mundo.tela_inicial();
     //mundo.renomear_jogadores();
+    mundo.iniciar_jogo();
 	glutMainLoop();
     return 0;
 }
