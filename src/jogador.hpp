@@ -29,6 +29,7 @@ struct Jogador
     // Propriedades do tanque
     int njogador;       // Número do jogador: 1, 2, ..., MAX_JOGADORES.
     float cor[4];       // em RGBA
+    float cor_alterada[4]; // Cor considerando n. de homens. Atualizada pelo método cor_real()
     std::string nome;
 
     // Pontuação, dinheiro e armamentos disponíveis
@@ -48,6 +49,9 @@ struct Jogador
     // Métodos
     Jogador(int i);
     ~Jogador();
+    float *cor_real();
+    std::string angulo_texto();             // Retorna o ângulo do tanque em formato de string
+
     void condicao_inicial();
     void reiniciar();
 

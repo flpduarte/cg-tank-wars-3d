@@ -19,7 +19,7 @@
 #include "objetos2D.hpp"
 
 /**
- * Escreve um texto na tela.
+ * Escreve um texto na tela, alinhado à esquerda. Retorna a sua largura.
  * Entradas:
  * font = fonte do stroke character. Pode ser GLUT_STROKE_ROMAN ou
  *        GLUT_STROKE_MONO_ROMAN.
@@ -30,13 +30,14 @@
  * 33,33 unidades para baixo.
  * https://www.opengl.org/resources/libraries/glut/spec3/node78.html#SECTION000113000000000000000
  */
-void desenhar_string(std::string str, float altura, void *font, float cor[3])
+float desenhar_string(std::string str, const float altura, void *font, const float cor[5])
 {
     // Translada fonte de forma que a origem vertical seja exatamente no centro
     // da fonte
     glPushMatrix();
 
     // Realiza operação de escala para ajustar fonte à altura desejada
+    float largura = 0;
     float escala = altura/FONTE_ALTURA;
     glTranslatef(0, (33.33 - FONTE_ALTURA)/2*escala, 0);
     glScalef(escala, escala, escala);
@@ -46,17 +47,19 @@ void desenhar_string(std::string str, float altura, void *font, float cor[3])
     glLineWidth(FONTE_ESPESSURA);
     for (std::string::iterator c=str.begin(); c != str.end(); c++)
     {
- 	      glutStrokeCharacter(font, *c);
+ 	    glutStrokeCharacter(font, *c);
+        largura += escala*glutStrokeWidth(font, *c);
     }
 
     glPopMatrix();
+    return largura;
 }
 
 /**
  * Dado um string, retorna seu comprimento total, em pixels.
- * Função utilizada para centralizar texto na tela.
+ * Usado quando se precisa saber do comprimento antes de digitar o texto.
  */
-float largura_string(std::string str, float altura, void *font)
+float largura_string(std::string str, const float altura, void *font)
 {
     int compr = 0;
 
@@ -66,22 +69,46 @@ float largura_string(std::string str, float altura, void *font)
     // Soma as larguras de cada caractere
     for (std::string::iterator c=str.begin(); c != str.end(); c++)
     {
- 	      compr += escala*glutStrokeWidth(font, *c);
+ 	    compr += escala*glutStrokeWidth(font, *c);
     }
     return compr;
 }
 
- /**
-  * Desenha a borda de um quadro de menu.
-  */
-void desenhar_borda(unsigned int largura, unsigned int altura, float cor[3])
+/**
+ * Imprime um texto centralizado na origem.
+ */
+float texto_centralizado(std::string str, const float altura, void *font, const float cor[4])
 {
-    glColor4fv(cor);
-    glLineWidth(OPCAOMENU_LARGURA_BORDA);
-    glBegin(GL_LINE_LOOP);
-        glVertex3f(0, 0, 0);
-        glVertex3f(largura, 0, 0);
-        glVertex3f(largura, altura, 0);
-        glVertex3f(0, altura, 0);
-    glEnd();
+    glPushMatrix();
+    glTranslatef(-largura_string(str, altura, font) / 2., 0, 0);
+    float largura = desenhar_string(str, altura, font, cor);
+    glPopMatrix();
+    return largura;
+}
+
+/**
+ * Imprime um texto centralizado na origem.
+ */
+float texto_alinhado_direita(std::string str, const float altura, void *font, const float cor[4])
+{
+    glPushMatrix();
+    glTranslatef(-largura_string(str, altura, font), 0, 0);
+    float largura = desenhar_string(str, altura, font, cor);
+    glPopMatrix();
+    return largura;
+}
+
+/**
+ * Desenha a borda de um quadro de menu.
+ */
+void desenhar_borda(const unsigned int largura, const unsigned int altura, const float cor[4])
+{
+   glColor4fv(cor);
+   glLineWidth(OPCAOMENU_LARGURA_BORDA);
+   glBegin(GL_LINE_LOOP);
+       glVertex3f(0, 0, 0);
+       glVertex3f(largura, 0, 0);
+       glVertex3f(largura, altura, 0);
+       glVertex3f(0, altura, 0);
+   glEnd();
 }

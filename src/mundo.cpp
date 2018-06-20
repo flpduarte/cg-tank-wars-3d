@@ -124,7 +124,6 @@ void Mundo::renomear_jogadores()
     }
     this->menu_ativo = criar_menu_renomear_jogadores();
     glutPostRedisplay();
-
 }
 
 /**
@@ -133,7 +132,7 @@ void Mundo::renomear_jogadores()
 void Mundo::iniciar_jogo()
 {
     // Zera todas as variáveis do jogo
-    rodada_atual = 1;
+    rodada_atual = 0;
     for (int i = 0; i < n_jogadores; i++)
     {
         jogadores[i]->condicao_inicial();
@@ -152,7 +151,7 @@ void Mundo::iniciar_rodada()
     this->tela_atual = TELA_RODADA;
 
     // Remove menus da memória
-    std::cout << "Iniciando rodada..." << '\n';
+    //std::cout << "Iniciando rodada..." << '\n';
     if (this->menu_ativo != NULL)
     {
         delete this->menu_ativo;

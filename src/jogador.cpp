@@ -31,6 +31,7 @@ Jogador::Jogador(int i): njogador(i)
 {
     // define a cor do tanque:
     definir_cor(this->cor, i);
+    cor::definir_cor(this->cor_alterada, this->cor);
     this->nome = "Jogador " + std::to_string(i);
     this->pontos = 0;
     this->dolares = 0;
@@ -72,12 +73,38 @@ void Jogador::reiniciar()
 
 
 /**
+ * Retorna o ângulo do tanque em formato de string, para ser exibido na tela.
+ * Formato:
+ * [0, 90]: "45 >"      Sinal de maior indica a direção - direita
+ *
+ * (90, 180]: "45 <"    Sinal de menor indica a direção - esquerda
+ */
+std::string Jogador::angulo_texto()
+{
+    return angulo > 90 ? std::to_string(angulo - 90) + " <" : std::to_string(angulo) + " >";
+}
+
+
+/**
  * Libera a memória utilizada pelo objeto Jogador
  */
 Jogador::~Jogador()
 {
-    // TODO: apagar lista_municoes. Preciso ajudar a função nova_lista_municoes(),
-    // que está criando a lista sem fornecer o seu tamanho.
+    delete lista_armas;
+}
+
+
+/**
+ * Retorna a cor "real" do tanque - homens/100 * cor.
+ */
+float *Jogador::cor_real()
+{
+    // altera só as componentes RGB. Componente A permanece = 1.
+    for (int i = 0; i < 3; i++)
+    {
+        cor_alterada[i] = cor[i]*homens/100.;
+    }
+    return cor_alterada;
 }
 
 /**
@@ -106,7 +133,7 @@ void Jogador::desenhar()
     // Rotaciona o tanque e o desenha
     glPushMatrix();
     glRotated(angulo, eixo[0], eixo[1], eixo[2]);
-    desenhar_tanque(cor, homens);
+    desenhar_tanque(this->cor_real());
     glPopMatrix();
 
     // Prepara para desenhar o canhão: translada centro dos eixos para a esfera

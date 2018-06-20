@@ -23,15 +23,14 @@
 #include <GL/glut.h>
 #include "jogador.hpp"
 #include "terreno.hpp"
+#include "constantes.hpp"
 
 struct Camera;
 
 class Cenario
 {
-    /* Constantes */
     /* Constantes da Cãmera */
     const double CAMERA_POS[3]    = {50, -100, 50};
-    //const double CAMERA_POS[3]    = {50, 0, -200};
     const double CAMERA_LOOKAT[3] = {50, 0, 23};
     const double CAMERA_VIEWUP[3] = {0, 0, 1};
 
@@ -44,14 +43,22 @@ class Cenario
     /* Características da iluminação do sol */
     const GLfloat SOMBRA[4]      = {0.4f, 0.4f, 0.4f, 1.0f};
     const GLfloat POSICAO_SOL[4] = {-50., 0., 0., 1.};
-    //const GLfloat POSICAO_SOL[4] = {50., 0., 40., 1.};
     const GLfloat COR_SOL[4]     = {1.0f, 1.0f, 1.0f, 1.0f};
+
+    /* Características do texto na Viewport 2D */
+    const float TAM_TEXTO            = 25.0f;
+    const float ESPACAMENTO          = 5.0f;
+    const float POS_PRIMEIRA_LINHA   = JANELA_ALTURA - ESPACAMENTO - TAM_TEXTO/2.;    // coordenadas da janela
+    const float POS_SEGUNDA_LINHA    = POS_PRIMEIRA_LINHA - TAM_TEXTO - ESPACAMENTO;
+    const float POS_TERCEIRA_LINHA   = POS_SEGUNDA_LINHA - TAM_TEXTO - ESPACAMENTO;
 
     /* Propriedades */
     Camera  *camera;                    // Camera principal
     Terreno *terreno;                   // Terreno atual
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
     Projetil *projetil;                 // Projétil em voo
+    int vento;                          // Vento no cenário atual. + para dir.
+    int jogador_atual;                  // De quem é a vez: 0, 1, 2, ...
 
 public:
     Cenario();
@@ -59,6 +66,7 @@ public:
     void exibir();                      // Exibe o cenário atual na tela
 
 private:
+    int  definir_vento();               // Define vento conforme configurações do jogo
     void misturar_jogadores();
     void posicionar_jogadores();
     void desenhar_na_viewport2D();      // Configura VP 2D e desenha informações

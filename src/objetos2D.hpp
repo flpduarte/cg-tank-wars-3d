@@ -17,8 +17,9 @@
 #define OBJETOS2D_HPP
 #include <string>
 
-void desenhar_string(std::string str, float altura, void *font, float cor[3]);
-void desenhar_borda(unsigned int largura, unsigned int altura, float cor[3]);
-float largura_string(std::string str, float altura, void *font);
-
+float desenhar_string(std::string str, const float altura, void *font, const float [4]);
+float largura_string(std::string str, const float altura, void *font);
+float texto_centralizado(std::string, const float, void *, const float [4]);
+float texto_alinhado_direita(std::string, const float, void *, const float [4]);
+void desenhar_borda(const unsigned int largura, const unsigned int altura, const float cor[4]);
 #endif

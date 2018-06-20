@@ -60,9 +60,8 @@ void Botao::desenhar()
 
     // Imprime texto no centro do botão
     glPushMatrix();
-    float x = ((float)largura - largura_string(this->titulo, 0.8*altura, FONTE))/2;
-    glTranslatef(x, altura/2, 0);
-    desenhar_string(this->titulo, 0.8*altura, FONTE, this->cor_titulo);
+    glTranslatef(largura/2, altura/2, 0);
+    texto_centralizado(this->titulo, 0.8*altura, FONTE, this->cor_titulo);
     glPopMatrix();
 }
 
@@ -136,9 +135,8 @@ void OpcaoAlterarValorNumerico::desenhar()
     // Escrever texto
     std::string texto = this->titulo + ": - " + std::to_string(referencia) + " +";
     glPushMatrix();
-    float x = ((float)largura - largura_string(texto, 0.8*altura, FONTE))/2;
-    glTranslatef(x, altura/2, 0);
-    desenhar_string(texto, 0.8*altura, FONTE, this->cor_referencia);
+    glTranslatef(largura/2, altura/2, 0);
+    texto_centralizado(texto, 0.8*altura, FONTE, this->cor_referencia);
     glPopMatrix();
 
 }

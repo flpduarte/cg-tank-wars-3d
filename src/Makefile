@@ -43,8 +43,8 @@ cenario.o configmenu.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
 configmenu.o globals.o mundo.o: mundo.hpp
 jogador.o municao.o mundo.o armas.o: municao.hpp
-menu.o objetos2D.o: objetos2D.hpp
-jogador.o objetos3D.o: objetos3D.hpp
+menu.o objetos2D.o cenario.o: objetos2D.hpp
+jogador.o objetos3D.o cenario.o: objetos3D.hpp
 terreno.o cenario.o: terreno.hpp
 
 

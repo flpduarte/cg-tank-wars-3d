@@ -46,31 +46,24 @@ const float BRILHO_TANQUE       = 32.0f;
  *
  * Assume que a matriz ativa é a MODELVIEW.
  *
- * - homens: Número de homens no tanque. Se traduz como uma porcentagem
- *   a ser multiplicado pela cor do tanque.
- * - cor: cor do jogador
+ * - cor: cor "real" do jogador - já corrigido pelo número de homens
  * - angulo: Ângulo
  *
  * Nota: o canhão não é desenhado por esta função. Deve ser desenhado posterior-
  * mente, após o posicionamento do corpo do tanque no mundo.
  */
-void desenhar_tanque(const GLfloat *cor, int homens)
+void desenhar_tanque(const GLfloat *cor)
 {
-    // Ajusta cor real do tanque
-    GLfloat cor_real[4];
-    for (int i = 0; i < 4; i++)
-        cor_real[i] = (GLfloat) homens * cor[i]/100.;
-
     // Desenha esteiras esquerda e direita
     glPushMatrix();
     glTranslatef(0, -3/8., 0);
-    desenhar_esteira_tanque(cor_real);
+    desenhar_esteira_tanque(cor);
     glTranslatef(0,  3/4., 0);
-    desenhar_esteira_tanque(cor_real);
+    desenhar_esteira_tanque(cor);
     glPopMatrix();
 
     // Desenha corpo do tanque - inclusive semi-espera onde ficará o canhão
-    desenhar_corpo_tanque(cor_real);
+    desenhar_corpo_tanque(cor);
 }
 
 /**

@@ -23,6 +23,8 @@
 #include "cenario.hpp"
 #include "constantes.hpp"
 #include "globals.hpp"
+#include "objetos2D.hpp"
+#include "objetos3D.hpp"
 
 /* --- Implementação da classe Cenario --- */
 
@@ -33,26 +35,28 @@
 Cenario::Cenario()
 {
     // Cria câmera e terreno
-    camera   = new Camera(CAMERA_POS, CAMERA_LOOKAT, CAMERA_VIEWUP);
-    terreno  = new Terreno;
-    projetil = NULL;
+    srand(time(NULL));
+    camera    = new Camera(CAMERA_POS, CAMERA_LOOKAT, CAMERA_VIEWUP);
+    terreno   = new Terreno;
+    jogadores = new Jogador *[mundo.n_jogadores]();
+    projetil  = NULL;
+    vento     = definir_vento();                // * a ser implementada
+    jogador_atual = rand() % mundo.n_jogadores;
+
+    // Cria lista aleatória de jogadores
+    misturar_jogadores();
+    posicionar_jogadores();
 
     // Configura iluminação do Sol.
     // Obs: Posso futuramente fazer essas configurações mudarem aleatoriamente,
     // para criar cenários noturnos, por exemplo. Mas isto está fora do escopo
     // do trabalho atual.
-    //glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
     glLightfv(GL_LIGHT0, GL_AMBIENT, SOMBRA);           //contribuição ambiente
     glLightfv(GL_LIGHT0, GL_DIFFUSE, COR_SOL);          //contribuição difusa
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
     glEnable(GL_LIGHT0);
 
     glEnable(GL_NORMALIZE);
-
-    // Cria lista aleatória de jogadores
-    jogadores = new Jogador *[mundo.n_jogadores]();
-    misturar_jogadores();
-    posicionar_jogadores();
 }
 
 /**
@@ -62,17 +66,31 @@ Cenario::~Cenario()
 {
     delete camera;
     delete terreno;
+    delete jogadores;
+    if (projetil != NULL)
+    {
+        delete projetil;
+    }
 }
 
 /* --- Funções privadas --- */
 /**
+ * Define um vento aleatório, na faixa de intensidades definida pela configuração
+ * do jogo.
+ *
+ * TODO: implementar esta função posteriormente.
+ */
+int Cenario::definir_vento()
+{
+    return 0;
+}
+
+/**
  * Mistura a ordem de aparecimento dos jogadores e define suas respectivas
- * posições no cenário
+ * posições no cenário.
  */
 void Cenario::misturar_jogadores()
 {
-    srand(time(NULL));
-
     // lê jogadores em ordem "aleatória"
     for (int i = 0; i < mundo.n_jogadores; i++)
     {
@@ -81,7 +99,8 @@ void Cenario::misturar_jogadores()
         do
         {
             n = rand() % mundo.n_jogadores;
-        } while (existe_elemento(jogadores, i, mundo.jogadores[n]));
+        }
+        while (existe_elemento(jogadores, i, mundo.jogadores[n]));
 
         // Insere-o no final da lista
         jogadores[i] = mundo.jogadores[n];
@@ -190,7 +209,7 @@ void Cenario::desenhar_na_viewport3D()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
-    //glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
 
     // Ativa efeitos de iluminação e desenha o terreno
     glMatrixMode(GL_MODELVIEW);
@@ -226,7 +245,48 @@ void Cenario::desenhar_na_viewport2D()
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
 
-    // TODO: imprimir as informações
+    // define janela de recorte de forma a coincidir
+    // coordendas do mundo com coordenadas da janela
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0, JANELA_LARGURA, 0, JANELA_ALTURA);
+
+    // Imprime nome do jogador atual no centro da primeira linha
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
+    texto_centralizado(jogadores[jogador_atual]->nome, TAM_TEXTO, FONTE, jogadores[jogador_atual]->cor_real());
+    glPopMatrix();
+
+    // 2a linha: angulo à esquerda, Arma à direita
+    glPushMatrix();
+    glTranslatef(ESPACAMENTO, POS_SEGUNDA_LINHA, 0);
+    float larg = desenhar_string("Angulo: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
+    glPushMatrix();
+    glTranslatef(larg, 0, 0);
+    desenhar_string(jogadores[jogador_atual]->angulo_texto(), TAM_TEXTO, FONTE, cor::AMARELO);
+    glPopMatrix();
+
+    glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
+    larg = texto_alinhado_direita(jogadores[jogador_atual]->lista_armas->arma_atual()->nome, TAM_TEXTO, FONTE, cor::AMARELO);
+    glTranslatef(-larg, 0, 0);
+    texto_alinhado_direita("Arma: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
+    glPopMatrix();
+
+    // 3a Linha: Potencia e Homens
+    glPushMatrix();
+    glTranslatef(ESPACAMENTO, POS_TERCEIRA_LINHA, 0);
+    larg = desenhar_string("Potencia: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
+    glPushMatrix();
+    glTranslatef(larg, 0, 0);
+    desenhar_string(std::to_string(jogadores[jogador_atual]->potencia), TAM_TEXTO, FONTE, cor::AMARELO);
+    glPopMatrix();
+
+    glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
+    larg = texto_alinhado_direita(std::to_string(jogadores[jogador_atual]->homens), TAM_TEXTO, FONTE, cor::AMARELO);
+    glTranslatef(-larg, 0, 0);
+    texto_alinhado_direita("Homens: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
+    glPopMatrix();
 }
 
 /* --- Implementação da classe Camera --- */

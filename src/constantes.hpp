@@ -83,6 +83,7 @@ namespace cor
     const float CINZA_MEDIO[] = {0.5, 0.5, 0.5, 1};
     const float CINZA_ESCURO[] = {0.2, 0.2, 0.2, 1};
     const float AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
+    const float LILAS_ESCURO[] = {0.5, 0, 0.5, 1};
 
     // Função auxiliar que copia os valores de cor da variável origem à variável dest.
     void definir_cor(float *dest, const float *origem);
