@@ -248,12 +248,12 @@ void Mundo::funcao_exibicao()
         case TELA_COMPRAS:
             preparar_tela_para_menu();
             this->menu_ativo->exibir();
-        break;
+            break;
 
         // Exibe o cenário
         case TELA_RODADA:
             this->cenario->exibir();
-        break;
+            break;
     }
 
     // redesenha a tela
@@ -272,13 +272,12 @@ void Mundo::interacao_teclado(unsigned char tecla, int x, int y)
         case TELA_RENOMEAR_JOGADORES:
         case TELA_RESULTADO_PARCIAL:
         case TELA_COMPRAS:
-        this->menu_ativo->gerenciar_teclado(tecla);
-        break;
+            this->menu_ativo->gerenciar_teclado(tecla);
+            break;
 
         case TELA_RODADA:
-        // TODO
-        break;
-
+            this->cenario->gerenciar_teclado(tecla);
+            break
     }
     glFlush();
 }
@@ -295,12 +294,12 @@ void Mundo::interacao_teclas_especiais(int tecla, int x, int y)
         case TELA_RENOMEAR_JOGADORES:
         case TELA_RESULTADO_PARCIAL:
         case TELA_COMPRAS:
-        this->menu_ativo->gerenciar_teclas_especiais(tecla);
-        break;
+            this->menu_ativo->gerenciar_teclas_especiais(tecla);
+            break;
 
         case TELA_RODADA:
-        // TODO
-        break;
+            this->cenario->gerenciar_teclas_especiais(tecla);
+            break;
 
     }
 }

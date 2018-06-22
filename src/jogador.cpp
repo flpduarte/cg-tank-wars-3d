@@ -33,17 +33,12 @@ Jogador::Jogador(int i): njogador(i)
     definir_cor(this->cor, i);
     cor::definir_cor(this->cor_alterada, this->cor);
     this->nome = "Jogador " + std::to_string(i);
-    this->pontos = 0;
-    this->dolares = 0;
-    this->homens = 100;
     this->pos[0] = 0;
     this->pos[1] = 0;
     this->pos[2] = 0;
     this->normal[0] = 0;
     this->normal[1] = 0;
     this->normal[2] = 1;
-    this->angulo = 90;
-    this->potencia = 200;
     this->lista_armas = new ListaArmamentos;
 }
 
@@ -57,18 +52,22 @@ Jogador::Jogador(int i): njogador(i)
 void Jogador::condicao_inicial()
 {
     // zera pontuação e dolares e reseta lista de armamentos
-    pontos = 0;
-    dolares = 0;
-    lista_armas->condicao_inicial();
+    this->pontos = 0;
+    this->dolares = 0;
+    this->lista_armas->condicao_inicial();
 }
 
 /**
  * Redefine o status do jogador para a condição de início de rodada:
  * - homens = 100
+ * - vivo   = true
  */
 void Jogador::reiniciar()
 {
-    this->homens = 100;
+    this->homens   = 100;
+    this->vivo     = true;
+    this->angulo   = 90;
+    this->potencia = 200;
 }
 
 
@@ -163,6 +162,28 @@ void Jogador::definir_normal(GLfloat normal[3])
     {
         this->normal[i] = normal[i];
     }
+}
+
+
+/**
+ * atirar()
+ * Lança um projétil a partir do tanque atual.
+ * O projétil é criado na ponta do canhão do tanque, com velocidade inicial
+ * dada pela multiplicação da potência pelo fator constante POT_PARA_VEL.
+ *
+ * Entrada: velocidade do vento, recebido do cenário.
+ */
+void atirar(int vento)
+{
+    // TODO;
+}
+
+/**
+ * explodir(): realiza a animação de explosão do tanque.
+ */
+void explodir()
+{
+    // TODO
 }
 /* -------------------------------------------------------------------------- */
 /**

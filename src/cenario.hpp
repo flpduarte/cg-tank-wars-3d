@@ -58,12 +58,20 @@ class Cenario
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
     Projetil *projetil;                 // Projétil em voo
     int vento;                          // Vento no cenário atual. + para dir.
-    int jogador_atual;                  // De quem é a vez: 0, 1, 2, ...
+    int jog_vez;                            // De quem é a vez: 0, 1, 2, ...
+    int jog_ativo;                      // É um pouco diferente da variável vez.
+                                        // jogador_ativo indica o jogador a ser
+                                        // mostrado no topo da página. Essa exibição
+                                        // mostra, por exemplo, qual foi o jogador
+                                        // que 'morreu'.
+    bool controle_jogador;              // Estado do cenário: true = projétil voando; true = jogador no controle.
 
 public:
     Cenario();
     ~Cenario();
     void exibir();                      // Exibe o cenário atual na tela
+    void gerenciar_teclado(unsigned char);
+    void gerenciar_teclas_especiais(int);
 
 private:
     int  definir_vento();               // Define vento conforme configurações do jogo

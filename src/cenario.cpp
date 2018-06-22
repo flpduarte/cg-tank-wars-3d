@@ -41,7 +41,8 @@ Cenario::Cenario()
     jogadores = new Jogador *[mundo.n_jogadores]();
     projetil  = NULL;
     vento     = definir_vento();                // * a ser implementada
-    jogador_atual = rand() % mundo.n_jogadores;
+    jog_vez   = rand() % mundo.n_jogadores;
+    jog_ativo = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
 
     // Cria lista aleatória de jogadores
     misturar_jogadores();
@@ -239,8 +240,8 @@ void Cenario::desenhar_na_viewport3D()
  */
 void Cenario::desenhar_na_viewport2D()
 {
-    // Limpa a tela para preto. Assume que Scissor está desligado.
-    glClearColor(0, 0, 0, 0);
+    // Limpa a tela para cinza escuro. Assume que Scissor está desligado.
+    glClearColor(0.2, 0.2, 0.2, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
@@ -251,24 +252,26 @@ void Cenario::desenhar_na_viewport2D()
     glLoadIdentity();
     gluOrtho2D(0, JANELA_LARGURA, 0, JANELA_ALTURA);
 
-    // Imprime nome do jogador atual no centro da primeira linha
+    // Imprime nome do jogador *ativo* no centro da primeira linha
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
-    texto_centralizado(jogadores[jogador_atual]->nome, TAM_TEXTO, FONTE, jogadores[jogador_atual]->cor_real());
+    texto_centralizado(jogadores[jog_ativo]->nome, TAM_TEXTO, FONTE, jogadores[jog_ativo]->cor_real());
     glPopMatrix();
 
     // 2a linha: angulo à esquerda, Arma à direita
+    // Informações são referentes ao jogador da vez atual (nao necessariamente
+    // o jogador ativo)
     glPushMatrix();
     glTranslatef(ESPACAMENTO, POS_SEGUNDA_LINHA, 0);
     float larg = desenhar_string("Angulo: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPushMatrix();
     glTranslatef(larg, 0, 0);
-    desenhar_string(jogadores[jogador_atual]->angulo_texto(), TAM_TEXTO, FONTE, cor::AMARELO);
+    desenhar_string(jogadores[jog_vez]->angulo_texto(), TAM_TEXTO, FONTE, cor::AMARELO);
     glPopMatrix();
 
     glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
-    larg = texto_alinhado_direita(jogadores[jogador_atual]->lista_armas->arma_atual()->nome, TAM_TEXTO, FONTE, cor::AMARELO);
+    larg = texto_alinhado_direita(jogadores[jog_vez]->lista_armas->arma_atual()->nome, TAM_TEXTO, FONTE, cor::AMARELO);
     glTranslatef(-larg, 0, 0);
     texto_alinhado_direita("Arma: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPopMatrix();
@@ -279,14 +282,86 @@ void Cenario::desenhar_na_viewport2D()
     larg = desenhar_string("Potencia: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPushMatrix();
     glTranslatef(larg, 0, 0);
-    desenhar_string(std::to_string(jogadores[jogador_atual]->potencia), TAM_TEXTO, FONTE, cor::AMARELO);
+    desenhar_string(std::to_string(jogadores[jog_vez]->potencia), TAM_TEXTO, FONTE, cor::AMARELO);
     glPopMatrix();
 
     glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
-    larg = texto_alinhado_direita(std::to_string(jogadores[jogador_atual]->homens), TAM_TEXTO, FONTE, cor::AMARELO);
+    larg = texto_alinhado_direita(std::to_string(jogadores[jog_vez]->homens), TAM_TEXTO, FONTE, cor::AMARELO);
     glTranslatef(-larg, 0, 0);
     texto_alinhado_direita("Homens: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPopMatrix();
+}
+
+/**
+ * Funções que respondem ao teclado: teclas comuns e teclas especiais.
+ * Nota: durante os eventos de voo do projétil ou outras animações, o
+ * estado controle_jogador é falso e o jogo não responderá aos coman-
+ * dos do teclado.
+ */
+void Cenario::gerenciar_teclado(unsigned char tecla)
+{
+    // Não faz nada se o jogador nao estiver no controle.
+    if (!controle_jogador)
+        return;
+
+    // Por enquanto a unica tecla a que o jogo responde é o espaço.
+    // O restante é via teclas especiais.
+    // Implementar outras teclas à medida que o jogo evoluir.
+    // Ex: 1, 2, ..., 9, 0: exibe uma janela com informações do
+    // jogador selecionado.
+    switch (tecla)
+    {
+        // Espaço: atirar!
+        // Desativa o controle do jogador neste caso.
+        // O próprio timerFunc fará a atualização da tela.
+        case ' ':
+            controle_jogador = false;
+            jogadores[jog_vez]->atirar(vento);
+            break;
+    }
+}
+
+
+/**
+ * Teclas especiais usadas:
+ * Setas esquerda e direita: ajustam ângulo
+ * Setas para cima e para baixo: ajustam potência
+ * Page up/Page down: Aumentam/diminuem a potência de 100 em 100
+ */
+void gerenciar_teclas_especiais(int tecla)
+{
+    if (!controle_jogador)
+        return;
+
+    switch (tecla)
+    {
+        case GLUT_KEY_LEFT:
+            jogadores[jog_vez]->angulo += 1;
+            if (jogadores[jog_vez]->angulo > 180)
+                jogadores[jog_vez]->angulo = 0
+            break;
+
+        case GLUT_KEY_RIGHT:
+            jogadores[jog_vez]->angulo -= 1;
+            if (jogadores[jog_vez]->angulo < 0)
+                jogadores[jog_vez]->angulo = 180;
+            break;
+
+        // Controle de potência. Note o limite pelo número de homens!
+        case GLUT_KEY_UP:
+        case GLUT_KEY_PAGE_UP:
+            jogadores[jog_vez]->potencia += (tecla == GLUT_KEY_PAGE_UP) ? 100 : 1;
+            if (jogadores[jog_vez]->potencia > 10*jogadores[jog_vez]->homens)
+                jogadores[jog_vez]->potencia = 10*jogadores[jog_vez]->homens;
+            break;
+
+        case GLUT_KEY_DOWN:
+        case GLUT_KEY_PAGE_DOWN:
+            jogadores[jog_vez]->potencia -= (tecla == GLUT_KEY_PAGE_DOWN) ? 100 : 1;
+            if (jogadores[jog_vez]->potencia < 0)
+                jogadores[jog_vez]->potencia = 0;
+            break;
+    }
 }
 
 /* --- Implementação da classe Camera --- */

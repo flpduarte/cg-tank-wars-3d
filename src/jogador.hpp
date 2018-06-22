@@ -41,6 +41,7 @@ struct Jogador
     int homens;
     int angulo;         // em graus. Intervalo: [0, 180]. 0° = positivo eixo X (direita).
     int potencia;
+    bool vivo;          // indica se o jogador está vivo ou não.
 
     // Posicionamento do tanque
     double pos[3];      // posição (x, y, z) do tanque
@@ -58,6 +59,9 @@ struct Jogador
     void desenhar();
     void posicionar(double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
     void definir_normal(GLfloat normal[3]); // Define o sentido "para cima" do tanque
+
+    void atirar(int vento); // TODO
+    void explodir();        // TODO
 };
 
 #endif
