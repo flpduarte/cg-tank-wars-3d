@@ -20,7 +20,6 @@
 #include "globals.hpp"
 #include "mundo.hpp"
 #include "interacoes.hpp"
-#include "armas.hpp"
 
 using namespace std;
 
@@ -28,7 +27,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     // Configurações da tela do jogo
-    //glutInit(&argc, argv);
+    glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_SINGLE | GLUT_DEPTH);
     glutInitWindowPosition(JANELA_POSICAO_X, JANELA_POSICAO_Y);
     glutInitWindowSize(JANELA_LARGURA, JANELA_ALTURA);
@@ -48,8 +47,6 @@ int main(int argc, char *argv[])
 
     // Inicia loop do jogo
     mundo.tela_inicial();
-    //mundo.renomear_jogadores();
-    //mundo.iniciar_jogo();
 	glutMainLoop();
     return 0;
 }

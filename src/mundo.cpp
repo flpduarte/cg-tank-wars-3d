@@ -147,20 +147,25 @@ void Mundo::iniciar_jogo()
  */
 void Mundo::iniciar_rodada()
 {
+    // Espera-se que o cenário deva estar desativado
+    assert(cenario == NULL);
+
     // Muda a tela ativa
     this->tela_atual = TELA_RODADA;
 
     // Remove menus da memória
-    //std::cout << "Iniciando rodada..." << '\n';
     if (this->menu_ativo != NULL)
     {
         delete this->menu_ativo;
         this->menu_ativo = NULL;
     }
 
-    // Cenário deve estar desativado
-    assert(cenario == NULL);
+    // Prepara para início da rodada
     rodada_atual++;
+    for (int i = 0; i < n_jogadores; i++)
+    {
+        jogadores[i]->reiniciar();
+    }
 
     // Cria um novo cenário
     cenario = new Cenario;
@@ -277,9 +282,9 @@ void Mundo::interacao_teclado(unsigned char tecla, int x, int y)
 
         case TELA_RODADA:
             this->cenario->gerenciar_teclado(tecla);
-            break
+            break;
     }
-    glFlush();
+    glutPostRedisplay();
 }
 
 
@@ -302,6 +307,7 @@ void Mundo::interacao_teclas_especiais(int tecla, int x, int y)
             break;
 
     }
+    glutPostRedisplay();
 }
 
 

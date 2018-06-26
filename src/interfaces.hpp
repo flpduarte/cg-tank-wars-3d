@@ -165,7 +165,7 @@ class Projetil
     double derivada(int);
 
     public:
-    Projetil(Municao *, double X0[3], int V0, int ang, int vento);
+    Projetil(Municao *m, double X0[6], int vento);
     void desenhar();
     void atualizar_posicao();
 };

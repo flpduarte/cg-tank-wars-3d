@@ -47,11 +47,7 @@ struct MunicaoEQtd
     /**
      * Define operador = para uso com MunicaoEQtd
      */
-    void operator=(MunicaoEQtd referencia)
-    {
-        this->arma = referencia.arma;
-        this->qtd  = referencia.qtd;
-    }
+    void operator=(MunicaoEQtd referencia);
 };
 
 /**
@@ -76,7 +72,7 @@ public:
     // Alteração da qtd de munição
     void adicionar_lote(int, int);      // Adiciona munição à arma escolhida (ao comprar um armamento)
     void remover_lote(int, int);        // Remove um lote de tiros (ao desfazer uma compra)
-    void decrementa_municao();          // Decrementa 1 da qtd de tiros da arma atual
+    Municao *atirar_arma_atual();       // Decrementa 1 da qtd de tiros da arma atual. Retorna a arma atual.
     void condicao_inicial();            // Restaura a lista para a condição de início de jogo'
                                         // (qtd padrão de tiros)
 };

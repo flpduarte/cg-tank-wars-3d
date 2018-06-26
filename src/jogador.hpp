@@ -45,7 +45,7 @@ struct Jogador
 
     // Posicionamento do tanque
     double pos[3];      // posição (x, y, z) do tanque
-    double normal[3];   // orientação para cima do tanque.
+    double normal[3];   // orientação para cima do tanque. Deve ser unitário.
 
     // Métodos
     Jogador(int i);
@@ -60,7 +60,7 @@ struct Jogador
     void posicionar(double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
     void definir_normal(GLfloat normal[3]); // Define o sentido "para cima" do tanque
 
-    void atirar(int vento); // TODO
+    Projetil *atirar(int vento);            // Cria um projétil para o cenário
     void explodir();        // TODO
 };
 

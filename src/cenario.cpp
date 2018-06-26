@@ -38,11 +38,14 @@ Cenario::Cenario()
     srand(time(NULL));
     camera    = new Camera(CAMERA_POS, CAMERA_LOOKAT, CAMERA_VIEWUP);
     terreno   = new Terreno;
+
+    // Configura cenário
     jogadores = new Jogador *[mundo.n_jogadores]();
     projetil  = NULL;
     vento     = definir_vento();                // * a ser implementada
     jog_vez   = rand() % mundo.n_jogadores;
     jog_ativo = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
+    controle_jogador = true;                    // Jogador já começa ativo
 
     // Cria lista aleatória de jogadores
     misturar_jogadores();
@@ -56,7 +59,6 @@ Cenario::Cenario()
     glLightfv(GL_LIGHT0, GL_DIFFUSE, COR_SOL);          //contribuição difusa
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
     glEnable(GL_LIGHT0);
-
     glEnable(GL_NORMALIZE);
 }
 
@@ -191,15 +193,14 @@ void Cenario::desenhar_na_viewport3D()
 {
     // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
     // cor azul celeste
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);    // não desenha polígonos encobertoss por outros à sua frente
-
-    // Pintar viewport de azul celeste
     glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
     glEnable(GL_SCISSOR_TEST);
     glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_SCISSOR_TEST);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
 
     // Muda para matriz ModelView e mantém-se nela
     glMatrixMode(GL_MODELVIEW);
@@ -241,19 +242,25 @@ void Cenario::desenhar_na_viewport3D()
 void Cenario::desenhar_na_viewport2D()
 {
     // Limpa a tela para cinza escuro. Assume que Scissor está desligado.
-    glClearColor(0.2, 0.2, 0.2, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_SCISSOR_TEST);
+    glClearColor(0.2, 0.2, 0.2, 0.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
     // define janela de recorte de forma a coincidir
     // coordendas do mundo com coordenadas da janela
+    // Nota: Redefinir viewport para ser janela inteira.
+    // glLoadIdentity() tem efeito sobre a matriz ativa, mas não faz nada com a viewport!
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0, JANELA_LARGURA, 0, JANELA_ALTURA);
+    glViewport(0, 0, JANELA_LARGURA, JANELA_ALTURA);   // redefine viewport para ser a janela inteira.
 
     // Imprime nome do jogador *ativo* no centro da primeira linha
     glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
     glPushMatrix();
     glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
     texto_centralizado(jogadores[jog_ativo]->nome, TAM_TEXTO, FONTE, jogadores[jog_ativo]->cor_real());
@@ -312,11 +319,11 @@ void Cenario::gerenciar_teclado(unsigned char tecla)
     switch (tecla)
     {
         // Espaço: atirar!
-        // Desativa o controle do jogador neste caso.
-        // O próprio timerFunc fará a atualização da tela.
+        // Cria um projétil no cenário; desativa controle do jogador.
+        // Ativa a animação do projétil
         case ' ':
             controle_jogador = false;
-            jogadores[jog_vez]->atirar(vento);
+            projetil = jogadores[jog_vez]->atirar(vento);
             break;
     }
 }
@@ -328,7 +335,7 @@ void Cenario::gerenciar_teclado(unsigned char tecla)
  * Setas para cima e para baixo: ajustam potência
  * Page up/Page down: Aumentam/diminuem a potência de 100 em 100
  */
-void gerenciar_teclas_especiais(int tecla)
+void Cenario::gerenciar_teclas_especiais(int tecla)
 {
     if (!controle_jogador)
         return;
@@ -336,9 +343,10 @@ void gerenciar_teclas_especiais(int tecla)
     switch (tecla)
     {
         case GLUT_KEY_LEFT:
+
             jogadores[jog_vez]->angulo += 1;
             if (jogadores[jog_vez]->angulo > 180)
-                jogadores[jog_vez]->angulo = 0
+                jogadores[jog_vez]->angulo = 0;
             break;
 
         case GLUT_KEY_RIGHT:

@@ -39,6 +39,18 @@ MunicaoEQtd::MunicaoEQtd(Municao *mun):
 
 
 /**
+ * Define operador = para uso com MunicaoEQtd
+ */
+void MunicaoEQtd::operator=(MunicaoEQtd referencia)
+{
+    this->arma = referencia.arma;
+    this->qtd  = referencia.qtd;
+}
+
+
+/* ------------ ListaArmamentos -------------- */
+
+/**
  * (IMPORTANTE)
  * Cria a lista de todos os armamentos existentes no jogo, usando a lista global
  * 'armamentos' como referência.
@@ -102,13 +114,15 @@ void ListaArmamentos::remover_lote(int indice, int qtd)
 }
 
 /**
- * Decrementa 1 qtd da arma ativa. Esta função é chamada quando a arma é lançada.
+ * Decrementa 1 qtd da arma ativa e retorna o ponteiro para a arma.
+ * Esta função é chamada quando a arma é lançada.
  * Note que esta função não troca o armamento ativo. A verificação se ainda há
  * tiros do armamento ativo deve ser realizada ao iniciar a vez do jogador.
  */
-void ListaArmamentos::decrementa_municao()
+Municao *ListaArmamentos::atirar_arma_atual()
 {
     lista[i_atual].qtd--;
+    return lista[i_atual].arma;
 }
 
 

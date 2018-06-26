@@ -80,7 +80,7 @@ void Jogador::reiniciar()
  */
 std::string Jogador::angulo_texto()
 {
-    return angulo > 90 ? std::to_string(angulo - 90) + " <" : std::to_string(angulo) + " >";
+    return angulo > 90 ? std::to_string(180 - angulo) + " <" : std::to_string(angulo) + " >";
 }
 
 
@@ -167,21 +167,37 @@ void Jogador::definir_normal(GLfloat normal[3])
 
 /**
  * atirar()
- * Lança um projétil a partir do tanque atual.
+ * Lança um projétil a partir do tanque atual. É chamado pelo Cenário.
  * O projétil é criado na ponta do canhão do tanque, com velocidade inicial
  * dada pela multiplicação da potência pelo fator constante POT_PARA_VEL.
  *
  * Entrada: velocidade do vento, recebido do cenário.
+ *
+ * NOTA: ASSUME que o vetor normal é unitário!
  */
-void atirar(int vento)
+Projetil *Jogador::atirar(int vento)
 {
-    // TODO;
+    // Definir posição inicial do projétil
+    double ang_rad   = angulo * PI/180.;
+    double V0 = FATOR_POT_VEL * potencia;
+    double X0[6] = {0};
+    X0[0] = pos[0] + TAMANHO_TANQUE *(normal[0]*.75/2 + COMPR_CANHAO*cos(ang_rad));
+    X0[1] = pos[1];
+    X0[2] = pos[2] + TAMANHO_TANQUE *(normal[2]*.75/2 + COMPR_CANHAO*sin(ang_rad));
+
+    // Calcular velocidade inicial do projétil
+    X0[3] = V0 * cos(ang_rad);
+    X0[4] = 0;
+    X0[5] = V0 * sin(ang_rad);
+
+    // definir vetor velocidade inicial
+    return new Projetil(lista_armas->atirar_arma_atual(), X0, vento);
 }
 
 /**
  * explodir(): realiza a animação de explosão do tanque.
  */
-void explodir()
+void Jogador::explodir()
 {
     // TODO
 }

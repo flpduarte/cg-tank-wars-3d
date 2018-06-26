@@ -43,7 +43,7 @@ class Cenario
     /* Características da iluminação do sol */
     const GLfloat SOMBRA[4]      = {0.4f, 0.4f, 0.4f, 1.0f};
     const GLfloat POSICAO_SOL[4] = {-50., 0., 0., 1.};
-    const GLfloat COR_SOL[4]     = {1.0f, 1.0f, 1.0f, 1.0f};
+    const GLfloat COR_SOL[4]     = {0.8f, 0.8f, 0.8f, 1.0f};
 
     /* Características do texto na Viewport 2D */
     const float TAM_TEXTO            = 25.0f;
@@ -58,7 +58,7 @@ class Cenario
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
     Projetil *projetil;                 // Projétil em voo
     int vento;                          // Vento no cenário atual. + para dir.
-    int jog_vez;                            // De quem é a vez: 0, 1, 2, ...
+    int jog_vez;                        // De quem é a vez: 0, 1, 2, ...
     int jog_ativo;                      // É um pouco diferente da variável vez.
                                         // jogador_ativo indica o jogador a ser
                                         // mostrado no topo da página. Essa exibição

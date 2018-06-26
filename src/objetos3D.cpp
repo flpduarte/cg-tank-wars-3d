@@ -324,7 +324,7 @@ void desenhar_canhao()
     glPushMatrix();
     glRotated(90, 0, 0, 1);
     glTranslated(0, -.75/2, 0);
-    desenhar_faixa_circular(1/32., 0.75);
+    desenhar_faixa_circular(RAIO_CANHAO, COMPR_CANHAO);
     glPopMatrix();
 }
 

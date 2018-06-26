@@ -189,15 +189,6 @@ void Menu::exibir()
 
 /* --- Implementação das funções da classe Municao --- */
 
-/**
- * lancar(X0, V0, angulo, vento)
- * Cria um objeto Projetil com as características dadas.
- */
-Projetil *Municao::lancar(double X0[3], int V0, int ang, int vento)
-{
-    return new Projetil(this, X0, V0, ang, vento);
-}
-
 double Municao::massa()
 {
     return m;
@@ -205,9 +196,11 @@ double Municao::massa()
 
 /* --- Implementação das funções da classe Projetil --- */
 /**
- * Cria um novo projétil no local designado.
+ * Cria um novo projétil com condições iniciais dadas.
+ * A condição inicial - posição e vetor velocidade - é calculada pelo objeto
+ * Jogador que lança o projétil.
  */
-Projetil::Projetil(Municao *m, double X0[3], int V0, int ang, int vento)
+Projetil::Projetil(Municao *m, double X0[6], int vento)
 {
     municao = m;
 
@@ -217,9 +210,9 @@ Projetil::Projetil(Municao *m, double X0[3], int V0, int ang, int vento)
     X[2] = X0[2];
 
     // Velocidade
-    X[3] = V0*cos(ang);     // Vx
-    X[4] = 0;               // Vy
-    X[5] = V0*sin(ang);     // Vz
+    X[3] = X0[3];
+    X[4] = X0[4];
+    X[5] = X0[5];
 
     // Forças
     F[0] =  m->massa()*vento;        // Efeito do vento

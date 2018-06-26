@@ -56,10 +56,14 @@ const int VP3D_YMIN        = 0;
 
 #define FRACAO_RAIO_DANO    1.25    // Raio de dano / Raio de Explosao no modelo de explosão
 #define GRAVIDADE           200.0   // TBD
+#define FATOR_POT_VEL       0.01    // Fator que converte potência em velocidade inicial
 #define DT                  0.05    // Passo de integração.
 
 /* Dimensões de referência para desenhar objetos */
-const double TAMANHO_TANQUE = 3.0;  // largura do tanque
+const double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão
+const double COMPR_CANHAO       = 0.75;         // comprimento do canhão, sem aplicar fator de escala
+const double RAIO_CANHAO        = 1/32.;
+//const double LARGURA_TANQUE     =
 
 const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
 const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};
