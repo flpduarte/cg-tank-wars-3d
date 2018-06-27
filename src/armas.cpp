@@ -11,9 +11,9 @@
  * Implementa cada tipo de munição declarada em armas.hpp
  */
 #include <iostream>
-#include "globals.hpp"
 #include "constantes.hpp"
 #include "armas.hpp"
+#include "globals.hpp"
 
 /**
  * Cria a lista global de armamentos. Chamado no início do jogo (bomb.cpp)

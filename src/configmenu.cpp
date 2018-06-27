@@ -12,6 +12,7 @@
  * Elas instanciam as classes implementadas em menu.cpp.
  */
 #include "configmenu.hpp"
+#include "armas.hpp"
 #include "globals.hpp"
 #include "interacoes.hpp"
 #include "menu.hpp"

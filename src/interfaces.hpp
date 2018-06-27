@@ -107,6 +107,7 @@ public:
  *              ser transladado para o local onde se localiza o objeto Projetil.
  */
 class Projetil;
+class Explosao;
 class Municao
 {
     // Propredades da municao.
@@ -121,7 +122,7 @@ public:
 
     Projetil *lancar(double pos[3], int power, int angle, int vento);
     virtual void desenhar() = 0;                // desenha munição em coordenadas do objeto
-    virtual void detonar(double pos[3]) = 0;    // Realiza os efeitos da detonação da munição no local indicado
+    virtual Explosao *detonar(double pos[3]) = 0;    // Realiza os efeitos da detonação da munição no local indicado
 };
 
 /**
@@ -165,9 +166,11 @@ class Projetil
 
     public:
     Projetil(Municao *m, double X0[6], int vento);
-    void desenhar();
     void atualizar_posicao();
     bool atingiu_obstaculo();   // Retorna true se o projétil atingiu um obstáculo - tanque ou terra
+
+    void desenhar();
+    Explosao *detonar();        // produz a explosão da munição no local atual do projétil
 };
 
 

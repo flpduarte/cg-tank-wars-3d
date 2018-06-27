@@ -50,7 +50,7 @@ void MunicaoExplosiva::desenhar()
  * detonar(): Executa a função que produz o efeito de explosão na posição
  * atual do armamento.
  */
-void MunicaoExplosiva::detonar(double pos[3])
+Explosao *MunicaoExplosiva::detonar(double pos[3])
 {
-    efeito_explosao(pos, this->raio_explosao());
+    return new Explosao(pos, this->raio_explosao());
 }

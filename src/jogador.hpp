@@ -60,7 +60,7 @@ struct Jogador
 
     Projetil *atirar(int vento);            // Cria um projétil para o cenário
     bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
-    void explodir();        // TODO
+    void explodir();
 };
 
 #endif

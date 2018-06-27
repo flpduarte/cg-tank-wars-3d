@@ -15,6 +15,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include "cenario.hpp"
 #include "mundo.hpp"
 #include "jogador.hpp"
 #include "constantes.hpp"

@@ -14,8 +14,8 @@
 #ifndef CONFIGMENU_HPP
 #define CONFIGMENU_HPP
 
-#include "menu.hpp"
-#include "jogador.hpp"
+class Menu;
+class Jogador;
 
 Menu *criar_menu_principal();
 Menu *criar_menu_renomear_jogadores();

@@ -26,10 +26,10 @@ class MunicaoExplosiva : public Municao
 {
 protected:
     virtual int raio_explosao() = 0; // declarada como método virtual para
-                                        // forçar a implementação por classes filhas
+                                     // forçar a implementação por classes filhas
 public:
     MunicaoExplosiva();         // Construtor define a massa do projétil.
-    void detonar(double [3]);             // Executa o efeito de explosão no local atual
+    Explosao *detonar(double [3]);  // Cria um objeto Explosao no local atual
                                 // do armamento
     virtual void desenhar();    // Desenha um projétil padrão. Método pode ser
                                 // substituído, se desejado.

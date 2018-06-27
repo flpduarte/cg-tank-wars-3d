@@ -15,15 +15,23 @@
  * - Terreno atual
  * - etc.
  */
+
+// desativar asserts qdo programa estiver funcionando
+#define NDEBUG
 #include <GL/glut.h>
+#include <cassert>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+#include "terreno.hpp"
+#include "jogador.hpp"
 #include "cenario.hpp"
 #include "constantes.hpp"
 #include "globals.hpp"
 #include "objetos2D.hpp"
 #include "objetos3D.hpp"
+
+
 
 /* --- Implementação da classe Cenario --- */
 
@@ -328,11 +336,13 @@ void Cenario::gerenciar_teclado(unsigned char tecla)
     {
         // Espaço: atirar!
         // Cria um projétil no cenário; desativa controle do jogador.
-        // Ativa a animação do projétil
+        // Muda estado do cenário para ativar a animação do projétil
         case ' ':
             controle_jogador = false;
             projetil = jogadores[jog_vez]->atirar(vento);
-            break;
+            glutPostRedisplay();
+            glutTimerFunc(DT_ANIMACAO, Cenario::animacao_projetil, 1);    // ativa animacao
+
     }
 }
 
@@ -381,12 +391,34 @@ void Cenario::gerenciar_teclas_especiais(int tecla)
 }
 
 /**
- * Esta é a função responsável pelas animações e pelos eventos que ocorrem após
- * o jogador atirar seu projétil.
+ * Funções responsáveis pela animação do projétil.
+ * Para ser chamada, assume que this->projetil != NULL.
  */
-void Cenario::funcao_timer(int valor)
+void Cenario::animacao_projetil(int valor)
 {
-    // TODO
+    mundo.cenario->animar_projetil();
+}
+
+void Cenario::animar_projetil()
+{
+    // atualiza a posição do projétil
+    assert(this->projetil != NULL);
+    this->projetil->atualizar_posicao();
+
+    // Se projétil atingiu um obstáculo, cria uma explosão no local atual
+    if (this->projetil->atingiu_obstaculo())
+    {
+        this->explosao = this->projetil->detonar();
+    }
+
+    // Caso contrário, continua a animação do projétil
+    else
+    {
+        glutTimerFunc(DT_ANIMACAO, animacao_projetil, 1);
+    }
+
+    // redesenha o cenário
+    glutPostRedisplay();
 }
 
 /**

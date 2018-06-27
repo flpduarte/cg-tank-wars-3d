@@ -14,10 +14,10 @@
 #ifndef MUNDO_HPP
 #define MUNDO_HPP
 
-#include "cenario.hpp"
 #include "constantes.hpp"
-#include "jogador.hpp"
-#include "interfaces.hpp"
+class Jogador;
+class Menu;
+class Cenario;
 
 /**
  * Mundo: Contém as variáveis de estado do mundo tais como tela atual, no. de

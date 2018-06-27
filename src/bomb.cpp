@@ -41,9 +41,6 @@ int main(int argc, char *argv[])
     glutMouseFunc(interacao_mouse);
 	glutDisplayFunc(funcao_exibicao);
 
-    // animação
-    glutTimerFunc(10, funcao_timer, 1);
-
     // Inicia loop do jogo
     mundo.tela_inicial();
 	glutMainLoop();

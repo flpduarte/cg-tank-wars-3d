@@ -298,3 +298,13 @@ void Projetil::desenhar()
     municao->desenhar();
     glPopMatrix();
 }
+
+
+/**
+ * detonar()
+ * Produz a explosão do projétil na posição atual
+ */
+Explosao *Projetil::detonar()
+{
+    return municao->detonar(X);
+}

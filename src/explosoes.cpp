@@ -14,14 +14,21 @@
  */
 #include "explosoes.hpp"
 #include "constantes.hpp"
+#include "jogador.hpp"
 
+Explosao::Explosao(double pos[3], double r): raio(r), t(0)
+{
+    epicentro[0] = pos[0];
+    epicentro[1] = pos[1];
+    epicentro[2] = pos[2];
+}
 
 /**
  * Explosao
- * Representa uma explosão!
- */
-
-/**
+ * Classe que representa uma explosão!
+ * Especificamente, é responsável por desenhar a animação da explosão,
+ * bem como "avisar" à classe Cenario quando a animação encerrar.
+ *
  * Efeito de explosão: exibe na tela o efeito de explosão a partir do epicentro
  * dado.
  * Provoca danos nos tanques conforme modelo abaixo.
@@ -35,9 +42,3 @@
  * 100% de dano      | Raio de dano = aprox. 125% do raio de explosão
  *                   | (configurado como a constante FRACAO_RAIO_DANO)
  */
-void efeito_explosao(double epicentro[3], int raio_explosao)
-{
-    // TODO
-    // Usar a constante FRACAO_RAIO_DANO
-    return;
-}

@@ -20,22 +20,12 @@
 
 #include <vector>
 #include <GL/glut.h>
-#include "jogador.hpp"
-#include "terreno.hpp"
 #include "constantes.hpp"
 
-/**
- * Define um tipo enumerado para representar os estados possíveis do cenário.
- * É necessário conhecer estes estados para saber qual é o próximo passo a ser
- * executado pela função timer.
- */
-enum EstadoCenario
-{
-    CONTROLE_DO_JOGADOR,
-    PROJETIL_EM_VOO,
-    
-};
-
+class Terreno;
+class Jogador;
+class Explosao;
+class Projetil;
 struct Camera;
 
 class Cenario
@@ -68,6 +58,7 @@ class Cenario
     Terreno *terreno;                   // Terreno atual
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
     Projetil *projetil;                 // Projétil em voo
+    Explosao *explosao;
     int vento;                          // Vento no cenário atual. + para dir.
     int jog_vez;                        // De quem é a vez: 0, 1, 2, ...
     int jog_ativo;                      // É um pouco diferente da variável vez.
@@ -76,15 +67,14 @@ class Cenario
                                         // mostra, por exemplo, qual foi o jogador
                                         // que 'morreu'.
     bool controle_jogador;              // Estado do cenário: true = não responde ao jogador; true = jogador no controle.
-    bool projetil_em_voo; // (?)
 
+    // Funções para exibir o cenário
 public:
     Cenario();
     ~Cenario();
     void exibir();                      // Exibe o cenário atual na tela
     void gerenciar_teclado(unsigned char);
     void gerenciar_teclas_especiais(int);
-    void funcao_timer(int);
     double z_solo(double x, double y);      // Retorna a coordenada z do solo em (x, y)
 
 private:
@@ -96,6 +86,19 @@ private:
     void desenhar();                    // Desenha o cenário em si: terreno, jogadores, projéteis, explosões, etc.
 
     bool existe_elemento(Jogador **, int, Jogador *);    // verifica se um jogador pertence à lista
+
+
+    /* Funções responsáveis pelo loop do cenário */
+public:
+    // funções para uso com glutTimerFunc()
+    static void animacao_projetil(int);      // Função timer do cenário para animar o projétil
+    static void animacao_explosao(int);      // Função timer do cenário para animar as explosões
+    static void animacao_morte_jogador(int); // Função timer do cenário para animar as explosões
+
+    void animar_projetil();
+    void animar_explosao();
+    void animar_morte_jogador();
+    void analisar_danos();
 };
 
 /* Agrupamento das informações da câmera em uma estrutura */

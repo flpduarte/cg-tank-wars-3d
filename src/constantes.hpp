@@ -57,6 +57,7 @@ const int VP3D_YMIN        = 0;
 #define GRAVIDADE           200.0   // TBD
 #define FATOR_POT_VEL       0.01    // Fator que converte potência em velocidade inicial
 #define DT                  0.05    // Passo de integração.
+#define DT_ANIMACAO         10      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc.
 
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão
