@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Define a classe Mundo e outros dados associados.
  *

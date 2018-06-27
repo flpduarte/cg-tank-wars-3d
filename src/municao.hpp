@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Declara classes de munições a partir da interface Municao.
  * A primeira versão do jogo contém somente munições explosivas.

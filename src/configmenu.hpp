@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Contém as funções que criam os menus para cada tela do jogo.
  * Elas instanciam as classes implementadas em menu.cpp.

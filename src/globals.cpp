@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Concentra as declarações de iniciação das variáveis globais. Os arquivos fonte
  * restantes que precisarem utilizar as variáveis globais precisarão apenas

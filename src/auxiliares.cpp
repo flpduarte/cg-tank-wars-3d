@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Implementa classes auxiliares para realizar operações matemáticas.
  * NOTA: as funções aqui estão dentro do namespace aux.

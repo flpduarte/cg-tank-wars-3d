@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Declara as classes para cada uma das municoes do jogo, bem como uma lista
  * de armamentos existente.

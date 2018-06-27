@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Declara as funções que realizam os efeito de detonação.
  * Inicialmente conterá somente explosão;

@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Define as funções necessárias pelo OpenGL para realizar:
  * - Interações com Teclado - teclas normais e especiais

@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Implementa as funções que desenham os objetos 3D na tela. Objetos incluem
  * tanques, projéteis e explosões.

@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Implementa a classe Terreno: armazena as informações sobre o terreno:
  * coordenadas e vetores normais, bem como as operações realizadas

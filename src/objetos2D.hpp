@@ -7,7 +7,6 @@
  *
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
- * Glauber Prado                    RA:
  *
  * Declara funções que desenham objetos 2D na tela. É utilizada
  * principalmente pelos Menus.
