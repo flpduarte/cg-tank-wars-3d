@@ -24,7 +24,7 @@ FONTES = bomb.cpp armas.cpp auxiliares.cpp cenario.cpp constantes.cpp configmenu
 OBJS = $(FONTES:.cpp=.o)
 
 # Headers comuns a todos os arquivos. Headers específicos serão gravados em suas respectivas regras
-DEP_COMUNS = constantes.hpp globals.hpp interfaces.hpp objetos3D.hpp Makefile
+DEP_COMUNS = constantes.hpp globals.hpp objetos3D.hpp Makefile
 
 # default target
 bomb: $(OBJS) Makefile
@@ -35,16 +35,18 @@ $(OBJS): $(DEP_COMUNS)
 
 # dependencias especificas
 auxiliares.o objetos3D.o terreno.o interfaces.o: auxiliares.hpp
-cenario.o mundo.o: cenario.hpp
-armas.o globals.o jogador.o: armas.hpp
-explosoes.o municao.o: explosoes.hpp
-interacoes.o: interacoes.hpp
-cenario.o configmenu.o jogador.o mundo.o: jogador.hpp
+armas.o globals.o interfaces.o mundo.o: armas.hpp
+cenario.o jogador.o mundo.o interfaces.o: cenario.hpp
+configmenu.o mundo.o: configmenu.hpp
+cenario.o explosoes.o municao.o: explosoes.hpp
+cenario.o interfaces.o: interfaces.hpp
+configmenu.o interacoes.o menu.o: interacoes.hpp
+cenario.o configmenu.o explosoes.o interfaces.o jogador.o mundo.o: jogador.hpp
 configmenu.o menu.o: menu.hpp
 configmenu.o globals.o mundo.o: mundo.hpp
-jogador.o municao.o mundo.o armas.o: municao.hpp
+municao.o mundo.o armas.o: municao.hpp
 menu.o objetos2D.o cenario.o: objetos2D.hpp
-jogador.o objetos3D.o cenario.o: objetos3D.hpp
+cenario.o jogador.o municao.o objetos3D.o: objetos3D.hpp
 terreno.o cenario.o: terreno.hpp
 
 

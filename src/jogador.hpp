@@ -16,9 +16,11 @@
 
 #include <string>
 #include <vector>
+#include <queue>
 #include <GL/glut.h>
-#include "interfaces.hpp"
-#include "armas.hpp"
+
+class Projetil;
+class ListaArmamentos;
 
 /**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
@@ -32,6 +34,7 @@ struct Jogador
     std::string nome;
 
     // Pontuação, dinheiro e armamentos disponíveis
+    int vitorias;
     int pontos;
     int dolares;
     ListaArmamentos *lista_armas;    // armazena a lista de armas que o jogador possui
@@ -40,7 +43,7 @@ struct Jogador
     int homens;
     int angulo;         // em graus. Intervalo: [0, 180]. 0° = positivo eixo X (direita).
     int potencia;
-    bool vivo;          // indica se o jogador está vivo ou não.
+    bool vivo;          // indica se o jogador está vivo ou não, para fins de desenhá-lo no cenário.
 
     // Posicionamento do tanque
     double pos[3];      // posição (x, y, z) do tanque
@@ -60,7 +63,7 @@ struct Jogador
 
     Projetil *atirar(int vento);            // Cria um projétil para o cenário
     bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
-    void explodir();
+    void morrer();                          // Executa a animação de morte do jogador atual.
 };
 
 #endif

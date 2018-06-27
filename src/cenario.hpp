@@ -19,6 +19,7 @@
 #define CENARIO_HPP
 
 #include <vector>
+#include <queue>
 #include <GL/glut.h>
 #include "constantes.hpp"
 
@@ -57,8 +58,10 @@ class Cenario
     Camera  *camera;                    // Camera principal
     Terreno *terreno;                   // Terreno atual
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
+    int      n_jogadores_vivos;         // Guarda o número de jogadores vivos.
     Projetil *projetil;                 // Projétil em voo
-    Explosao *explosao;
+    Explosao *explosao;                 // Explosão atualmente ocorrendo
+    Jogador  *jogador_morrendo;         // Armazena o jogador cuja animação de morte está atualmente sendo executada.
     int vento;                          // Vento no cenário atual. + para dir.
     int jog_vez;                        // De quem é a vez: 0, 1, 2, ...
     int jog_ativo;                      // É um pouco diferente da variável vez.
@@ -95,10 +98,17 @@ public:
     static void animacao_explosao(int);      // Função timer do cenário para animar as explosões
     static void animacao_morte_jogador(int); // Função timer do cenário para animar as explosões
 
-    void animar_projetil();
-    void animar_explosao();
-    void animar_morte_jogador();
-    void analisar_danos();
+    void animar_projetil();                 // Responsável por animar o projétil
+    void animar_explosao();                 // Responsável por animar uma explosão
+    void animar_morte_jogador();            // Responsável por animar a morte do jogador.
+    void analisar_danos();                  // Responsável por atualizar os efeitos provocados pelas explosões
+    void retirar_jogadores_mortos();        // Responsável por executar a animação de cada jogador "marcado para morrer" e atualizar num. de jogadores vivos
+    bool rodada_encerrou();                 // Responsável por informar se a rodada acabou (1 ou 0 jogadores vivos) e atualizar num vitorias do vencedor
+    void iniciar_vez_do_proximo_jogador();  // Responsável por iniciar a vez do próximo jogador vivo.
+
+    // Variáveis auxiliares do loop
+private:
+    std::queue<int> fila_jogadores_mortos;
 };
 
 /* Agrupamento das informações da câmera em uma estrutura */

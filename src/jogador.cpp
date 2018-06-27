@@ -51,6 +51,7 @@ Jogador::Jogador(int i): njogador(i)
 void Jogador::condicao_inicial()
 {
     // zera pontuação e dolares e reseta lista de armamentos
+    this->vitorias = 0;
     this->pontos = 0;
     this->dolares = 0;
     this->lista_armas->condicao_inicial();
@@ -63,8 +64,8 @@ void Jogador::condicao_inicial()
  */
 void Jogador::reiniciar()
 {
-    this->homens   = 100;
     this->vivo     = true;
+    this->homens   = 100;
     this->angulo   = 90;
     this->potencia = 200;
 }
@@ -219,9 +220,9 @@ bool Jogador::atingiu(double *X)
 }
 
 /**
- * explodir(): realiza a animação de explosão do tanque.
+ * morrer(): Exibe os frames de morte do tanque.
  */
-void Jogador::explodir()
+void Jogador::morrer()
 {
     // TODO
 }

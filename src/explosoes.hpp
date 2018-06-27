@@ -76,7 +76,7 @@ class Explosao
 
 public:
     Explosao(double pos[3], double);    // Cria objeto explosão no local atual
-    void provocar_danos(Jogador **);    // dada a lista de jogadores atuais, atualiza os homens dos jogadores afetados pela explosao
+    int dano(double pos[3]);            // dada a posição de um jogador, retorna o dano causado pela explosão.
     bool proximo_frame();               // Desenha próximo "frame" da animação de explosão. Retorna false quando animação encerrar
 };
 

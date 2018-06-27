@@ -13,6 +13,9 @@
 #include <cmath>
 #include <GL/glut.h>
 #include <iostream>
+#include "armas.hpp"
+#include "cenario.hpp"
+#include "jogador.hpp"
 #include "interfaces.hpp"
 #include "constantes.hpp"
 #include "auxiliares.hpp"

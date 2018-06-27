@@ -17,27 +17,28 @@
  */
 
 // desativar asserts qdo programa estiver funcionando
-#define NDEBUG
+//#define NDEBUG
 #include <GL/glut.h>
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include "terreno.hpp"
+#include "armas.hpp"
 #include "jogador.hpp"
+#include "terreno.hpp"
 #include "cenario.hpp"
+#include "interfaces.hpp"
 #include "constantes.hpp"
 #include "globals.hpp"
 #include "objetos2D.hpp"
 #include "objetos3D.hpp"
-
-
+#include "explosoes.hpp"
+#include "interacoes.hpp"
 
 /* --- Implementação da classe Cenario --- */
 
 /**
  * Cria um novo cenário: Terreno, câmera e ordem de aparecimento dos jogadores.
- * // TODO - ainda em construção
  */
 Cenario::Cenario()
 {
@@ -47,12 +48,15 @@ Cenario::Cenario()
     terreno   = new Terreno;
 
     // Configura cenário
-    jogadores = new Jogador *[mundo.n_jogadores]();
-    projetil  = NULL;
-    vento     = definir_vento();                // * a ser implementada
-    jog_vez   = rand() % mundo.n_jogadores;
-    jog_ativo = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
-    controle_jogador = true;                    // Jogador já começa ativo
+    jogadores           = new Jogador *[mundo.n_jogadores]();
+    n_jogadores_vivos   = mundo.n_jogadores;
+    projetil            = NULL;
+    explosao            = NULL;
+    jogador_morrendo    = NULL;
+    vento               = definir_vento();                // * a ser implementada
+    jog_vez             = rand() % mundo.n_jogadores;
+    jog_ativo           = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
+    controle_jogador    = true;                    // Jogador já começa ativo
 
     // Cria lista aleatória de jogadores
     misturar_jogadores();
@@ -67,6 +71,9 @@ Cenario::Cenario()
 	glLightfv(GL_LIGHT0, GL_POSITION, POSICAO_SOL);
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
+
+    // Não é preciso fazer mais nada: o cenário já está configurado com o controle
+    // dado ao jogador.
 }
 
 /**
@@ -80,6 +87,10 @@ Cenario::~Cenario()
     if (projetil != NULL)
     {
         delete projetil;
+    }
+    if (explosao != NULL)
+    {
+        delete explosao;
     }
 }
 
@@ -397,6 +408,7 @@ void Cenario::gerenciar_teclas_especiais(int tecla)
 void Cenario::animacao_projetil(int valor)
 {
     mundo.cenario->animar_projetil();
+    glutPostRedisplay();
 }
 
 void Cenario::animar_projetil()
@@ -409,17 +421,197 @@ void Cenario::animar_projetil()
     if (this->projetil->atingiu_obstaculo())
     {
         this->explosao = this->projetil->detonar();
+        delete this->projetil;
+        this->projetil = NULL;
+        glutTimerFunc(DT_ANIMACAO, Cenario::animacao_explosao, 0);   // 0 = explosao projetil
     }
 
     // Caso contrário, continua a animação do projétil
     else
     {
-        glutTimerFunc(DT_ANIMACAO, animacao_projetil, 1);
+        glutTimerFunc(DT_ANIMACAO, Cenario::animacao_projetil, 1);
     }
+}
 
-    // redesenha o cenário
+
+/**
+ * Funções responsáveis pela animação da explosão.
+ * Assume que existe explosão ocorrendo no cenário.
+ */
+void Cenario::animacao_explosao(int value)
+{
+    mundo.cenario->animar_explosao();
     glutPostRedisplay();
 }
+
+void Cenario::animar_explosao()
+{
+    // Confirma que existe explosão no cenário
+    assert(this->explosao != NULL);
+
+    // Chamar esta função continuamente enquanto a animação não tiver terminado.
+    if (this->explosao->proximo_frame()) // true enquanto animação não terminar
+    {
+        glutTimerFunc(DT_ANIMACAO, Cenario::animacao_explosao, 0);
+    }
+
+    // Caso contrário, analisa os danos causado pela explosão.
+    else
+    {
+        this->analisar_danos();
+    }
+}
+
+
+/**
+ * analisar_danos()
+ * Atualiza o número de homens dos jogadores após a explosão.
+ * Apaga o objeto explosao ao final da tarefa.
+ *
+ * Caso um jogador tenha morrido com a explosão, insere-o em uma
+ * fila para executar as animações de morte daquele jogador.
+ */
+void Cenario::analisar_danos()
+{
+    // Confirma que existe explosão. Esta função é chamada por animar_explosao().
+    assert(this->explosao != NULL);
+
+    // Itera pelos jogadores vivos no cenário e atualiza seus respectivos números
+    // de homens.
+    for (int i = 0; i < mundo.n_jogadores; i++)
+    {
+        if (this->jogadores[i]->homens > 0)
+        {
+            this->jogadores[i]->homens -= this->explosao->dano(this->jogadores[i]->pos);
+
+            // Inclui jogador na fila para executar animação de morte se ele morreu.
+            if (this->jogadores[i]->homens <= 0)
+            {
+                this->jogadores[i]->homens = 0;
+                fila_jogadores_mortos.push(i);
+            }
+        }
+    }
+
+    // Apaga o objeto explosão
+    delete this->explosao;
+    this->explosao = NULL;
+
+    // Voltar para o loop de executar a animação de saída dos jogadores
+    retirar_jogadores_mortos();
+}
+
+/**
+ * Loop que executa a animação de cada jogador que está na fila de
+ * jogadores mortos.
+ *
+ * Após executar cada animação, muda a flag "vivo" para false do jogador,
+ * a fim de que ele não seja mais exibido no cenário.
+ *
+ * Quando não houver mais jogadores com homens = 0 para executar animação,
+ * a função verifica se há mais de 1 jogador no cenário.
+ *
+ * Se houver, devolve o controle para o próximo jogador da vez.
+ * Caso contrário, dá a vitória ao jogador vivo e encerra o cenário.
+ */
+void Cenario::retirar_jogadores_mortos()
+{
+    // Executa animações de morte.
+    if (!fila_jogadores_mortos.empty())
+    {
+        // retira índice do jogador da fila e o salva na variável jogador_morrendo
+        int i_jogador    = fila_jogadores_mortos.front();
+        jogador_morrendo = jogadores[i_jogador];
+        n_jogadores_vivos--;                                // menos 1 jogador vivo
+        fila_jogadores_mortos.pop();
+        glutTimerFunc(DT_ANIMACAO, Cenario::animacao_morte_jogador, 1);
+    }
+
+    // Se não houver mais jogadores na fila, verificar se encerra o jogo ou se
+    // muda a vez para o próximo jogador.
+    else
+    {
+        jogador_morrendo = NULL;
+        if (this->rodada_encerrou())
+        {
+            // dá um pequeno intervalo entre a ultima animação e ir para o
+            // resultado parcial.
+            glutTimerFunc(100, resultado_parcial, 0);
+        }
+
+        // Iniciar a vez do próximo jogador
+        else
+        {
+            iniciar_vez_do_proximo_jogador();
+        }
+    }
+}
+
+
+/**
+ * rodada_encerrou()
+ * Verifica número de jogadores vivos.
+ * - 2 ou mais jogadores vivos: retorna false.
+ * - 1 jogador vivo: incrementa o número de vitórias desse jogador.
+ *   Retorna true.
+ * - 0 jogadores vivos: retorna true.
+ */
+bool Cenario::rodada_encerrou()
+{
+    bool resultado;
+
+    // 0 ou 1 jogador - rodada encerrou.
+    if (this->n_jogadores_vivos > 1)
+    {
+        if (this->n_jogadores_vivos == 1)
+        {
+            Jogador **j = jogadores;
+            while (!(*j)->vivo)
+            {
+                j++;
+            }
+            (*j)->vitorias++;
+        }
+        resultado = true;
+    }
+
+    // Mais de 1 jogador: retorna false
+    else
+    {
+        resultado = false;
+    }
+
+    return resultado;
+}
+
+/**
+ * Inicia a vez do próximo jogador.
+ * Assume que há pelo menos 2 jogadores vivos!
+ */
+void Cenario::iniciar_vez_do_proximo_jogador()
+{
+    assert (n_jogadores_vivos > 1);
+    do
+    {
+        jog_vez = (jog_vez + 1) % mundo.n_jogadores;
+    }
+    while (!jogadores[jog_vez]->vivo);
+
+     // Faz jogador da vez tmb ser o jogador ativo e segue o jogo!
+    jog_ativo = jog_vez;
+    controle_jogador = true;
+}
+
+/**
+ * Funções responsáveis pela animação da morte de um jogador.
+ */
+void Cenario::animacao_morte_jogador(int value)
+{
+    // TODO
+}
+
+
+
 
 /**
  * z_solo(): Retorna a posição z do solo na posição (x, y) dada.

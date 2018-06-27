@@ -106,8 +106,9 @@ void iniciar_rodada()
 
 /**
  * Apresenta a tela de resultados parciais, após o término de uma rodada.
+ * É chamada por um glutTimerFunc(), daí a necessidade da entrada, mesmo não sendo usada.
  */
-void resultado_parcial()
+void resultado_parcial(int valor)
 {
     mundo.resultado_parcial();
 }
