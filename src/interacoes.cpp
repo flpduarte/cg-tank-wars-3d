@@ -66,6 +66,16 @@ void interacao_mouse(int botao, int estado, int x, int y)
 }
 
 /**
+ * Timer function para animações e outros eventos do cenário.
+ * Ela só é executada se EXISTIR UM CENÁRIO.
+ */
+void funcao_timer(int valor)
+{
+    if (mundo.cenario != NULL)
+        mundo.cenario->funcao_timer(valor);
+}
+
+/**
  * Vai para a tela inicial do jogo.
  * Chega-se nessa tela:
  * - Ao iniciar o jogo

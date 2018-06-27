@@ -15,6 +15,12 @@
 #include "explosoes.hpp"
 #include "constantes.hpp"
 
+
+/**
+ * Explosao
+ * Representa uma explosão!
+ */
+
 /**
  * Efeito de explosão: exibe na tela o efeito de explosão a partir do epicentro
  * dado.

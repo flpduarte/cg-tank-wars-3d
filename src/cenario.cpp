@@ -184,36 +184,14 @@ void Cenario::exibir()
     desenhar_na_viewport3D();
 }
 
+
 /**
- * Desenha o cenário 3D!
- * Hipótese: informações 2D já foram desenhadas na tela.
+ * desenhar()
+ * Função responsável por desenhar todos os objetos 3D que compõem o cenário.
  */
-void Cenario::desenhar_na_viewport3D()
+void Cenario::desenhar()
 {
-    // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
-    // cor azul celeste
-    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
-    glEnable(GL_SCISSOR_TEST);
-    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_SCISSOR_TEST);
-
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-
-    // Muda para matriz ModelView e mantém-se nela
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    camera->posicionar();
-
-    // Configura Viewport e Projeção Perspectiva
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
-    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
-
-    // Ativa efeitos de iluminação e desenha o terreno
-    glMatrixMode(GL_MODELVIEW);
+    // Desenha o terreno
     terreno->desenhar();
 
     // Desenha os jogadores
@@ -227,6 +205,37 @@ void Cenario::desenhar_na_viewport3D()
     {
         projetil->desenhar();
     }
+}
+
+
+/**
+ * Configura a viewport 3D principal e desenha o cenário na viewport.
+ */
+void Cenario::desenhar_na_viewport3D()
+{
+    // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
+    // cor azul celeste
+    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    glEnable(GL_SCISSOR_TEST);
+    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
+
+    // Ativa iluminação e teste de profundidade
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+
+    // Configura Viewport e Projeção Perspectiva
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
+    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+
+    // Muda para matriz ModelView, posiciona a câmera e desenha o cenário
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    camera->posicionar();
+    this->desenhar();
 }
 
 /**
@@ -369,6 +378,23 @@ void Cenario::gerenciar_teclas_especiais(int tecla)
                 jogadores[jog_vez]->potencia = 0;
             break;
     }
+}
+
+/**
+ * Esta é a função responsável pelas animações e pelos eventos que ocorrem após
+ * o jogador atirar seu projétil.
+ */
+void Cenario::funcao_timer(int valor)
+{
+    // TODO
+}
+
+/**
+ * z_solo(): Retorna a posição z do solo na posição (x, y) dada.
+ */
+double Cenario::z_solo(double x, double y)
+{
+    return this->terreno->z(x, y);
 }
 
 /* --- Implementação da classe Camera --- */

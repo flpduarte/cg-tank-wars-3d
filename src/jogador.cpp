@@ -193,6 +193,31 @@ Projetil *Jogador::atirar(int vento)
     return new Projetil(lista_armas->atirar_arma_atual(), X0, vento);
 }
 
+
+/**
+ * atingiu(): retorna true se o projétil na posição dada atinge o tanque.
+ * Retorna false, caso contrário.
+ *
+ * Assume que o vetor X tem pelo menos 3 posições: (x, y, z).
+ */
+bool Jogador::atingiu(double *X)
+{
+    // Se o jogador não estiver vivo, nem realiza nenhum cálculo.
+    if (!vivo)
+        return false;
+
+    // Para ser mais preciso, seria necessário calcular se o projétil
+    // atingiu alguma parte do tanque.
+    // Por simplicidade, considerou-se que o tanque possui formato
+    // esférico, com raio = 3/4 de seu comprimento. Esse é o chamado
+    // "hitbox" do tanque.
+    else
+        return ((pos[0] - X[0])*(pos[0] - X[0]) +
+               (pos[1] - X[1])*(pos[1] - X[1]) +
+               (pos[2] - X[2])*(pos[2] - X[2]))
+               < (HITBOX_TANQUE*HITBOX_TANQUE);
+}
+
 /**
  * explodir(): realiza a animação de explosão do tanque.
  */

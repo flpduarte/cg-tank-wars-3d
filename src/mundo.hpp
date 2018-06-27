@@ -36,6 +36,7 @@ public:
     // estado atual do mundo
     Tela tela_atual;
     int rodada_atual;   // 1, 2, ..., n_rodadas
+    Cenario *cenario;   // Armazena o cenário atual
 
     // Construtor e destrutor
     Mundo();
@@ -72,7 +73,6 @@ public:
 
 private:
     Menu    *menu_ativo;            // Armazena o menu atualmente ativo
-    Cenario *cenario;               // Armazena o cenário atual
 
 };
 

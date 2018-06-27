@@ -167,5 +167,8 @@ class Projetil
     Projetil(Municao *m, double X0[6], int vento);
     void desenhar();
     void atualizar_posicao();
+    bool atingiu_obstaculo();   // Retorna true se o projétil atingiu um obstáculo - tanque ou terra
 };
+
+
 #endif

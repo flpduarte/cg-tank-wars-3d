@@ -54,12 +54,12 @@ struct Jogador
 
     void condicao_inicial();
     void reiniciar();
-
     void desenhar();
     void posicionar(double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
     void definir_normal(GLfloat normal[3]); // Define o sentido "para cima" do tanque
 
     Projetil *atirar(int vento);            // Cria um projétil para o cenário
+    bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
     void explodir();        // TODO
 };
 

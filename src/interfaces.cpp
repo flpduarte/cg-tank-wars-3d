@@ -16,6 +16,7 @@
 #include "interfaces.hpp"
 #include "constantes.hpp"
 #include "auxiliares.hpp"
+#include "globals.hpp"
 
 /* --- Implementação do construtor de OpcaoMenu --- */
 /**
@@ -252,6 +253,24 @@ void Projetil::atualizar_posicao()
     {
         X[i] += derivada(i) * DT;
     }
+}
+
+
+/**
+ * atingiu_obstaculo()
+ * Retorna true se o projétil atingiu um obstâculo: o solo ou algum tanque.
+ */
+bool Projetil::atingiu_obstaculo()
+{
+    // Verifica se o projétil atingiu o solo
+    bool atingiu = (X[2] - mundo.cenario->z_solo(X[0], X[1])) <= RAIO_PROJETIL;
+
+    // Verifica se o projétil atingiu algum jogador
+    for (int i = 0; i < mundo.n_jogadores && !atingiu; i++)
+    {
+        atingiu = atingiu || mundo.jogadores[i]->atingiu(X);
+    }
+    return atingiu;
 }
 
 /**

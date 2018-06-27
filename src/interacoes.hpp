@@ -25,6 +25,7 @@
 void interacao_teclado(unsigned char, int, int);
 void interacao_teclas_especiais(int, int, int);
 void interacao_mouse(int, int, int, int);
+void funcao_timer(int valor);
 void funcao_exibicao();
 
 void tela_inicial();            // Vai para a tela inicial

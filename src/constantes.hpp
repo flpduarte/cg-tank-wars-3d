@@ -60,9 +60,10 @@ const int VP3D_YMIN        = 0;
 
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão
+const double HITBOX_TANQUE      = 3.*TAMANHO_TANQUE/4.;
 const double COMPR_CANHAO       = 0.75;         // comprimento do canhão, sem aplicar fator de escala
 const double RAIO_CANHAO        = 1/32.;
-//const double LARGURA_TANQUE     =
+
 
 const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
 const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};

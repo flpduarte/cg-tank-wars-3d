@@ -24,6 +24,18 @@
 #include "terreno.hpp"
 #include "constantes.hpp"
 
+/**
+ * Define um tipo enumerado para representar os estados possíveis do cenário.
+ * É necessário conhecer estes estados para saber qual é o próximo passo a ser
+ * executado pela função timer.
+ */
+enum EstadoCenario
+{
+    CONTROLE_DO_JOGADOR,
+    PROJETIL_EM_VOO,
+    
+};
+
 struct Camera;
 
 class Cenario
@@ -63,7 +75,8 @@ class Cenario
                                         // mostrado no topo da página. Essa exibição
                                         // mostra, por exemplo, qual foi o jogador
                                         // que 'morreu'.
-    bool controle_jogador;              // Estado do cenário: true = projétil voando; true = jogador no controle.
+    bool controle_jogador;              // Estado do cenário: true = não responde ao jogador; true = jogador no controle.
+    bool projetil_em_voo; // (?)
 
 public:
     Cenario();
@@ -71,6 +84,8 @@ public:
     void exibir();                      // Exibe o cenário atual na tela
     void gerenciar_teclado(unsigned char);
     void gerenciar_teclas_especiais(int);
+    void funcao_timer(int);
+    double z_solo(double x, double y);      // Retorna a coordenada z do solo em (x, y)
 
 private:
     int  definir_vento();               // Define vento conforme configurações do jogo
@@ -78,6 +93,7 @@ private:
     void posicionar_jogadores();
     void desenhar_na_viewport2D();      // Configura VP 2D e desenha informações
     void desenhar_na_viewport3D();      // Configura VP 3D e desenha cenário
+    void desenhar();                    // Desenha o cenário em si: terreno, jogadores, projéteis, explosões, etc.
 
     bool existe_elemento(Jogador **, int, Jogador *);    // verifica se um jogador pertence à lista
 };
