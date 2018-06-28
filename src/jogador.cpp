@@ -14,6 +14,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <ctime>
 #include "jogador.hpp"
 #include "globals.hpp"
 #include "auxiliares.hpp"
@@ -64,10 +65,15 @@ void Jogador::condicao_inicial()
  */
 void Jogador::reiniciar()
 {
+    // Restaura propriedades
     this->vivo     = true;
     this->homens   = 100;
     this->angulo   = 90;
     this->potencia = 200;
+
+    // Define um novo tipo de morte para a rodada
+    tipo_morte     = rand() % NUM_TIPOS_MORTE;
+    variacao_morte = rand() % NUM_VARIACOES_MORTE[tipo_morte];
 }
 
 

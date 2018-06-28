@@ -77,10 +77,14 @@ Cenario::Cenario()
 }
 
 /**
- * Destroi cenário após o fim da rodada
+ * Destroi cenário após o fim da rodada.
  */
 Cenario::~Cenario()
 {
+    // Desativa efeito de iluminação
+    glDisable(GL_LIGHT0);
+
+    // Remove vetores criados
     delete camera;
     delete terreno;
     delete jogadores;
@@ -223,6 +227,12 @@ void Cenario::desenhar()
     if (projetil != NULL)
     {
         projetil->desenhar();
+    }
+
+    // Desenha a explosão, se houver
+    if (explosao != NULL)
+    {
+        explosao->desenhar();
     }
 }
 
@@ -536,7 +546,7 @@ void Cenario::retirar_jogadores_mortos()
         {
             // dá um pequeno intervalo entre a ultima animação e ir para o
             // resultado parcial.
-            glutTimerFunc(100, resultado_parcial, 0);
+            glutTimerFunc(500, resultado_parcial, 0);
         }
 
         // Iniciar a vez do próximo jogador
@@ -561,7 +571,7 @@ bool Cenario::rodada_encerrou()
     bool resultado;
 
     // 0 ou 1 jogador - rodada encerrou.
-    if (this->n_jogadores_vivos > 1)
+    if (this->n_jogadores_vivos < 2)
     {
         if (this->n_jogadores_vivos == 1)
         {

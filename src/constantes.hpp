@@ -24,9 +24,9 @@
 #define FONTE_Y0         33.33
 
 /* Configuração padrão do jogo */
-#define PADRAO_N_JOGADORES  2
-#define PADRAO_N_RODADAS    10
-#define MAX_CARACTERES_NOME 15
+const int PADRAO_N_JOGADORES  = 2;
+const int PADRAO_N_RODADAS    = 10;
+const int MAX_CARACTERES_NOME = 15;
 
 /* Dimensões e posição da janela */
 const int JANELA_LARGURA   =  800;
@@ -52,12 +52,13 @@ const int VP3D_YMIN        = 0;
 #define MASSA_MUNICAO       1.0   // TBD
 #define RAIO_INCINERADOR    5       // Raio de explosão do incinerador; os outros são baseados nesta.
 #define QTD_INCINERADOR     100     // Qtd inicial de incineradores por jogador
-
 #define FRACAO_RAIO_DANO    1.25    // Raio de dano / Raio de Explosao no modelo de explosão
-#define GRAVIDADE           200.0   // TBD
-#define FATOR_POT_VEL       0.01    // Fator que converte potência em velocidade inicial
-#define DT                  0.05    // Passo de integração.
-#define DT_ANIMACAO         10      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc.
+
+/* Constates que influenciam na velocidade de animação e na sensação do jogo */
+#define GRAVIDADE           50.0   // TBD
+#define FATOR_POT_VEL       0.28       // Fator que converte potência em velocidade inicial
+#define DT                  0.033    // Passo de integração.
+#define DT_ANIMACAO         15      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc.
 
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão
@@ -69,7 +70,7 @@ const double RAIO_CANHAO        = 1/32.;
 const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
 const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};
 const float BRILHO_PROJETIL      = 20.0f;
-const float RAIO_PROJETIL        = 1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
+const float RAIO_PROJETIL        = 4*1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
 
 /* Constantes utilizadas por mundo.hpp e mundo.c */
 const int MAX_JOGADORES     = 10;

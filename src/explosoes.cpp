@@ -12,16 +12,11 @@
  * Inicialmente conterá somente explosão;
  * No futuro, será incluso aqui a produção de terra (Ball of Dirt).
  */
+#include <GL/glut.h>
+#include <cmath>
 #include "explosoes.hpp"
 #include "constantes.hpp"
-#include "jogador.hpp"
-
-Explosao::Explosao(double pos[3], double r): raio(r), t(0)
-{
-    epicentro[0] = pos[0];
-    epicentro[1] = pos[1];
-    epicentro[2] = pos[2];
-}
+#include "objetos3D.hpp"
 
 /**
  * Explosao
@@ -35,6 +30,7 @@ Explosao::Explosao(double pos[3], double r): raio(r), t(0)
  *
  * Modelo de dano:
  *
+ * 0                 R       1,25R
  * +-----------------|--------|------------>
  * Raio de explosão  | Raio de dano
  * Tanques dentro    | Tanques aqui sofrem dano parcial; cai linearmente
@@ -42,3 +38,95 @@ Explosao::Explosao(double pos[3], double r): raio(r), t(0)
  * 100% de dano      | Raio de dano = aprox. 125% do raio de explosão
  *                   | (configurado como a constante FRACAO_RAIO_DANO)
  */
+
+Explosao::Explosao(double pos[3], double r): raio(r), t(0), finalizado(false), raio_atual(0.1)
+{
+    epicentro[0] = pos[0];
+    epicentro[1] = pos[1];
+    epicentro[2] = pos[2];
+
+    // Cria uma fonte de luz no local da explosão
+    glLightfv(GL_LIGHT1, GL_POSITION, (GLfloat *) epicentro);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, aten_quadratica);
+    glEnable(GL_LIGHT1);
+}
+
+Explosao::~Explosao()
+{
+    glDisable(GL_LIGHT1);
+}
+
+/**
+ * Retorna o número de homens de dano considerando um tanque na posição dada.
+ * Usa o modelo definido nos comentários acima.
+ */
+int Explosao::dano(double pos[3])
+{
+    // Se o tanque estiver dentro do raio de explosão, causar dano 100%
+    double d = dist(pos, epicentro);
+    if (d < raio)
+    {
+        return 100;
+    }
+
+    // Entre R e FRACAO*R: cai linearmente
+    else if (d < FRACAO_RAIO_DANO*raio)
+    {
+        return 100 * (FRACAO_RAIO_DANO*raio - d) / (FRACAO_RAIO_DANO*raio - raio);
+    }
+
+    // Fora do alcance da explosão
+    else
+    {
+        return 0;
+    }
+}
+
+/**
+ * Modifica as características da Explosão para permitir que ela seja desenhada
+ * no cenário.
+ */
+bool Explosao::proximo_frame()
+{
+    // TODO
+
+    // Deixa a fonte de luz como sendo negra ao final da animação
+    glLightfv(GL_LIGHT1, GL_AMBIENT, cor::PRETO);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, cor::PRETO);
+
+    finalizado = true;
+    return !finalizado;
+}
+
+
+/**
+ * Desenha a explosão como uma bola de fogo no local do epicentro!
+ */
+void Explosao::desenhar()
+{
+    // Configura intensidade da fonte de luz
+    GLfloat sombra[] = {fracao_sombra * cor[0], fracao_sombra * cor[1], fracao_sombra * cor[2], fracao_sombra * cor[3]};
+    glLightfv(GL_LIGHT1, GL_AMBIENT, sombra);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE, cor);
+
+    // Define propriedades do "material" da bola de fogo: preto, mas com emissividade
+    // de superfície.
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, cor::PRETO);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, cor::PRETO);
+    glMaterialfv(GL_FRONT, GL_EMISSION, this->cor);
+
+    // Desenha a bola de fogo. Modelado como uma esfera.
+    glMatrixMode(GL_MODELVIEW);
+    glTranslated(epicentro[0], epicentro[1], epicentro[2]);
+    desenhar_esfera(this->raio_atual);
+}
+
+
+/**
+ * dist()
+ * Função auxiliar que retorna a distância euclidiana entre dois pontos dados.
+ */
+double Explosao::dist(double p1[3], double p2[3])
+{
+    return sqrt(pow(p2[0] - p1[0], 2) + pow(p2[1] - p1[1], 2) + pow(p2[2] - p1[2], 2));
+}

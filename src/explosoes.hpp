@@ -70,14 +70,28 @@ class Jogador;
 
 class Explosao
 {
+    // Constantes de iluminação
+    const float fracao_sombra = 0.75;
+    const float aten_quadratica = 0.1;
+
+    // Características gerais da explosão
     double epicentro[3];
     double raio;
     int    t;                           // Tempo a contar do início da explosão.
+    bool   finalizado;                  // Explosão finalizada
+
+    // Variáveis utilizadas pelo método desenhar()
+    double raio_atual;          // raio atual da bola de fogo
+    GLfloat cor[4];              // cor atual da bola de fogo
+
+    double dist(double [3], double [3]); // função auxiliar que calcula a distância entre 2 pontos
 
 public:
     Explosao(double pos[3], double);    // Cria objeto explosão no local atual
+    ~Explosao();                        // Destrutor da Explosao: desativa a fonte GL_LIGHT1.
     int dano(double pos[3]);            // dada a posição de um jogador, retorna o dano causado pela explosão.
-    bool proximo_frame();               // Desenha próximo "frame" da animação de explosão. Retorna false quando animação encerrar
+    bool proximo_frame();               // Atualiza dados para desenhar o próximo "frame" da animação de explosão. Retorna false quando animação encerrar
+    void desenhar();                    // Desenha a explosão
 };
 
 /**

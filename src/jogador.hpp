@@ -19,8 +19,20 @@
 #include <queue>
 #include <GL/glut.h>
 
+const int NUM_TIPOS_MORTE = 1;
+const int NUM_VARIACOES_MORTE[] = {4};    // vetor com variações possíveis
+
 class Projetil;
 class ListaArmamentos;
+
+/**
+ * Cria uma enumeração para tipos de morte do jogador!
+ * Obs: por enquanto, só 1 tipo foi implementado (27/06/18)
+ */
+enum TipoMorte
+{
+    MELTDOWN = 0
+};
 
 /**
  * Jogador: classe que contém todas as informações sobre um jogador atual.
@@ -41,9 +53,14 @@ struct Jogador
 
     // Estado atual do tanque
     int homens;
-    int angulo;         // em graus. Intervalo: [0, 180]. 0° = positivo eixo X (direita).
+    int angulo;             // em graus. Intervalo: [0, 180]. 0° = positivo eixo X (direita).
     int potencia;
-    bool vivo;          // indica se o jogador está vivo ou não, para fins de desenhá-lo no cenário.
+    bool vivo;              // indica se o jogador está vivo ou não, para fins de desenhá-lo no cenário.
+
+    // Formas de animação de morte do tanque.
+    // A forma de morrer do tanque será definida já no início da rodada!
+    int tipo_morte;   // Tipo de morte
+    int variacao_morte;     // Variações entre os tipos de morte.
 
     // Posicionamento do tanque
     double pos[3];      // posição (x, y, z) do tanque
