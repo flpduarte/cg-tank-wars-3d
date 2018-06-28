@@ -59,8 +59,10 @@ struct Jogador
 
     // Formas de animação de morte do tanque.
     // A forma de morrer do tanque será definida já no início da rodada!
-    int tipo_morte;   // Tipo de morte
+    int tipo_morte;         // Tipo de morte
     int variacao_morte;     // Variações entre os tipos de morte.
+    unsigned int frame;              // número do frame de animação.
+    bool anim_finalizada;   // indica se a animação finalizou ou não.
 
     // Posicionamento do tanque
     double pos[3];      // posição (x, y, z) do tanque
@@ -80,7 +82,14 @@ struct Jogador
 
     Projetil *atirar(int vento);            // Cria um projétil para o cenário
     bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
-    void morrer();                          // Executa a animação de morte do jogador atual.
+
+    void morte_proximo_frame();                          // Executa a animação de morte do jogador atual.
+
+    /* Animações de morte */
+protected:
+    void meltdown();
 };
+
+
 
 #endif

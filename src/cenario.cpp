@@ -533,6 +533,8 @@ void Cenario::retirar_jogadores_mortos()
         int i_jogador    = fila_jogadores_mortos.front();
         jogador_morrendo = jogadores[i_jogador];
         n_jogadores_vivos--;                                // menos 1 jogador vivo
+        jog_ativo        = i_jogador;                       // Mostra na tela o nome do jogador que morreu
+
         fila_jogadores_mortos.pop();
         glutTimerFunc(DT_ANIMACAO, Cenario::animacao_morte_jogador, 1);
     }
@@ -614,13 +616,44 @@ void Cenario::iniciar_vez_do_proximo_jogador()
 
 /**
  * Funções responsáveis pela animação da morte de um jogador.
+ * Manipula a variável jogador_morrendo.
  */
 void Cenario::animacao_morte_jogador(int value)
 {
-    // TODO
+    mundo.cenario->animar_morte_jogador();
+    glutPostRedisplay();
 }
 
+void Cenario::animar_morte_jogador()
+{
+    jogador_morrendo->morte_proximo_frame();
 
+    // Se ainda não tiver acabado os frames de animação, usar glutTimerFunc para
+    // continuar animando
+    if (!jogador_morrendo->anim_finalizada)
+    {
+        glutTimerFunc(DT_ANIMACAO, animacao_morte_jogador, 1);
+    }
+
+    // Acabou animação: remove jogador morrendo da tela
+    else
+    {
+        jogador_morrendo->vivo = false;
+        jogador_morrendo = NULL;
+
+        // Anima uma eventual explosao que a animação possa ter criado.
+        if (explosao != NULL)
+        {
+            glutTimerFunc(DT_ANIMACAO, animacao_explosao, 0);
+        }
+
+        // Senão, volta para retirar_jogadores_mortos()
+        else
+        {
+            retirar_jogadores_mortos();
+        }
+    }
+}
 
 
 /**

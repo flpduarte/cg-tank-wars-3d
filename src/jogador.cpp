@@ -11,10 +11,13 @@
  * Implementa os métodos da classe Jogador.
  *
  */
+// para desativar asserts, ativar este comando antes de #define <cassert>
+//#define NDEBUG
 #include <cmath>
 #include <string>
 #include <iostream>
 #include <ctime>
+#include <cassert>
 #include "jogador.hpp"
 #include "globals.hpp"
 #include "auxiliares.hpp"
@@ -72,8 +75,10 @@ void Jogador::reiniciar()
     this->potencia = 200;
 
     // Define um novo tipo de morte para a rodada
-    tipo_morte     = rand() % NUM_TIPOS_MORTE;
-    variacao_morte = rand() % NUM_VARIACOES_MORTE[tipo_morte];
+    tipo_morte      = rand() % NUM_TIPOS_MORTE;
+    variacao_morte  = rand() % NUM_VARIACOES_MORTE[tipo_morte];
+    frame           = 0;
+    anim_finalizada = false;
 }
 
 
@@ -226,12 +231,45 @@ bool Jogador::atingiu(double *X)
 }
 
 /**
- * morrer(): Exibe os frames de morte do tanque.
+ * Exibe os frames de morte do tanque.
  */
-void Jogador::morrer()
+void Jogador::morte_proximo_frame()
 {
-    // TODO
+    // Realizar animação conforme tipo de morte.
+    switch (tipo_morte)
+    {
+        case MELTDOWN:
+            meltdown();
+            break;
+    }
 }
+
+/**
+ * meltdown(): Imita a morte do tipo "Meltdown" do Tank Wars original.
+ * A ideia é fazer o tanque aumentar o brilho até 100% em 100 frames,
+ * em seguida diminuir o brilho de volta pra 0 nos próximos 100 frames.
+ *
+ */
+void Jogador::meltdown()
+{
+    assert(anim_finalizada == false);
+    if (frame < 100)
+    {
+        this->homens = ++frame; // incrementa, depois usa o frame
+    }
+    else if (frame < 200)
+    {
+        this->homens = 200 - (++frame);
+    }
+
+    // Finalizar animação
+    else
+    {
+        this->homens = 0;
+        this->anim_finalizada = true;
+    }
+}
+
 /* -------------------------------------------------------------------------- */
 /**
  * Função auxiliar que define a cor do tanque de acordo com o número do jogador.

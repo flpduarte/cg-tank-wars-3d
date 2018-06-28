@@ -11,6 +11,9 @@
  * Implementa as funções definidas em mundo.hpp
  *
  */
+
+// para desativar asserts, ativar este comando antes de #define <cassert>
+//#define NDEBUG
 #include <GL/glut.h>
 #include <cassert>
 #include <cstdlib>
@@ -23,7 +26,7 @@
 #include "globals.hpp"
 #include "configmenu.hpp"
 
-//#define NDEBUG            // para desativar asserts, ativar este comando
+
 
 /* Funções auxiliares */
 
