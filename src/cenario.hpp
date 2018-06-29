@@ -75,6 +75,7 @@ class Cenario
 public:
     Cenario();
     ~Cenario();
+    void criar_explosao(double pos[3], double raio);
     void exibir();                      // Exibe o cenário atual na tela
     void gerenciar_teclado(unsigned char);
     void gerenciar_teclas_especiais(int);

@@ -23,6 +23,7 @@
 #include "auxiliares.hpp"
 #include "constantes.hpp"
 #include "objetos3D.hpp"
+#include "cenario.hpp"
 
 void definir_cor(float *, const int);     // função local para definir a cor do tanque
 
@@ -275,21 +276,60 @@ void Jogador::morte_proximo_frame()
 void Jogador::meltdown()
 {
     assert(anim_finalizada == false);
-    if (frame < 70)
+
+    // variacao 0: não explode.
+    if (variacao_morte == 0)
     {
-        this->homens = ++frame; // incrementa, depois usa o frame
-    }
-    else if (frame < 140)
-    {
-        this->homens = 140 - (++frame);
+        if (frame < frame_interv_meltdown)
+        {
+            this->homens = (int) ((double)frame/frame_interv_meltdown * 100.); // incrementa, depois usa o frame
+        }
+        else if (frame < 2*frame_interv_meltdown)
+        {
+            this->homens = (int) ( 100. * (1 - (double)(frame - frame_interv_meltdown)/frame_interv_meltdown ));
+        }
+
+        // Finalizar animação
+        else
+        {
+            this->homens = 0;
+            this->anim_finalizada = true;
+        }
     }
 
-    // Finalizar animação
+    // variacao 1-4: realiza animação e ao final cria uma explosão.
+    // quanto maior a variação, maior a explosão.
     else
     {
-        this->homens = 0;
-        this->anim_finalizada = true;
+        // Brilho do tanque antes da explosão
+        if (frame < frame_interv_meltdown)
+        {
+            this->homens = (int) ((double)frame/frame_interv_meltdown * 100.);
+        }
+        else if (frame < 2*frame_interv_meltdown)
+        {
+            this->homens = (int) ((double)(frame - frame_interv_meltdown)/frame_interv_meltdown * 100.);
+        }
+        else if (frame < 3*frame_interv_meltdown)
+        {
+            this->homens = (int) ((double)(frame - 2*frame_interv_meltdown)/frame_interv_meltdown * 100.);
+        }
+        else if (frame < 4*frame_interv_meltdown)
+        {
+            this->homens = (int) (100. * (1. - (frame - 3.*frame_interv_meltdown)/frame_interv_meltdown ));
+        }
+
+        // cria explosão após animação.
+        else
+        {
+            this->homens = 0;
+            mundo.cenario->criar_explosao(this->pos, RAIO_INCINERADOR * pow(2, variacao_morte - 1));
+            this->anim_finalizada = true;
+        }
     }
+
+    // incrementa frame
+    frame++;
 }
 
 /* -------------------------------------------------------------------------- */

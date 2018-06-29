@@ -61,7 +61,7 @@ struct Jogador
     // A forma de morrer do tanque será definida já no início da rodada!
     int tipo_morte;         // Tipo de morte
     int variacao_morte;     // Variações entre os tipos de morte.
-    unsigned int frame;              // número do frame de animação.
+    unsigned int frame;     // número do frame de animação.
     bool anim_finalizada;   // indica se a animação finalizou ou não.
 
     // Posicionamento do tanque
@@ -87,6 +87,7 @@ struct Jogador
 
     /* Animações de morte */
 protected:
+    const unsigned int frame_interv_meltdown = 50;
     void meltdown();
 };
 

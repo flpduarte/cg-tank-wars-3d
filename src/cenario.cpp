@@ -665,6 +665,17 @@ void Cenario::animar_morte_jogador()
     }
 }
 
+/**
+ * Utilizada pela animação da morte de jogadores, esta função cria uma explosão
+ * no local indicado pelo cenário.
+ *
+ * Futuramente, esta função pode ser implementada como uma "fila de explosões".
+ */
+void Cenario::criar_explosao(double pos[3], double raio)
+{
+    assert (explosao == NULL);
+    explosao = new Explosao(pos, raio);
+}
 
 /**
  * z_solo(): Retorna a posição z do solo na posição (x, y) dada.
