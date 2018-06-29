@@ -50,15 +50,16 @@ const int VP3D_YMIN        = 0;
 
 /* Constantes utilizadas por municao.cpp e armas.cpp */
 #define MASSA_MUNICAO       1.0   // TBD
-#define RAIO_INCINERADOR    5       // Raio de explosão do incinerador; os outros são baseados nesta.
+#define RAIO_INCINERADOR    3.0     // Raio de explosão do incinerador; os outros são baseados nesta.
 #define QTD_INCINERADOR     100     // Qtd inicial de incineradores por jogador
-#define FRACAO_RAIO_DANO    1.25    // Raio de dano / Raio de Explosao no modelo de explosão
+#define FRACAO_RAIO_DANO    0.8
+#define FRACAO_EFEITO_COLAT 1.4    // Raio de dano / Raio de Explosao no modelo de explosão
 
 /* Constates que influenciam na velocidade de animação e na sensação do jogo */
-#define GRAVIDADE           50.0   // TBD
-#define FATOR_POT_VEL       0.28       // Fator que converte potência em velocidade inicial
+#define GRAVIDADE           50.0     // TBD
+#define FATOR_POT_VEL       0.16     // Fator que converte potência em velocidade inicial
 #define DT                  0.033    // Passo de integração.
-#define DT_ANIMACAO         15      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc.
+#define DT_ANIMACAO         10      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc.
 
 /* Dimensões de referência para desenhar objetos */
 const double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão

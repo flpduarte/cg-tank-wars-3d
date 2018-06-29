@@ -175,6 +175,28 @@ void Jogador::definir_normal(GLfloat normal[3])
     }
 }
 
+/**
+ * preparar_para_jogar():
+ * Realiza alguns ajustes menores do jogador antes de iniciar a sua vez:
+ * - Muda de armamento, caso a munição da arma atual seja = 0;
+ * - Muda potência para o máximo possível, caso o jogador tenha
+ *   sofrido dano, e a sua última potência selecionada supere a
+ *   potência máxima.
+ */
+void Jogador::preparar_para_jogar()
+{
+    // Muda arma, se necessário
+    if (lista_armas->qtd_atual() <= 0)
+    {
+        lista_armas->selecionar_proxima();
+    }
+
+    // Muda potência, se necessário
+    if (potencia > homens*10)
+    {
+        potencia = homens*10;
+    }
+}
 
 /**
  * atirar()
@@ -253,13 +275,13 @@ void Jogador::morte_proximo_frame()
 void Jogador::meltdown()
 {
     assert(anim_finalizada == false);
-    if (frame < 100)
+    if (frame < 70)
     {
         this->homens = ++frame; // incrementa, depois usa o frame
     }
-    else if (frame < 200)
+    else if (frame < 140)
     {
-        this->homens = 200 - (++frame);
+        this->homens = 140 - (++frame);
     }
 
     // Finalizar animação

@@ -28,7 +28,7 @@ class Terreno
     const double YMAX =  20.0;
     const double ZMIN =   0.0;
     const double ZMAX =  40.0;
-    const double REFINAMENTO_MALHA = 0.5;
+    const double REFINAMENTO_MALHA = 2.0;
 
     /* Alturas minima e máxima do terreno, em termos de fração de (ZMAX - ZMIN). */
     const double ALTURA_MINIMA = 0.30;

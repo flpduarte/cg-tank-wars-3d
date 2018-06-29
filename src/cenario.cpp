@@ -56,7 +56,6 @@ Cenario::Cenario()
     vento               = definir_vento();                // * a ser implementada
     jog_vez             = rand() % mundo.n_jogadores;
     jog_ativo           = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
-    controle_jogador    = true;                    // Jogador já começa ativo
 
     // Cria lista aleatória de jogadores
     misturar_jogadores();
@@ -72,8 +71,9 @@ Cenario::Cenario()
     glEnable(GL_LIGHT0);
     glEnable(GL_NORMALIZE);
 
-    // Não é preciso fazer mais nada: o cenário já está configurado com o controle
-    // dado ao jogador.
+    // Prepara para iniciar vez do jogador atual
+    jogadores[jog_vez]->preparar_para_jogar();
+    controle_jogador    = true;                    // Jogador já começa ativo
 }
 
 /**
@@ -220,7 +220,8 @@ void Cenario::desenhar()
     // Desenha os jogadores
     for (int i = 0; i < mundo.n_jogadores; i++)
     {
-        jogadores[i]->desenhar();
+        if (jogadores[i]->vivo)
+            jogadores[i]->desenhar();
     }
 
     // Desenha o projétil, se houver
@@ -361,10 +362,18 @@ void Cenario::gerenciar_teclado(unsigned char tecla)
         case ' ':
             controle_jogador = false;
             projetil = jogadores[jog_vez]->atirar(vento);
-            glutPostRedisplay();
             glutTimerFunc(DT_ANIMACAO, Cenario::animacao_projetil, 1);    // ativa animacao
+            break;
 
+        // Tab: muda o armamento
+        case '\t':
+            jogadores[jog_vez]->lista_armas->selecionar_proxima();
+            break;
+
+        default:
+            std::cout << "Tecla pressionada: <" << tecla << '>' << '\n';
     }
+    glutPostRedisplay();
 }
 
 
@@ -611,6 +620,7 @@ void Cenario::iniciar_vez_do_proximo_jogador()
 
      // Faz jogador da vez tmb ser o jogador ativo e segue o jogo!
     jog_ativo = jog_vez;
+    jogadores[jog_vez]->preparar_para_jogar();
     controle_jogador = true;
 }
 

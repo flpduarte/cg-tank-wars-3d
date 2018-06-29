@@ -76,14 +76,14 @@ struct Jogador
 
     void condicao_inicial();
     void reiniciar();
+    void preparar_para_jogar();             // Prepara o jogador para o início da sua vez
+    Projetil *atirar(int vento);            // Cria um projétil para o cenário
+    bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
+    void morte_proximo_frame();             // Executa a animação de morte do jogador atual.
+
     void desenhar();
     void posicionar(double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
     void definir_normal(GLfloat normal[3]); // Define o sentido "para cima" do tanque
-
-    Projetil *atirar(int vento);            // Cria um projétil para o cenário
-    bool atingiu(double *X);                // Retorna true se a posição do projétil recebida atinge o jogador atual
-
-    void morte_proximo_frame();                          // Executa a animação de morte do jogador atual.
 
     /* Animações de morte */
 protected:

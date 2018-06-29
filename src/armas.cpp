@@ -73,7 +73,11 @@ ListaArmamentos::ListaArmamentos()
 void ListaArmamentos::selecionar_proxima()
 {
     // incrementa i até encontrar um armamento com qtd > 0.
-    while (lista[++i_atual].qtd <= 0);
+    do
+    {
+        i_atual = (i_atual + 1) % N_ARMAMENTOS;
+    }
+    while (lista[i_atual].qtd <= 0);
 }
 
 /**
@@ -166,7 +170,7 @@ IncineradorM2::IncineradorM2()
     this->nome         = "Incinerador Mark II";
     this->preco        = 4000;
     this->qtd_por_lote = 10;
-    this->qtd_inicial  = 0;
+    this->qtd_inicial  = 1;
     this->r_explosao   = 2*RAIO_INCINERADOR;
 }
 int IncineradorM2::raio_explosao()
@@ -182,7 +186,7 @@ Bomba20Kilotons::Bomba20Kilotons()
     this->nome         = "Bomba 20 Kilotons";
     this->preco        = 7000;
     this->qtd_por_lote = 2;
-    this->qtd_inicial  = 0;
+    this->qtd_inicial  = 1;
     this->r_explosao   = 4*RAIO_INCINERADOR;
 }
 int Bomba20Kilotons::raio_explosao()
@@ -198,7 +202,7 @@ Bomba5Megatons::Bomba5Megatons()
     this->nome         = "Bomba 5 Megatons";
     this->preco        = 10000;
     this->qtd_por_lote = 1;
-    this->qtd_inicial  = 0;
+    this->qtd_inicial  = 1;
     this->r_explosao   = 8*RAIO_INCINERADOR;
 }
 int Bomba5Megatons::raio_explosao()

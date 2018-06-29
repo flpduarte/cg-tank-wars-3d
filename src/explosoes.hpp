@@ -72,7 +72,8 @@ class Explosao
 {
     // Constantes de iluminação
     const float fracao_sombra = 0.75;
-    const float aten_quadratica = 0.1;
+    const float aten_quadratica = 1.;
+    int   frame_intervalos;             // controla velocidade de explosao
 
     // Características gerais da explosão
     double epicentro[3];
