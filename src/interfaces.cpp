@@ -13,38 +13,13 @@
 #include <cmath>
 #include <GL/glut.h>
 #include <iostream>
-#include "armas.hpp"
-#include "cenario.hpp"
-#include "jogador.hpp"
-#include "interfaces.hpp"
-#include "constantes.hpp"
-#include "auxiliares.hpp"
-#include "globals.hpp"
-
-/* --- Implementação do construtor de OpcaoMenu --- */
-/**
- * Cria um objeto OpcaoMenu com largura e altura padrões.
- */
-OpcaoMenu::OpcaoMenu(std::string tit):
-    largura(OPCAOMENU_LARGURA_PADRAO),
-    altura(OPCAOMENU_ALTURA_PADRAO),
-    titulo(tit),
-    selecionavel(true),
-    selecionado(false),
-    bloqueia_cursor(false)
-{
-    // define cores padrão
-    cor::definir_cor(cor_borda, cor::BRANCO);
-    cor::definir_cor(cor_fundo, cor::PRETO);
-    cor::definir_cor(cor_titulo, cor::BRANCO);
-}
-
-/* É estranho, mas é preciso definir o destrutor */
-OpcaoMenu::~OpcaoMenu() {}
-
-/* Reações padrão às funções reagir_a_tecla_especial() e reagir_a_teclado() */
-void OpcaoMenu::reagir_a_teclado(unsigned char tecla) {}
-void OpcaoMenu::reagir_a_tecla_especial(int tecla) {}
+#include "../include/armas.hpp"
+#include "../include/cenario.hpp"
+#include "../include/jogador.hpp"
+#include "../include/interfaces.hpp"
+#include "../include/constantes.hpp"
+#include "../include/auxiliares.hpp"
+#include "../include/globals.hpp"
 
 
 /* --- Implementação das funções da classe Menu --- */
@@ -64,7 +39,7 @@ Menu::Menu():
 /**
  * Insere uma opção de menu.
  */
-void Menu::inserir_opcao(OpcaoMenu *opcao)
+void Menu::inserir_opcao(ItemMenu *opcao)
 {
     // Ao inserir opções, muda a propriedade selecionado para
     // true ao encontrar a primeira opção "selecionável" -
@@ -113,7 +88,7 @@ void Menu::recalcular_origem()
  */
 void Menu::gerenciar_teclas_especiais(int tecla)
 {
-    OpcaoMenu *opcao_atual = this->opcoes[this->opcao_ativa];
+    ItemMenu *opcao_atual = this->opcoes[this->opcao_ativa];
     switch (tecla)
     {
         // Menu reage às teclas para cima e para baixo - desde que a opção ativa não bloqueou o cursor
@@ -175,7 +150,7 @@ void Menu::exibir()
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    // Desenha cada objeto OpcaoMenu e o posiciona no mundo.
+    // Desenha cada objeto ItemMenu e o posiciona no mundo.
     // Translada ao início do menu
     glTranslatef(this->posx0, this->posy0, 0);
     for (unsigned int i = 0; i < this->opcoes.size(); i++)

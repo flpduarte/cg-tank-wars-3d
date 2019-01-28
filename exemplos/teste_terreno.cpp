@@ -4,10 +4,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <GL/glut.h>
-#include "..\src\terreno.hpp"
-#include "..\src\cenario.hpp"
-#include "..\src\jogador.hpp"
-#include "..\src\globals.hpp"
+#include "../include/terreno.hpp"
+#include "../include/cenario.hpp"
+#include "../include/jogador.hpp"
+#include "../include/globals.hpp"
 
 using namespace std;
 

@@ -18,26 +18,6 @@
 #include "constantes.hpp"
 
 /**
- * Botao: Estrutura derivada de EntradaMenu.
- * Corresponde a um botão: ao selecioná-lo e apertar enter, ele executará
- * uma ação específica, definida ao criar o objeto.
- */
-class Botao : public OpcaoMenu
-{
-    // ação que o botão executará é salva sob a forma de um ponteiro para uma
-    // função a ser executada.
-    void (*acao)(void);
-
-public:
-    void desenhar();
-    void reagir_a_teclado(unsigned char);  // Botões reagem à tecla Enter.
-
-    Botao(std::string, void (void));
-    ~Botao();
-};
-
-
-/**
  * OpcaoAlterarValorNumerico
  * Cria uma opção do menu que permite alterar um valor com as teclas para
  * a esquerda ou para a direita. Algo do tipo:
@@ -55,7 +35,7 @@ public:
  *
  * Por enquanto, este objeto só tem suporte a alterar valores numéricos.
  */
-class OpcaoAlterarValorNumerico : public OpcaoMenu
+class OpcaoAlterarValorNumerico : public ItemMenu
 {
     int min;
     int max;
@@ -95,7 +75,7 @@ public:
  * caracteres alfanumericos, espaços e backspace. Não aceitará tabs.
  *
  */
-class OpcaoEditarNome : public OpcaoMenu
+class OpcaoEditarNome : public ItemMenu
 {
     unsigned int max_caracteres;
     std::string &referencia;

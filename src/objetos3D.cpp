@@ -18,9 +18,9 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <iostream>
-#include "auxiliares.hpp"
-#include "constantes.hpp"
-#include "objetos3D.hpp"
+#include "../include/auxiliares.hpp"
+#include "../include/constantes.hpp"
+#include "../include/objetos3D.hpp"
 
 /* Constantes */
 const int NPONTOS = 50;                                 // para desenhar superfícies curvas

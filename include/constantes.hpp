@@ -41,13 +41,6 @@ const int VP3D_LARGURA     = JANELA_LARGURA;
 const int VP3D_XMIN        = 0;
 const int VP3D_YMIN        = 0;
 
-/* Dimensões padrão das opções de menu */
-#define OPCAOMENU_LARGURA_PADRAO 600
-#define OPCAOMENU_ALTURA_PADRAO  50         // inclui borda
-#define OPCAOMENU_POSX_PADRAO    0
-#define OPCAOMENU_POSY_PADRAO    JANELA_ALTURA - OPCAOMENU_ALTURA_PADRAO
-#define OPCAOMENU_LARGURA_BORDA  4
-
 /* Constantes utilizadas por municao.cpp e armas.cpp */
 #define MASSA_MUNICAO       1.0   // TBD
 #define RAIO_INCINERADOR    3.0     // Raio de explosão do incinerador; os outros são baseados nesta.
@@ -71,7 +64,7 @@ const double RAIO_CANHAO        = 1/32.;
 const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
 const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};
 const float BRILHO_PROJETIL      = 20.0f;
-const float RAIO_PROJETIL        = 4*1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
+const double RAIO_PROJETIL        = 4*1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
 
 /* Constantes utilizadas por mundo.hpp e mundo.c */
 const int MAX_JOGADORES     = 10;

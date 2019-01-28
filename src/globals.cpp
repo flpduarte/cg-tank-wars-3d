@@ -15,8 +15,8 @@
  * Ler Guideline #6 do documento "C++ Header File Guidelines" escrito por Kieras
  * (2015).
  */
-#include "armas.hpp"
-#include "globals.hpp"
+#include "../include/armas.hpp"
+#include "../include/globals.hpp"
 
 MunicaoEQtd lista_global_armamentos[N_ARMAMENTOS];
 Mundo mundo;

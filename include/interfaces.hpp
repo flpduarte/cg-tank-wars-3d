@@ -14,41 +14,8 @@
 #define INTERFACES_HPP
 #include <string>
 #include <vector>
-
-/**
- * OpcaoMenu: uma interface que corresponde aos tipos de opções e botões
- * que aparecem no menu.
- *
- * Toda entrada no menu possuirá um título e um método desenhar(), o qual
- * desenhará o quadro daquela entrada centrado na origem. Caberá ao objeto
- * Menu reposicionar o quadro.
- *
- * Cada opção Menu é desenhado em coordenadas de objeto, com origem em seu
- * *canto inferior esquerdo*.
- */
-class OpcaoMenu
-{
-public:
-    unsigned int largura;
-    unsigned int altura;
-    std::string titulo;
-    bool selecionavel;      // Indica se o quadro é selecionavel ou não.
-    bool selecionado;       // Indica se o cursor encontra-se nesta opção.
-
-    bool bloqueia_cursor;   // Um estado que indica se ele impede a mudança para
-                            // outras opções por meio das setas para cima e para baixo
-
-    // cores em RGBA
-    float cor_borda[4];
-    float cor_fundo[4];
-    float cor_titulo[4];
-
-    OpcaoMenu(std::string titulo);                          // Cria objeto com altura e largura padrão. Pode ser modificado depois.
-    virtual ~OpcaoMenu() = 0;                               // Obriga classes filhas a definirem um destrutor
-    virtual void desenhar() = 0;                            // Virtual puro, classes filhas DEVEM implementá-lo.
-    virtual void reagir_a_tecla_especial(int tecla);        // se não implementado, esta opção não reage a teclas especiais.
-    virtual void reagir_a_teclado(unsigned char);           // retorna true se precisar atualizar a tela após a ação.
-};
+#include <ui/ItemMenu.h>
+#include "constantes.hpp"
 
 /**
  * Menu: Representa um Menu simples, com caixas de seleção e botões.
@@ -71,7 +38,7 @@ class Menu
 {
     unsigned int largura, altura;               // dimensões totais do menu. Usado p/ centralizá-lo na tela
     int posx0, posy0;                         // Origem do Menu, Coordenadas da Tela
-    std::vector<OpcaoMenu *> opcoes;
+    std::vector<ItemMenu *> opcoes;
     unsigned int opcao_ativa;                            // Índice da opcao do menu atualmente ativa
     bool _possui_opcao_selecionada;             // Um flag para indicar se o menu já possui uma opção->selecionado = true.
     bool posicionamento_automatico;
@@ -83,7 +50,7 @@ public:
     Menu();
     ~Menu();                                    // Libera a memória usada pelas opções
     void definir_origem(int, int);              // Desativa posicionamento automático e define origem do menu
-    void inserir_opcao(OpcaoMenu *);
+    void inserir_opcao(ItemMenu *);
     void exibir();
     void gerenciar_teclado(unsigned char);
     void gerenciar_teclas_especiais(int tecla);  // Tecla para cima e para baixo são gerenciados por Menu.

@@ -15,11 +15,11 @@
 /* Bibliotecas */
 #include <iostream>
 #include <GL/glut.h>
-#include "armas.hpp"
-#include "constantes.hpp"
-#include "globals.hpp"
-#include "mundo.hpp"
-#include "interacoes.hpp"
+#include "../include/armas.hpp"
+#include "../include/constantes.hpp"
+#include "../include/globals.hpp"
+#include "../include/mundo.hpp"
+#include "../include/interacoes.hpp"
 
 using namespace std;
 

@@ -18,9 +18,9 @@
 #include <ctime>
 #include <iostream>
 #include <GL/glut.h>
-#include "auxiliares.hpp"
-#include "terreno.hpp"
-#include "constantes.hpp"
+#include "../include/auxiliares.hpp"
+#include "../include/terreno.hpp"
+#include "../include/constantes.hpp"
 
 // Usar namespace aux, pois a classe terreno utiliza muito as funções auxiliares!
 using namespace aux;

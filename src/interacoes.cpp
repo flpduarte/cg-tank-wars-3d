@@ -23,8 +23,8 @@
  * Isso permitirá acessar todas as propriedades do mundo.
  * https://stackoverflow.com/questions/23774223/cannot-convert-classnameglutkeyboard-from-type-void-classnameunsigned
  */
-#include "interacoes.hpp"
-#include "globals.hpp"
+#include "../include/interacoes.hpp"
+#include "../include/globals.hpp"
 #include <iostream>
 
 /**

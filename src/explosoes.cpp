@@ -14,9 +14,9 @@
  */
 #include <GL/glut.h>
 #include <cmath>
-#include "explosoes.hpp"
-#include "constantes.hpp"
-#include "objetos3D.hpp"
+#include "../include/explosoes.hpp"
+#include "../include/constantes.hpp"
+#include "../include/objetos3D.hpp"
 
 /**
  * Explosao

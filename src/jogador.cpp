@@ -18,12 +18,12 @@
 #include <iostream>
 #include <ctime>
 #include <cassert>
-#include "jogador.hpp"
-#include "globals.hpp"
-#include "auxiliares.hpp"
-#include "constantes.hpp"
-#include "objetos3D.hpp"
-#include "cenario.hpp"
+#include "../include/jogador.hpp"
+#include "../include/globals.hpp"
+#include "../include/auxiliares.hpp"
+#include "../include/constantes.hpp"
+#include "../include/objetos3D.hpp"
+#include "../include/cenario.hpp"
 
 void definir_cor(float *, const int);     // função local para definir a cor do tanque
 

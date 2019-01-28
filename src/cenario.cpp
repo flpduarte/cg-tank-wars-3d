@@ -23,17 +23,17 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include "armas.hpp"
-#include "jogador.hpp"
-#include "terreno.hpp"
-#include "cenario.hpp"
-#include "interfaces.hpp"
-#include "constantes.hpp"
-#include "globals.hpp"
-#include "objetos2D.hpp"
-#include "objetos3D.hpp"
-#include "explosoes.hpp"
-#include "interacoes.hpp"
+#include "../include/armas.hpp"
+#include "../include/jogador.hpp"
+#include "../include/terreno.hpp"
+#include "../include/cenario.hpp"
+#include "../include/interfaces.hpp"
+#include "../include/constantes.hpp"
+#include "../include/globals.hpp"
+#include "../include/objetos2D.hpp"
+#include "../include/objetos3D.hpp"
+#include "../include/explosoes.hpp"
+#include "../include/interacoes.hpp"
 
 /* --- Implementação da classe Cenario --- */
 

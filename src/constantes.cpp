@@ -11,7 +11,7 @@
  * Implementa a função definir_cor() do namespace cor.
  */
 #include <cstring>
-#include "constantes.hpp"
+#include "../include/constantes.hpp"
 
 void cor::definir_cor(float *dest, const float *origem)
 {

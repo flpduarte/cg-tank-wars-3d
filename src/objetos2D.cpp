@@ -14,8 +14,8 @@
  */
 #include <string>
 #include <GL/glut.h>
-#include "constantes.hpp"
-#include "objetos2D.hpp"
+#include "../include/constantes.hpp"
+#include "../include/objetos2D.hpp"
 
 /**
  * Escreve um texto na tela, alinhado à esquerda. Retorna a sua largura.
@@ -95,19 +95,4 @@ float texto_alinhado_direita(std::string str, const float altura, void *font, co
     float largura = desenhar_string(str, altura, font, cor);
     glPopMatrix();
     return largura;
-}
-
-/**
- * Desenha a borda de um quadro de menu.
- */
-void desenhar_borda(const unsigned int largura, const unsigned int altura, const float cor[4])
-{
-   glColor4fv(cor);
-   glLineWidth(OPCAOMENU_LARGURA_BORDA);
-   glBegin(GL_LINE_LOOP);
-       glVertex3f(0, 0, 0);
-       glVertex3f(largura, 0, 0);
-       glVertex3f(largura, altura, 0);
-       glVertex3f(0, altura, 0);
-   glEnd();
 }

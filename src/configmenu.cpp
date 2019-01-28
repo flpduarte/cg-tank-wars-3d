@@ -11,14 +11,15 @@
  * Implementa as funções que criam os menus para cada tela do jogo.
  * Elas instanciam as classes implementadas em menu.cpp.
  */
-#include "configmenu.hpp"
-#include "armas.hpp"
-#include "globals.hpp"
-#include "interacoes.hpp"
-#include "menu.hpp"
-#include "mundo.hpp"
-#include "jogador.hpp"
+#include "../include/configmenu.hpp"
+#include "../include/armas.hpp"
+#include "../include/globals.hpp"
+#include "../include/interacoes.hpp"
+#include "../include/menu.hpp"
+#include "../include/mundo.hpp"
+#include "../include/jogador.hpp"
 #include <iostream>
+#include <ui/Botao.h>
 
 /**
  * Cria um menu principal. Retorna o ponteiro para o objeto Menu.
