@@ -18,6 +18,7 @@
 #include <iostream>
 #include <ctime>
 #include <cassert>
+#include <graphics/cor.h>
 #include "../include/jogador.hpp"
 #include "../include/globals.hpp"
 #include "../include/auxiliares.hpp"

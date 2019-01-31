@@ -14,6 +14,7 @@
  */
 #include <GL/glut.h>
 #include <cmath>
+#include <graphics/cor.h>
 #include "../include/explosoes.hpp"
 #include "../include/constantes.hpp"
 #include "../include/objetos3D.hpp"

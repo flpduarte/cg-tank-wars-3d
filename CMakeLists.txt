@@ -9,9 +9,8 @@ set(SOURCE_FILES
         src/main.cpp
         src/armas.cpp
         src/auxiliares.cpp
-        src/cenario.cpp
+        src/game/cenario.cpp
         src/configmenu.cpp
-        src/constantes.cpp
         src/explosoes.cpp
         src/globals.cpp
         src/interacoes.cpp
@@ -24,7 +23,7 @@ set(SOURCE_FILES
         src/objetos3D.cpp
         src/terreno.cpp
         src/ui/menu/ItemMenu.cpp
-        src/ui/menu/Botao.cpp)
+        src/ui/menu/Botao.cpp src/graphics/cor.cpp)
 
 add_executable(TankWars ${SOURCE_FILES})
 #[[

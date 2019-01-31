@@ -31,31 +31,36 @@ struct Camera;
 
 class Cenario
 {
+    /* Dimensões das Viewports durante as rodadas */
+    static constexpr int VP3D_ALTURA      = JANELA_ALTURA - 100;   // 100 pixels p/ informações
+    static constexpr int VP3D_LARGURA     = JANELA_LARGURA;
+    static constexpr int VP3D_XMIN        = 0;
+    static constexpr int VP3D_YMIN        = 0;
+
     /* Constantes da Cãmera */
-    const double CAMERA_POS[3]    = {50, -100, 50};
-    const double CAMERA_LOOKAT[3] = {50, 0, 23};
-    const double CAMERA_VIEWUP[3] = {0, 0, 1};
+    static constexpr double CAMERA_POS[]    = {50, -100, 50};
+    static constexpr double CAMERA_LOOKAT[] = {50, 0, 23};
+    static constexpr double CAMERA_VIEWUP[] = {0, 0, 1};
 
     /* Constantes da projeção perspectiva */
-    const double FOV          = 40.0;
-    const double ASPECT_RATIO = 1.3333; // 800 x 600
-    const double DNEAR        = 50.;
-    const double DFAR         = 500.;
+    static constexpr double FOV          = 40.0;
+    static constexpr double ASPECT_RATIO = 1.3333; // 800 x 600
+    static constexpr double DNEAR        = 50.;
+    static constexpr double DFAR         = 500.;
 
-    /* Características da iluminação do sol */
-    const GLfloat SOMBRA[4]      = {0.4f, 0.4f, 0.4f, 1.0f};
-    const GLfloat POSICAO_SOL[4] = {-50., 0., 0., 1.};
-    const GLfloat COR_SOL[4]     = {0.8f, 0.8f, 0.8f, 1.0f};
+    // Características da iluminação do sol
+    static constexpr GLfloat SOMBRA[]      = {0.4f, 0.4f, 0.4f, 1.0f};
+    static constexpr GLfloat POSICAO_SOL[4] = {-50.f, 0.f, 0.f, 1.f};
+    static constexpr GLfloat COR_SOL[4]     = {0.8f, 0.8f, 0.8f, 1.0f};
 
     /* Características do texto na Viewport 2D */
-    const float TAM_TEXTO            = 25.0f;
-    const float ESPACAMENTO          = 5.0f;
-    const float POS_PRIMEIRA_LINHA   = JANELA_ALTURA - ESPACAMENTO - TAM_TEXTO/2.;    // coordenadas da janela
-    const float POS_SEGUNDA_LINHA    = POS_PRIMEIRA_LINHA - TAM_TEXTO - ESPACAMENTO;
-    const float POS_TERCEIRA_LINHA   = POS_SEGUNDA_LINHA - TAM_TEXTO - ESPACAMENTO;
+    static constexpr float TAM_TEXTO            = 25.0f;
+    static constexpr float ESPACAMENTO          = 5.0f;
+    static constexpr float POS_PRIMEIRA_LINHA   = JANELA_ALTURA - ESPACAMENTO - TAM_TEXTO/2.f;    // coordenadas da janela
+    static constexpr float POS_SEGUNDA_LINHA    = POS_PRIMEIRA_LINHA - TAM_TEXTO - ESPACAMENTO;
+    static constexpr float POS_TERCEIRA_LINHA   = POS_SEGUNDA_LINHA - TAM_TEXTO - ESPACAMENTO;
 
     /* Propriedades */
-    Camera  *camera;                    // Camera principal
     Terreno *terreno;                   // Terreno atual
     Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
     int      n_jogadores_vivos;         // Guarda o número de jogadores vivos.
@@ -70,6 +75,7 @@ class Cenario
                                         // mostra, por exemplo, qual foi o jogador
                                         // que 'morreu'.
     bool controle_jogador;              // Estado do cenário: true = não responde ao jogador; true = jogador no controle.
+    std::queue<int> fila_jogadores_mortos;
 
     // Funções para exibir o cenário
 public:
@@ -107,19 +113,22 @@ public:
     bool rodada_encerrou();                 // Responsável por informar se a rodada acabou (1 ou 0 jogadores vivos) e atualizar num vitorias do vencedor
     void iniciar_vez_do_proximo_jogador();  // Responsável por iniciar a vez do próximo jogador vivo.
 
-    // Variáveis auxiliares do loop
 private:
-    std::queue<int> fila_jogadores_mortos;
+    void posicionar();
+
 };
 
-/* Agrupamento das informações da câmera em uma estrutura */
-struct Camera
-{
-	double pos[3];
-	double look_at[3];
-	double view_up[3];
+// OBSERVAÇÕES SOBRE AS CONSTANTES ESTÁTICAS DA CLASSE:
+//
+// "Note that the constant initializer is not a definition. You still need to define the static member in an
+// enclosing namespace."
+// https://www.ibm.com/support/knowledgecenter/en/SSLTBW_2.3.0/com.ibm.zos.v2r3.cbclx01/cplr038.htm
+//
+// Resumindo, as expressões abaixo declaram, mas NÃO INICIAM, as constantes. Para iniciá-las, é preciso
+// escrever o comando abaixo no 'namespace' (fora do bloco da classe):
+//
+// constexpr GLfloat SOMBRA[];
+//
+// Isso foi feito no arquivo .cpp.
 
-	Camera(const double p[3], const double la[3], const double vu[3]);
-	void posicionar();
-};
 #endif

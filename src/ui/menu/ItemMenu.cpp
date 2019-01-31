@@ -5,6 +5,7 @@
 #include <string>
 #include <ui/ItemMenu.h>
 #include <GL/glut.h>
+#include <graphics/cor.h>
 
 using namespace std;
 

@@ -6,7 +6,7 @@
 #define TANKWARS_BOTAO_H
 
 #include <string>
-#include "ItemMenu.h"
+#include <ui/ItemMenu.h>
 
 /**
  * Botao: Implementa a interface ItemMenu.

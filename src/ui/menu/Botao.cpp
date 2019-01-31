@@ -6,6 +6,7 @@
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <objetos2D.hpp>
+#include <graphics/cor.h>
 
 /* --- Classe Botao --- */
 /**

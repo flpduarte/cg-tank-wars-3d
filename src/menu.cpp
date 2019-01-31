@@ -12,6 +12,7 @@
  */
 #include <GL/glut.h>
 #include <iostream>
+#include <graphics/cor.h>
 #include "../include/menu.hpp"
 #include "../include/constantes.hpp"
 #include "../include/objetos2D.hpp"

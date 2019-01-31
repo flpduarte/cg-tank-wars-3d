@@ -18,6 +18,7 @@
 #include <ctime>
 #include <iostream>
 #include <GL/glut.h>
+#include <graphics/cor.h>
 #include "../include/auxiliares.hpp"
 #include "../include/terreno.hpp"
 #include "../include/constantes.hpp"

@@ -68,8 +68,8 @@ Mundo::Mundo()
     this->tela_atual  = TELA_INICIAL;
     this->n_jogadores = PADRAO_N_JOGADORES;
     this->n_rodadas   = PADRAO_N_RODADAS;
-    this->menu_ativo  = NULL;
-    this->cenario     = NULL;
+    this->menu_ativo  = nullptr;
+    this->cenario     = nullptr;
 }
 
 /**
@@ -152,7 +152,7 @@ void Mundo::iniciar_jogo()
 void Mundo::iniciar_rodada()
 {
     // Espera-se que o cenário deva estar desativado
-    assert(cenario == NULL);
+    assert(cenario == nullptr);
 
     // Muda a tela ativa
     this->tela_atual = TELA_RODADA;

@@ -20,6 +20,7 @@
 #include "../include/jogador.hpp"
 #include <iostream>
 #include <ui/Botao.h>
+#include <graphics/cor.h>
 
 /**
  * Cria um menu principal. Retorna o ponteiro para o objeto Menu.

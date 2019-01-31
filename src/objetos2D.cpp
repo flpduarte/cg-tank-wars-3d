@@ -14,8 +14,8 @@
  */
 #include <string>
 #include <GL/glut.h>
-#include "../include/constantes.hpp"
-#include "../include/objetos2D.hpp"
+#include <constantes.hpp>
+#include <objetos2D.hpp>
 
 /**
  * Escreve um texto na tela, alinhado à esquerda. Retorna a sua largura.

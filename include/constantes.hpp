@@ -35,12 +35,6 @@ const int JANELA_POSICAO_X =   50;
 const int JANELA_POSICAO_Y =  100;
 #define   JANELA_TITULO      "Tank Wars 3D"
 
-/* Dimensões das Viewports durante as rodadas */
-const int VP3D_ALTURA      = JANELA_ALTURA - 100;   // 100 pixels p/ informações
-const int VP3D_LARGURA     = JANELA_LARGURA;
-const int VP3D_XMIN        = 0;
-const int VP3D_YMIN        = 0;
-
 /* Constantes utilizadas por municao.cpp e armas.cpp */
 #define MASSA_MUNICAO       1.0   // TBD
 #define RAIO_INCINERADOR    3.0     // Raio de explosão do incinerador; os outros são baseados nesta.
@@ -68,27 +62,6 @@ const double RAIO_PROJETIL        = 4*1/32. * TAMANHO_TANQUE; // coincide com ra
 
 /* Constantes utilizadas por mundo.hpp e mundo.c */
 const int MAX_JOGADORES     = 10;
-
-/* Definição de algumas cores padrão, em RGBA */
-namespace cor
-{
-    const float PRETO[]    = {0, 0, 0, 1};
-    const float VERMELHO[] = {1, 0, 0, 1};
-    const float VERDE[]    = {0, 1, 0, 1};
-    const float AZUL[]     = {0, 0, 1, 1};
-    const float AMARELO[]  = {1, 1, 0, 1};
-    const float CIANO[]    = {0, 1, 1, 1};
-    const float LILAS[]    = {1, 0, 1, 1};
-    const float BRANCO[]   = {1, 1, 1, 1};
-    const float CINZA_MEDIO[] = {0.5, 0.5, 0.5, 1};
-    const float CINZA_ESCURO[] = {0.2, 0.2, 0.2, 1};
-    const float AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
-    const float LILAS_ESCURO[] = {0.5, 0, 0.5, 1};
-
-    // Função auxiliar que copia os valores de cor da variável origem à variável dest.
-    void definir_cor(float *dest, const float *origem);
-}
-
 
 /* Tipos enumerados */
 /**

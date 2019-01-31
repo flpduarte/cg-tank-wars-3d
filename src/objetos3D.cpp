@@ -18,6 +18,7 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <iostream>
+#include <graphics/cor.h>
 #include "../include/auxiliares.hpp"
 #include "../include/constantes.hpp"
 #include "../include/objetos3D.hpp"
