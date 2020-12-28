@@ -16,16 +16,13 @@
 //#define NDEBUG
 #include <GL/glut.h>
 #include <cassert>
-#include <cstdlib>
 #include <iostream>
-#include "../include/armas.hpp"
-#include "../include/cenario.hpp"
-#include "../include/mundo.hpp"
-#include "../include/jogador.hpp"
-#include "../include/constantes.hpp"
-#include "../include/globals.hpp"
-#include "../include/configmenu.hpp"
-
+#include <armas.hpp>
+#include <cenario.hpp>
+#include <mundo.hpp>
+#include <jogador.hpp>
+#include <globals.hpp>
+#include <configmenu.hpp>
 
 
 /* Funções auxiliares */

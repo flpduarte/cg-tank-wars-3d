@@ -14,10 +14,10 @@
 
 /* Bibliotecas */
 #include <GL/glut.h>
-#include "../include/constantes.hpp"
-#include "../include/municao.hpp"
-#include "../include/explosoes.hpp"
-#include "../include/objetos3D.hpp"
+#include <constantes.hpp>
+#include <municao.hpp>
+#include <explosoes.hpp>
+#include <objetos3D.hpp>
 
 
 /* Implementação das funções da classe MunicaoExplosiva */

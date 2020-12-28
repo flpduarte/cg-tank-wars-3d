@@ -27,7 +27,6 @@ class Terreno;
 class Jogador;
 class Explosao;
 class Projetil;
-struct Camera;
 
 class Cenario
 {
@@ -114,7 +113,7 @@ public:
     void iniciar_vez_do_proximo_jogador();  // Responsável por iniciar a vez do próximo jogador vivo.
 
 private:
-    void posicionar();
+    void posicionar_camera();
 
 };
 
@@ -127,7 +126,7 @@ private:
 // Resumindo, as expressões abaixo declaram, mas NÃO INICIAM, as constantes. Para iniciá-las, é preciso
 // escrever o comando abaixo no 'namespace' (fora do bloco da classe):
 //
-// constexpr GLfloat SOMBRA[];
+// constexpr GLfloat Cenario::SOMBRA[];
 //
 // Isso foi feito no arquivo .cpp.
 

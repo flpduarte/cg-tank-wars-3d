@@ -4,4 +4,6 @@ This is a remake of Kenneth Morse's Tank Wars game. It was presented as my Final
 
 The game was written in C++ and used OpenGL for the 3D graphics.
 
-To this date, the game is incomplete; it is only possible to play a single round.
+Currently, the game is incomplete; it is only possible to play a single round.
+
+This source code is currently built using MSYS2 + gcc toolchain for MinGW 64 + Freeglut.

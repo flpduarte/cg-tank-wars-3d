@@ -14,7 +14,8 @@
 #ifndef MUNDO_HPP
 #define MUNDO_HPP
 
-#include "constantes.hpp"
+#include <constantes.hpp>
+
 class Jogador;
 class Menu;
 class Cenario;
