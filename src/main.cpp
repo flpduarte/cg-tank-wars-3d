@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	glutDisplayFunc(funcao_exibicao);
 
     // Inicia loop do jogo
-    mundo.tela_inicial();
+    mundo.ir_para_tela_inicial();
 	glutMainLoop();
     return 0;
 }

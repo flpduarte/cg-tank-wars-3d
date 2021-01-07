@@ -84,7 +84,7 @@ Mundo::~Mundo()
 /**
  * Transiciona para a tela inicial
  */
-void Mundo::tela_inicial()
+void Mundo::ir_para_tela_inicial()
 {
     // Muda a tela atual
     this->tela_atual = TELA_INICIAL;
@@ -96,10 +96,7 @@ void Mundo::tela_inicial()
     glClearColor(0, 0, 0, 0);
 
     // Apaga menu antigo e cria menu novo
-    if (this->menu_ativo != NULL)
-    {
-        delete this->menu_ativo;
-    }
+    delete this->menu_ativo;
     this->menu_ativo = criar_menu_principal();
 
     // Avisa que é preciso redesenhar a tela.
@@ -113,7 +110,7 @@ void Mundo::tela_inicial()
  * Não é preciso mudar configurações de exibição: isto já foi feito para o menu
  * principal.
  */
-void Mundo::renomear_jogadores()
+void Mundo::ir_para_tela_renomear_jogadores()
 {
     // Muda a tela atual
     this->tela_atual = TELA_RENOMEAR_JOGADORES;
@@ -179,7 +176,7 @@ void Mundo::iniciar_rodada()
  * O incremento do número de vitórias deve ter sido feito ao finalizar a rodada,
  * imediatamente antes de chamar esta função.
  */
-void Mundo::resultado_parcial()
+void Mundo::ir_para_resultado_parcial()
 {
     // Remove cenário
     if (this->cenario != NULL)
@@ -211,7 +208,7 @@ void Mundo::resultado_parcial()
  * Exibe o menu de compras para cada jogador.
  * Entrada: número do jogador: 1, 2, ..., n_jogadores
  */
-void Mundo::tela_compras(int njogador)
+void Mundo::ir_para_tela_compras(int njogador)
 {
     // Transiciona para a tela de compras. Usa as mesmas Configurações
     // que a tela de resultado parcial.

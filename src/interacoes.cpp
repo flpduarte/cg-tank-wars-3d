@@ -75,7 +75,7 @@ void interacao_mouse(int botao, int estado, int x, int y)
  */
 void tela_inicial()
 {
-    mundo.tela_inicial();
+    mundo.ir_para_tela_inicial();
 }
 
 /**
@@ -84,7 +84,7 @@ void tela_inicial()
  */
 void renomear_jogadores()
 {
-    mundo.renomear_jogadores();
+    mundo.ir_para_tela_renomear_jogadores();
 }
 
 /**
@@ -110,7 +110,7 @@ void iniciar_rodada()
  */
 void resultado_parcial(int valor)
 {
-    mundo.resultado_parcial();
+    mundo.ir_para_resultado_parcial();
 }
 
 /**
@@ -120,5 +120,5 @@ void resultado_parcial(int valor)
  */
 void tela_compras(unsigned int jogador)
 {
-    mundo.tela_compras(jogador);
+    mundo.ir_para_tela_compras(jogador);
 }

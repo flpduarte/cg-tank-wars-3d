@@ -10,11 +10,14 @@
  *
  * Define a classe Mundo e outros dados associados.
  *
+ * Possíveis estados do jogo:
+ * Tela Inicial -> Renomear Jogadores,
  */
 #ifndef MUNDO_HPP
 #define MUNDO_HPP
 
 #include <constantes.hpp>
+#include "ui/Menu.hpp"
 
 class Jogador;
 class Menu;
@@ -27,6 +30,8 @@ class Cenario;
 class Mundo
 {
 public:
+    static const int MAX_JOGADORES = 10;
+
     // Lista de jogadores. Só estarão ativos os jogadores de 0 a n_jogadores - 1
     Jogador *jogadores[MAX_JOGADORES];
 
@@ -44,12 +49,12 @@ public:
     ~Mundo();
 
     // Métodos que transicionam de uma tela para outra e realizam o loop do jogo
-    void tela_inicial();            // Vai para a tela inicial
-    void renomear_jogadores();      // Tela inicial -> Escolha jogadores
+    void ir_para_tela_inicial();            // Vai para a tela inicial
+    void ir_para_tela_renomear_jogadores();      // Tela inicial -> Escolha jogadores
     void iniciar_jogo();            // Escolha jogadores -> jogo
     void iniciar_rodada();          // Inicia o loop de uma rodada_atual
-    void resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
-    void tela_compras(int);         // Exibe o menu de compras de cada jogador
+    void ir_para_resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
+    void ir_para_tela_compras(int);         // Exibe o menu de compras de cada jogador
 
     // Métodos de interação com o usuário. São passados às funções do OpenGL
     // Estes métodos deveriam ser estáticos para poderem ser utilizados pelo

@@ -315,7 +315,7 @@ void Cenario::desenhar_na_viewport2D()
     glLoadIdentity();
     glPushMatrix();
     glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
-    texto_centralizado(jogadores[jog_ativo]->nome, TAM_TEXTO, FONTE, jogadores[jog_ativo]->cor_real());
+    desenharTextoCentralizado(jogadores[jog_ativo]->nome, TAM_TEXTO, FONTE, jogadores[jog_ativo]->cor_real());
     glPopMatrix();
 
     // 2a linha: angulo à esquerda, Arma à direita

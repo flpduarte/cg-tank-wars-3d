@@ -15,15 +15,17 @@ set(SOURCE_FILES
         src/interacoes.cpp
         src/interfaces.cpp
         src/jogador.cpp
-        src/menu.cpp
+        src/ui/menu/Menu.cpp
         src/mundo.cpp
         src/municao.cpp
         src/objetos2D.cpp
         src/objetos3D.cpp
         src/terreno.cpp
         src/ui/menu/ItemMenu.cpp
-        src/ui/menu/Botao.cpp
-        src/graphics/cor.cpp)
+        src/ui/menu/ItemMenuBotao.cpp
+        src/graphics/cor.cpp
+        src/ui/menu/ItemMenuEditarNome.cpp
+        src/ui/menu/ItemMenuAlterarValorNumerico.cpp src/ui/menu/ItemMenuRetangular.cpp include/ui/ItemMenuRetangular.h)
 
 add_executable(TankWars ${SOURCE_FILES})
 include_directories(include)

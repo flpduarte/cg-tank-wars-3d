@@ -18,7 +18,7 @@
 
 float desenhar_string(std::string str, const float altura, void *font, const float [4]);
 float largura_string(std::string str, const float altura, void *font);
-float texto_centralizado(std::string, const float, void *, const float [4]);
-float texto_alinhado_direita(std::string, const float, void *, const float [4]);
+float desenharTextoCentralizado(const std::string& str, const float altura, void *font, const float *cor);
+float texto_alinhado_direita(const std::string&, const float, void *, const float [4]);
 void desenhar_borda(const unsigned int largura, const unsigned int altura, const float cor[4]);
 #endif

@@ -14,6 +14,8 @@
 #ifndef CONFIGMENU_HPP
 #define CONFIGMENU_HPP
 
+#include "ui/Menu.hpp"
+
 class Menu;
 class Jogador;
 

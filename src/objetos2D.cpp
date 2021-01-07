@@ -74,9 +74,9 @@ float largura_string(std::string str, const float altura, void *font)
 }
 
 /**
- * Imprime um texto centralizado na origem.
+ * Imprime um texto centralizado no ponto atual. Uma matriz é inserida para definir o ponto atual como origem.
  */
-float texto_centralizado(std::string str, const float altura, void *font, const float cor[4])
+float desenharTextoCentralizado(const std::string& str, const float altura, void *font, const float *cor)
 {
     glPushMatrix();
     glTranslatef(-largura_string(str, altura, font) / 2., 0, 0);
@@ -88,7 +88,7 @@ float texto_centralizado(std::string str, const float altura, void *font, const 
 /**
  * Imprime um texto centralizado na origem.
  */
-float texto_alinhado_direita(std::string str, const float altura, void *font, const float cor[4])
+float texto_alinhado_direita(const std::string& str, const float altura, void *font, const float cor[4])
 {
     glPushMatrix();
     glTranslatef(-largura_string(str, altura, font), 0, 0);
