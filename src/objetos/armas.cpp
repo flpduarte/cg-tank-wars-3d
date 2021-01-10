@@ -12,8 +12,8 @@
  */
 #include <iostream>
 #include <constantes.hpp>
-#include "../include/armas.hpp"
-#include "../include/globals.hpp"
+#include "objetos/armas.hpp"
+#include "globals.hpp"
 
 /**
  * Cria a lista global de armamentos. Chamado no início do jogo (bomb.cpp)
@@ -122,7 +122,7 @@ void ListaArmamentos::remover_lote(int indice, int qtd)
  * Note que esta função não troca o armamento ativo. A verificação se ainda há
  * tiros do armamento ativo deve ser realizada ao iniciar a vez do jogador.
  */
-Municao *ListaArmamentos::atirar_arma_atual()
+Municao *ListaArmamentos::atirarArmaAtual()
 {
     lista[i_atual].qtd--;
     return lista[i_atual].arma;

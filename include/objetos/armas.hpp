@@ -16,7 +16,7 @@
 #define ARMAS_HPP
 
 #include <array>
-#include "municao.hpp"
+#include <objetos/municao.hpp>
 
 #define N_ARMAMENTOS 4
 
@@ -71,7 +71,7 @@ public:
     // Alteração da qtd de munição
     void adicionar_lote(int, int);      // Adiciona munição à arma escolhida (ao comprar um armamento)
     void remover_lote(int, int);        // Remove um lote de tiros (ao desfazer uma compra)
-    Municao *atirar_arma_atual();       // Decrementa 1 da qtd de tiros da arma atual. Retorna a arma atual.
+    Municao *atirarArmaAtual();       // Decrementa 1 da qtd de tiros da arma atual. Retorna a arma atual.
     void condicao_inicial();            // Restaura a lista para a condição de início de jogo'
                                         // (qtd padrão de tiros)
 };

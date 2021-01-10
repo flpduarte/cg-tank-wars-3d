@@ -3,7 +3,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <GL/glut.h>
-#include "../include/jogador.hpp"
+#include "objetos/jogador.hpp"
 #include "../include/constantes.hpp"
 
 Jogador jogador(8);

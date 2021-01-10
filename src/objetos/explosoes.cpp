@@ -15,9 +15,9 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <graphics/cor.h>
-#include "../include/explosoes.hpp"
-#include "../include/constantes.hpp"
-#include "../include/objetos3D.hpp"
+#include "objetos/explosoes.hpp"
+#include "constantes.hpp"
+#include "objetos3D.hpp"
 
 /**
  * Explosao
@@ -37,11 +37,11 @@
  * Tanques dentro    | Tanques aqui sofrem dano parcial; cai linearmente
  * deste raio sofrem | com a distância a partir do raio de explosão.
  * 100% de dano      | Raio de dano = aprox. 125% do raio de explosão
- * configurado como  | (configurado como a constante FRACAO_EFEITO_COLAT)
+ * configurado como  | (configurado como a constante FRACAO_EFEITO_COLATERAL)
  * FRACAO_RAIO_DANO
  */
 
-Explosao::Explosao(double pos[3], double r): raio(r), t(0), finalizado(false), raio_atual(0)
+Explosao::Explosao(const double pos[3], double r): raio(r), t(0), finalizado(false), raio_atual(0)
 {
     epicentro[0] = pos[0];
     epicentro[1] = pos[1];
@@ -55,7 +55,7 @@ Explosao::Explosao(double pos[3], double r): raio(r), t(0), finalizado(false), r
     // Cria uma fonte de luz no local da explosão
     glLightfv(GL_LIGHT1, GL_POSITION, (GLfloat *) epicentro);
     glEnable(GL_LIGHT1);
-    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, aten_quadratica);
+    glLightf(GL_LIGHT1, GL_QUADRATIC_ATTENUATION, ATENUACAO_QUADRATICA);
     glLightf(GL_LIGHT1, GL_LINEAR_ATTENUATION, 100.0);
     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 2);
 }
@@ -72,16 +72,16 @@ Explosao::~Explosao()
 int Explosao::dano(double pos[3])
 {
     // Se o tanque estiver dentro do raio de explosão, causar dano 100%
-    double d = dist(pos, epicentro);
+    double d = distancia(pos, epicentro);
     if (d < FRACAO_RAIO_DANO*raio)
     {
         return 100;
     }
 
-    // Dano cai linearmente até FRACAO_EFEITO_COLAT
-    else if (d < FRACAO_EFEITO_COLAT*raio)
+    // Dano cai linearmente até FRACAO_EFEITO_COLATERAL
+    else if (d < FRACAO_EFEITO_COLATERAL * raio)
     {
-        return 100 * (FRACAO_EFEITO_COLAT*raio - d) / (FRACAO_EFEITO_COLAT*raio - FRACAO_RAIO_DANO*raio);
+        return 100 * (FRACAO_EFEITO_COLATERAL * raio - d) / (FRACAO_EFEITO_COLATERAL * raio - FRACAO_RAIO_DANO * raio);
     }
 
     // Fora do alcance da explosão
@@ -104,14 +104,14 @@ bool Explosao::proximo_frame()
         raio_atual = raio * (float)t/frame_intervalos;
     }
 
-    // Segunda parte: muda a cor para vermelho
+    // Segunda parte: muda a corBase para vermelho
     else if (t <= 3*frame_intervalos)
     {
         this->cor[1] = 1.  - (t - frame_intervalos)/(2. * frame_intervalos);
         this->cor[2] = 1.  - t/(2. * frame_intervalos);
     }
 
-    // Terceira parte: muda a cor para preto
+    // Terceira parte: muda a corBase para preto
     else if (t <= 4*frame_intervalos)
     {
         this->cor[0] = 1. - (t - (3. * frame_intervalos))/(frame_intervalos);
@@ -143,7 +143,7 @@ bool Explosao::proximo_frame()
 void Explosao::desenhar()
 {
     // Configura intensidade da fonte de luz
-    GLfloat sombra[] = {fracao_sombra * cor[0], fracao_sombra * cor[1], fracao_sombra * cor[2], fracao_sombra * cor[3]};
+    GLfloat sombra[] = {FRACAO_SOMBRA * cor[0], FRACAO_SOMBRA * cor[1], FRACAO_SOMBRA * cor[2], FRACAO_SOMBRA * cor[3]};
     glLightfv(GL_LIGHT1, GL_AMBIENT, sombra);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, cor);
 
@@ -164,10 +164,10 @@ void Explosao::desenhar()
 
 
 /**
- * dist()
+ * distancia()
  * Função auxiliar que retorna a distância euclidiana entre dois pontos dados.
  */
-double Explosao::dist(double p1[3], double p2[3])
+double Explosao::distancia(double p1[3], double p2[3])
 {
     return sqrt(pow(p2[0] - p1[0], 2) + pow(p2[1] - p1[1], 2) + pow(p2[2] - p1[2], 2));
 }

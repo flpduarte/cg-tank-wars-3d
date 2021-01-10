@@ -6,18 +6,16 @@ set(CMAKE_CXX_STANDARD 14)
 # Source Files
 set(SOURCE_FILES
         src/main.cpp
-        src/armas.cpp
-        src/auxiliares.cpp
+        src/objetos/armas.cpp
+        src/auxiliares/auxiliares.cpp
         src/cenario.cpp
-        src/configmenu.cpp
-        src/explosoes.cpp
+        src/objetos/explosoes.cpp
         src/globals.cpp
         src/interacoes.cpp
-        src/interfaces.cpp
-        src/jogador.cpp
+        src/objetos/jogador.cpp
         src/ui/menu/Menu.cpp
         src/mundo.cpp
-        src/municao.cpp
+        src/objetos/municao.cpp
         src/objetos2D.cpp
         src/objetos3D.cpp
         src/terreno.cpp
@@ -25,7 +23,7 @@ set(SOURCE_FILES
         src/ui/menu/ItemMenuBotao.cpp
         src/graphics/cor.cpp
         src/ui/menu/ItemMenuEditarNome.cpp
-        src/ui/menu/ItemMenuAlterarValorNumerico.cpp src/ui/menu/ItemMenuRetangular.cpp include/ui/ItemMenuRetangular.h)
+        src/ui/menu/ItemMenuAlterarValorNumerico.cpp src/ui/menu/ItemMenuRetangular.cpp include/ui/ItemMenuRetangular.h src/objetos/Tanque.cpp include/objetos/Tanque.h src/objetos/Projetil.cpp include/objetos/Projetil.h)
 
 add_executable(TankWars ${SOURCE_FILES})
 include_directories(include)

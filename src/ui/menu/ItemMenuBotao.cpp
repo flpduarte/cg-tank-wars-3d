@@ -19,7 +19,7 @@
  *
  * ItemMenuBotaoenuBotao(): função destrutora da classe botão; nada a fazer.
  */
-ItemMenuBotao::ItemMenuBotao(std::string rotulo, void fn(), GLfloat const *cor_rotulo) :
+ItemMenuBotao::ItemMenuBotao(std::string rotulo, void (fn)(), GLfloat const *cor_rotulo) :
         ItemMenuRetangular(), rotulo(std::move(rotulo)), acao(fn), cor_rotulo(cor_rotulo) {}
 
 ItemMenuBotao::~ItemMenuBotao() = default;

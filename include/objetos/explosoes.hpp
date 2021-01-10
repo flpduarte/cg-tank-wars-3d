@@ -14,38 +14,9 @@
  */
 #ifndef EXPLOSOES_HPP
 #define EXPLOSOES_HPP
-#include "jogador.hpp"
-/*
-A linha abaixo provoca um problema de referências circulares no jogo:
 
 
-O motivo é a sequência de includes:
-explosoes.cpp -> explosoes.hpp -> jogador.hpp -> interfaces.hpp**
 
-Em interfaces.hpp, a classe Jogador é solicitada *antes* de ter sido
-definida.
-
-Contudo, notamos que é o próprio header jogador.hpp que solicita o uso
-de um header interfaces.hpp; o segundo por sua vez, necessita de jogador.hpp!
-
-Para resolver esse problema, devemos verificar o que realmente precisamos:
- - Se só for preciso saber que uma classe existe, e não precisar *operar* sobre
-   ela, ou seja, ela será utilizada exclusivamente na forma de ponteiros, então
-   não é preciso fazer um #include no arquivo da classe. Uma simples DECLARAÇÃO
-   de que a classe existe é suficiente.
- - Caso se necessite *operar* sobre a classe, ou seja, chamar as suas proprieda-
-   des e/ou métodos, então aí sim devemos incluir seu Header.
-
-Resumindo, se conhecer o interior da classe não for necessário, basta fazer um
-forward declaration. Não é preciso - nem é recomendado - chamar o header file.
-Isso normalmente ocorre em HEADER FILES: eles não operam sobre as classes, apenas
-declaram funções que irão operá-las!
-
-É isso que acontece nesse arquivo. Preciso apenas saber que existe uma classe
-Jogador. Só quem precisa conhecer a estrutura interna da classe Jogador é
-explosoes.cpp. explosoes.hpp pode apenas declarar a classe como mostrado a seguir.
-
-*/
 class Jogador;
 
 /**
@@ -70,9 +41,12 @@ class Jogador;
 
 class Explosao
 {
+    static double constexpr FRACAO_RAIO_DANO = 0.8;
+    static double constexpr FRACAO_EFEITO_COLATERAL = 1.4;    // Raio de dano / Raio de Explosao no modelo de explosão
+
     // Constantes de iluminação
-    const float fracao_sombra = 0.75;
-    const float aten_quadratica = 1.;
+    static constexpr float FRACAO_SOMBRA = 0.75;
+    static constexpr float ATENUACAO_QUADRATICA = 1.;
     int   frame_intervalos;             // controla velocidade de explosao
 
     // Características gerais da explosão
@@ -83,16 +57,17 @@ class Explosao
 
     // Variáveis utilizadas pelo método desenhar()
     double raio_atual;          // raio atual da bola de fogo
-    GLfloat cor[4];              // cor atual da bola de fogo
-
-    double dist(double [3], double [3]); // função auxiliar que calcula a distância entre 2 pontos
+    GLfloat cor[4];              // corBase atual da bola de fogo
 
 public:
-    Explosao(double pos[3], double);    // Cria objeto explosão no local atual
+    Explosao(const double posicao[3], double raio);    // Cria objeto explosão no local atual
     ~Explosao();                        // Destrutor da Explosao: desativa a fonte GL_LIGHT1.
     int dano(double pos[3]);            // dada a posição de um jogador, retorna o dano causado pela explosão.
     bool proximo_frame();               // Atualiza dados para desenhar o próximo "frame" da animação de explosão. Retorna false quando animação encerrar
     void desenhar();                    // Desenha a explosão
+
+private:
+    double distancia(double p1[3], double p2[3]); // função auxiliar que calcula a distância entre 2 pontos
 };
 
 /**

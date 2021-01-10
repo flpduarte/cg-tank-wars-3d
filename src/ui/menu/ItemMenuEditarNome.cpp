@@ -6,7 +6,6 @@
 #include "constantes.hpp"
 #include <graphics/cor.h>
 #include <GL/glut.h>
-#include "interfaces.hpp"
 #include "ui/ItemMenuEditarNome.h"
 
 /**

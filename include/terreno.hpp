@@ -17,7 +17,7 @@
 #define TERRENO_HPP
 
 #include <GL/glut.h>
-#include "auxiliares.hpp"
+#include "auxiliar/auxiliares.hpp"
 
 class Terreno
 {
@@ -71,7 +71,7 @@ public:
     ~Terreno();
     void desenhar();
     double z(double x, double y);           // retorna a altura no ponto (x, y)
-    GLfloat *normal(double x, double y);     // Retorna o vetor normal ao terreno em (x, y)
+    GLfloat *normal(double x, double y);     // Retorna o vetor vetorNormal ao terreno em (x, y)
 
     /* Métodos protegidos */
 protected:

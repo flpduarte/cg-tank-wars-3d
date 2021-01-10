@@ -36,7 +36,7 @@
 class Menu
 {
     unsigned int largura, altura;               // dimensões totais do menu. Usado p/ centralizá-lo na tela
-    int posx0, posy0;                         // Origem do Menu, Coordenadas da Tela
+    int posx0, posy0;                         // Origem do Menu, Coordenadas da TelaAtual
     vector<ItemMenu *> opcoes;
     unsigned int opcao_ativa;                            // Índice da opcao do menu atualmente ativa
     bool possui_opcao_selecionada;             // Um flag para indicar se o menu já possui uma opção->selecionado = true.

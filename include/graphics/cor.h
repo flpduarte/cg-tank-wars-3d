@@ -1,5 +1,5 @@
 /**
- * Define o namespace cor, ele contém algumas cores padrão.
+ * Define o namespace corBase, ele contém algumas cores padrão.
  *
  * Created by Felipe on 30/01/2019.
  */
@@ -25,7 +25,7 @@ namespace cor
     const GLfloat AZUL_CELESTE[] = {0, 0.66796875, 0.8984375, 1.0};
     const GLfloat LILAS_ESCURO[] = {0.5, 0, 0.5, 1};
 
-    // Função auxiliar que copia os valores de cor da variável origem à variável dest.
+    // Função auxiliar que copia os valores de corBase da variável origem à variável dest.
     void definir_cor(GLfloat *dest, const GLfloat *origem);
 }
 

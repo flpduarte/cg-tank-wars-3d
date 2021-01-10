@@ -19,7 +19,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <graphics/cor.h>
-#include "../include/auxiliares.hpp"
+#include "auxiliar/auxiliares.hpp"
 #include "../include/terreno.hpp"
 #include "../include/constantes.hpp"
 
@@ -165,8 +165,8 @@ double Terreno::z(double x, double y)
 }
 
 /**
- * Dadas coordenadas (x, y), retorna o vetor normal ao terreno naquele ponto.
- * Por enquanto estou retornando o vetor normal mais próximo. Um refinamento
+ * Dadas coordenadas (x, y), retorna o vetor vetorNormal ao terreno naquele ponto.
+ * Por enquanto estou retornando o vetor vetorNormal mais próximo. Um refinamento
  * possível é fazer uma interpolação entre os 4 vetores normais próximos na
  * malha.
  */
@@ -276,7 +276,7 @@ void Terreno::calcular_vetores_normais()
 			// Coordenada z
 			normais[i][j][2] = 1;
 
-			// Normalizar o vetor normal
+			// Normalizar o vetor vetorNormal
 			double modulo = sqrt(normais[i][j][0]*normais[i][j][0] + normais[i][j][1]*normais[i][j][1] + normais[i][j][2]*normais[i][j][2]);
 			normais[i][j][0] /= modulo;
 			normais[i][j][1] /= modulo;
@@ -288,7 +288,7 @@ void Terreno::calcular_vetores_normais()
 
 /**
  * Insere no OpenGL o vértice correspondente ao elemento (i, j) do mapa de alturas.
- * Insere também o vetor normal associado àquele vértice.
+ * Insere também o vetor vetorNormal associado àquele vértice.
  *
  * Variáveis globais utilizadas:
  * mapa

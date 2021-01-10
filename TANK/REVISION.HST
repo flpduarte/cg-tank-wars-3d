@@ -241,7 +241,7 @@ V2.5      May 17, 1991: Lots o' new stuff
                many shots are out of bounds.
           As suggested by many users, the number of weapons you
                begin with has been lowered.  You now start with
-               only 3 normal weapons per game to play, 10 hand
+               only 3 vetorNormal weapons per game to play, 10 hand
                grenades per game, and 100 lead balls total.
           Again, I always use a mouse so this bug escaped me.
                When selecting Crumbles with a keyboard and using

@@ -11,7 +11,7 @@
  * Implementa a classe Menu.
  */
 #include <ui/Menu.hpp>
-#include <jogador.hpp>
+#include <objetos/jogador.hpp>
 #include <cenario.hpp>
 
 //Menu::Menu(int x0, int y0):

@@ -20,11 +20,12 @@
 
 #include <vector>
 #include <queue>
+#include <random>
+#include <objetos/Tanque.h>
 #include <GL/glut.h>
 #include "constantes.hpp"
 
 class Terreno;
-class Jogador;
 class Explosao;
 class Projetil;
 
@@ -59,42 +60,49 @@ class Cenario
     static constexpr float POS_SEGUNDA_LINHA    = POS_PRIMEIRA_LINHA - TAM_TEXTO - ESPACAMENTO;
     static constexpr float POS_TERCEIRA_LINHA   = POS_SEGUNDA_LINHA - TAM_TEXTO - ESPACAMENTO;
 
-    /* Propriedades */
-    Terreno *terreno;                   // Terreno atual
-    Jogador **jogadores;                // Lista dos jogadores em ordem aleatória
-    int      n_jogadores_vivos;         // Guarda o número de jogadores vivos.
-    Projetil *projetil;                 // Projétil em voo
-    Explosao *explosao;                 // Explosão atualmente ocorrendo
-    Jogador  *jogador_morrendo;         // Armazena o jogador cuja animação de morte está atualmente sendo executada.
-    int vento;                          // Vento no cenário atual. + para dir.
-    int jog_vez;                        // De quem é a vez: 0, 1, 2, ...
-    int jog_ativo;                      // É um pouco diferente da variável vez.
-                                        // jogador_ativo indica o jogador a ser
-                                        // mostrado no topo da página. Essa exibição
-                                        // mostra, por exemplo, qual foi o jogador
-                                        // que 'morreu'.
-    bool controle_jogador;              // Estado do cenário: true = não responde ao jogador; true = jogador no controle.
-    std::queue<int> fila_jogadores_mortos;
+    /* Propriedades Físicas do Cenário */
+    static constexpr double GRAVIDADE           = 50.0;
+
+
+    /* Objetos no cenário */
+    Terreno *terreno;                           // Terreno atual
+    std::vector<Tanque> tanques;                // Lista de tanques no cenário, na ordem da esquerda para a direita
+    Projetil *projetil;                         // Projétil em voo
+    Explosao *explosao;                         // Explosão atualmente ocorrendo
+
+    int vento;                                  // Vento no cenário atual. + para dir.
+    int      n_jogadores_vivos;                 // Guarda o número de jogadores vivos.
+
+    bool controle_jogador;                      // Estado do cenário: true = não responde ao jogador; true = jogador no controle.
+    std::vector<Tanque>::iterator tanqueNaVez;  // De quem é a vez. É um iterador, pois permite determinar o próximo jogador usando o operador ++.
+    Tanque *tanqueEmFoco;                       // Tanque cujo nome de jogador aparecerá no topo da tela. É um ponteiro, pois é mais fácil referenciá-lo desta forma.
+    Tanque *tanqueMorrendo;                     // Armazena o jogador cuja animação de morte está atualmente sendo executada.
+    std::queue<Tanque *> filaTanquesMortos;     // Armazena uma referência ao tanque (ponteiro).
+
 
     // Funções para exibir o cenário
 public:
-    Cenario();
+    explicit Cenario(const std::vector<Jogador *> &listaJogadores);
     ~Cenario();
-    void criar_explosao(double pos[3], double raio);
-    void exibir();                      // Exibe o cenário atual na tela
+
+    // getters
+    int getVento() const;
+    int getGravidade() const;
+    double getCoordenadaZ(double x, double y);      // Retorna a coordenada z do solo em (x, y)
+
+    // Verificar se a posição do projétil atinge algum obstáculo no cenário
+    bool atingiuObstaculo(double const *posicao);
+private:
+    bool atingiuTerreno(const double *posicao);
+    bool atingiuUmTanque(const double *posicao);
+
+public:
+    // Gerenciar teclas para controlar os tanques
     void gerenciar_teclado(unsigned char);
     void gerenciar_teclas_especiais(int);
-    double z_solo(double x, double y);      // Retorna a coordenada z do solo em (x, y)
 
-private:
-    int  definir_vento();               // Define vento conforme configurações do jogo
-    void misturar_jogadores();
-    void posicionar_jogadores();
-    void desenhar_na_viewport2D();      // Configura VP 2D e desenha informações
-    void desenhar_na_viewport3D();      // Configura VP 3D e desenha cenário
-    void desenhar();                    // Desenha o cenário em si: terreno, jogadores, projéteis, explosões, etc.
-
-    bool existe_elemento(Jogador **, int, Jogador *);    // verifica se um jogador pertence à lista
+    // Exibe o cenário na tela
+    void exibir();                      // Exibe o cenário atual na tela
 
 
     /* Funções responsáveis pelo loop do cenário */
@@ -114,6 +122,23 @@ public:
 
 private:
     void posicionar_camera();
+    int  definir_vento();               // Define vento conforme configurações do jogo
+    void criarListaDeTanquesEmOrdemAleatoria(std::vector<Jogador *> const &listaJogadores);  // Cria os tanques do cenário a partir da lista de juogadores recebida
+    // Reordena os tanques
+    void posicionarTanques();           // Posiciona os tanques no cenário, após eles terem sido reordenados.
+
+    void desenhar();                    // Desenha o cenário em si: terreno, jogadores, projéteis, explosões, etc.
+    void desenhar_na_viewport2D();      // Configura VP 2D e desenha informações
+    void desenhar_na_viewport3D();      // Configura VP 3D e desenha cenário
+
+    void registrarDanoAosTanquesAfetados();
+    void registrarVitoriaAosTanquesSobreviventes() const;
+
+    /* Função auxiliar - seleciona um elemento aleatório de um container C++ que possui iterador */
+    static std::default_random_engine gerador;
+
+    template<typename iteratorType>
+    static iteratorType selecionarElementoAleatorio(iteratorType first, iteratorType last);     // Seleciona um tanque aleatório da lista de tanques
 
 };
 

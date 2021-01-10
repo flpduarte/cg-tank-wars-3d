@@ -19,20 +19,21 @@
 // desativar asserts qdo programa estiver funcionando
 //#define NDEBUG
 #include <GL/glut.h>
+#include <algorithm>
 #include <cassert>
 #include <cstdlib>
 #include <ctime>
+#include <iterator>
 #include <iostream>
+#include <random>
 #include <graphics/cor.h>
-#include "../include/armas.hpp"
-#include "../include/jogador.hpp"
-#include "../include/terreno.hpp"
+#include <objetos/armas.hpp>
+#include <objetos/jogador.hpp>
+#include <terreno.hpp>
 #include <cenario.hpp>
-#include "../include/globals.hpp"
-#include "../include/objetos2D.hpp"
-#include "../include/objetos3D.hpp"
-#include "../include/explosoes.hpp"
-#include "../include/interacoes.hpp"
+#include <objetos2D.hpp>
+#include <constantes.hpp>
+#include "objetos/explosoes.hpp"
 
 /* --- Implementação da classe Cenario --- */
 
@@ -50,31 +51,31 @@ constexpr GLfloat Cenario::POSICAO_SOL[];
 constexpr GLfloat Cenario::COR_SOL[];
 // Isso porque as demais constantes só serão criadas APÓS A EXECUÇÃO DO CONSTRUTOR (lazy initialization).
 // Logo, as linhas acima são obrigatórias para cada constante estática que precise ser iniciada
-// antes da execução do construtor  .
+// antes da execução do construtor.
 
+// Iniciação do engine para geração de números aleatórios
+std::default_random_engine Cenario::gerador = std::default_random_engine();
 
 /**
  * Cria um novo cenário: Terreno, câmera e ordem de aparecimento dos jogadores.
  */
-Cenario::Cenario()
+Cenario::Cenario(const std::vector<Jogador *> &listaJogadores)
 {
     // Cria câmera e terreno
     srand(time(NULL));
     terreno   = new Terreno;
 
     // Configura cenário
-    jogadores           = new Jogador *[mundo.n_jogadores]();
-    n_jogadores_vivos   = mundo.n_jogadores;
-    projetil            = NULL;
-    explosao            = NULL;
-    jogador_morrendo    = NULL;
-    vento               = definir_vento();                // * a ser implementada
-    jog_vez             = rand() % mundo.n_jogadores;
-    jog_ativo           = jog_vez;                        // Implementar posteriormene o efeito de queda inicial dos tanques
+    criarListaDeTanquesEmOrdemAleatoria(listaJogadores);
+    posicionarTanques();
 
-    // Cria lista aleatória de jogadores
-    misturar_jogadores();
-    posicionar_jogadores();
+    n_jogadores_vivos   = tanques.size();
+    projetil            = nullptr;
+    explosao            = nullptr;
+    tanqueMorrendo      = nullptr;
+    vento               = definir_vento();
+    tanqueNaVez         = selecionarElementoAleatorio(tanques.begin(), tanques.end());
+    tanqueEmFoco        = &(*tanqueNaVez);
 
     // Configura iluminação do Sol.
     // Obs: Posso futuramente fazer essas configurações mudarem aleatoriamente,
@@ -87,62 +88,33 @@ Cenario::Cenario()
     glEnable(GL_NORMALIZE);
 
     // Prepara para iniciar vez do jogador atual
-    jogadores[jog_vez]->preparar_para_jogar();
+    tanqueNaVez->preparar_para_jogar();
     controle_jogador    = true;                    // Jogador já começa ativo
 }
 
-/**
- * Destroi cenário após o fim da rodada.
- */
-Cenario::~Cenario()
-{
-    // Desativa efeito de iluminação
-    glDisable(GL_LIGHT0);
-
-    // Remove vetores criados
-    delete terreno;
-    delete jogadores;
-    if (projetil != NULL)
-    {
-        delete projetil;
-    }
-    if (explosao != NULL)
-    {
-        delete explosao;
-    }
+int Cenario::getVento() const {
+    return vento;
 }
 
-/* --- Funções privadas --- */
-/**
- * Define um vento aleatório, na faixa de intensidades definida pela configuração
- * do jogo.
- *
- * TODO: implementar esta função posteriormente.
- */
-int Cenario::definir_vento()
-{
-    return 0;
+int Cenario::getGravidade() const {
+    return GRAVIDADE;
 }
 
-/**
- * Mistura a ordem de aparecimento dos jogadores e define suas respectivas
- * posições no cenário.
- */
-void Cenario::misturar_jogadores()
-{
-    // lê jogadores em ordem "aleatória"
-    for (int i = 0; i < mundo.n_jogadores; i++)
-    {
-        // Procura um jogador que ainda não existe na lista
-        int n;
-        do
-        {
-            n = rand() % mundo.n_jogadores;
-        }
-        while (existe_elemento(jogadores, i, mundo.jogadores[n]));
+void Cenario::criarListaDeTanquesEmOrdemAleatoria(std::vector<Jogador *> const &listaJogadores) {
 
-        // Insere-o no final da lista
-        jogadores[i] = mundo.jogadores[n];
+    // Cria uma lista de inteiros de 0 a nJogadores
+    std::vector<int> numeroJogadores;
+    for (int i = 0; i < listaJogadores.size(); i++) {
+        numeroJogadores.emplace_back(i);
+    }
+
+    // Mistura os inteiros
+    std::shuffle(numeroJogadores.begin(), numeroJogadores.end(), gerador);
+    // std::shuffle(tanques.begin(), tanques.end(), std::mt19937(std::random_device()()));
+
+    // Cria os tanques a partir da lista misturada de inteiros
+    for (int i : numeroJogadores) {
+        tanques.emplace_back(Tanque(*listaJogadores[i]));
     }
 }
 
@@ -161,37 +133,63 @@ void Cenario::misturar_jogadores()
  *
  * Passo = (n_jogadores - 1) / 80
  */
-void Cenario::posicionar_jogadores()
+void Cenario::posicionarTanques()
 {
-    double passo = 80. / (mundo.n_jogadores - 1);
+    double passo = 80. / (double)(tanques.size() - 1);
     double x0    = (double) 8 + rand() % 4;
+    int n_jogadores = tanques.size();
 
-    for (int i = 0; i < mundo.n_jogadores; i++)
+    for (int i = 0; i < n_jogadores; i++)
     {
         double x = x0 + i*passo;
         double pos[3] = {x, 0, terreno->z(x, 0)};
-        jogadores[i]->posicionar(pos);
-        jogadores[i]->definir_normal(terreno->normal(x, 0));
+        tanques[i].posicionar(pos);
+        tanques[i].definir_normal(terreno->normal(x, 0));
     }
 
-    // ajusta ângulo inicial dos canhoes dos jogadores nas extremidades
-    jogadores[0]->angulo = 75;
-    jogadores[mundo.n_jogadores - 1]->angulo = 105;
+    // ajusta ângulo inicial dos canhoes dos tanques nas extremidades
+    tanques[0].setAnguloPara75Direita();
+    tanques[n_jogadores - 1].setAnguloPara75Esquerda();
 }
 
 /**
- * Retorna true se o jogador dado pertence ao array dado.
- * Retorna false, caso contrário.
+ * Escolhe um tanque aleatoriamente do vetor de tanques.
+ * @return o iterador para o tanque escolhido.
  */
-bool Cenario::existe_elemento(Jogador **lista, int n, Jogador *jogador)
-{
-    bool existe = false;
-    for (int i = 0; !existe && (i < n); i++)
-    {
-        existe = (lista[i] == jogador);
-    }
+template<typename iteratorType>
+iteratorType Cenario::selecionarElementoAleatorio(iteratorType first, iteratorType last) {
+    // Seja "distancia" uma variável aleatória com distribuição uniforme, no intervalo [0, n - 1].
+    // Cada chamada de distancia(gerador) gera um novo número nesse intervalo.
+    std::uniform_int_distribution<> distancia(0, std::distance(first, last));
+    auto primeiroElemento = first;
+    std::advance(primeiroElemento, distancia(gerador));
+    return primeiroElemento;
+}
 
-    return existe;
+/**
+ * Destroi cenário após o fim da rodada.
+ */
+Cenario::~Cenario()
+{
+    // Desativa efeito de iluminação
+    glDisable(GL_LIGHT0);
+
+    // Remove vetores criados
+    delete terreno;
+    delete projetil;
+    delete explosao;
+}
+
+/* --- Funções privadas --- */
+/**
+ * Define um vento aleatório, na faixa de intensidades definida pela configuração
+ * do jogo.
+ *
+ * TODO: implementar esta função posteriormente.
+ */
+int Cenario::definir_vento()
+{
+    return 0;
 }
 
 /**
@@ -206,9 +204,9 @@ bool Cenario::existe_elemento(Jogador **lista, int n, Jogador *jogador)
  * Note que aqui precisarei lidar com 2 viewports diferentes.
  *
  * Posso usar glScissor(left, bottom, width, height) para definir uma região em
- * Coordenadas da Tela que receberá desenhos. Isso permitirá limpar somente par-
+ * Coordenadas da TelaAtual que receberá desenhos. Isso permitirá limpar somente par-
  * te da tela, por exemplo. Usarei glScissor para limpar cada viewport com uma
- * cor diferente.
+ * corBase diferente.
  *
  * Ideia:
  * 1. Desenhar as informações em 2D na tela, antes de exibir cenário 3D.
@@ -223,68 +221,8 @@ void Cenario::exibir()
 
 
 /**
- * desenhar()
- * Função responsável por desenhar todos os objetos 3D que compõem o cenário.
- */
-void Cenario::desenhar()
-{
-    // Desenha o terreno
-    terreno->desenhar();
-
-    // Desenha os jogadores
-    for (int i = 0; i < mundo.n_jogadores; i++)
-    {
-        if (jogadores[i]->vivo)
-            jogadores[i]->desenhar();
-    }
-
-    // Desenha o projétil, se houver
-    if (projetil != NULL)
-    {
-        projetil->desenhar();
-    }
-
-    // Desenha a explosão, se houver
-    if (explosao != NULL)
-    {
-        explosao->desenhar();
-    }
-}
-
-
-/**
- * Configura a viewport 3D principal e desenha o cenário na viewport.
- */
-void Cenario::desenhar_na_viewport3D()
-{
-    // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
-    // cor azul celeste
-    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
-    glEnable(GL_SCISSOR_TEST);
-    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glDisable(GL_SCISSOR_TEST);
-
-    // Ativa iluminação e teste de profundidade
-    glEnable(GL_LIGHTING);
-    glEnable(GL_DEPTH_TEST);
-
-    // Configura Viewport e Projeção Perspectiva
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
-    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
-
-    // Muda para matriz ModelView, posiciona a câmera e desenha o cenário
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    posicionar_camera();
-    this->desenhar();
-}
-
-/**
  * Desenha as informações sobre a imagem 3D:
- * - Vento, angulo, potencia, arma atual, etc.
+ * - Vento, anguloCanhao, potencia, arma atual, etc.
  *
  * As informações são exibidas antes de exibir o cenário em 3D. Em outras pala-
  * vras, o cenário 3D é desenhado sobre as informações 2D. Considerei o viewport
@@ -315,10 +253,10 @@ void Cenario::desenhar_na_viewport2D()
     glLoadIdentity();
     glPushMatrix();
     glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
-    desenharTextoCentralizado(jogadores[jog_ativo]->nome, TAM_TEXTO, FONTE, jogadores[jog_ativo]->cor_real());
+    desenharTextoCentralizado(tanqueEmFoco->getNome(), TAM_TEXTO, FONTE, tanqueEmFoco->getCorReal());
     glPopMatrix();
 
-    // 2a linha: angulo à esquerda, Arma à direita
+    // 2a linha: anguloCanhao à esquerda, Arma à direita
     // Informações são referentes ao jogador da vez atual (nao necessariamente
     // o jogador ativo)
     glPushMatrix();
@@ -326,11 +264,11 @@ void Cenario::desenhar_na_viewport2D()
     float larg = desenhar_string("Angulo: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPushMatrix();
     glTranslatef(larg, 0, 0);
-    desenhar_string(jogadores[jog_vez]->angulo_texto(), TAM_TEXTO, FONTE, cor::AMARELO);
+    desenhar_string(tanqueNaVez->getAnguloEmString(), TAM_TEXTO, FONTE, cor::AMARELO);
     glPopMatrix();
 
     glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
-    larg = texto_alinhado_direita(jogadores[jog_vez]->lista_armas->arma_atual()->nome, TAM_TEXTO, FONTE, cor::AMARELO);
+    larg = texto_alinhado_direita(tanqueNaVez->getNomeDaArmaAtual(), TAM_TEXTO, FONTE, cor::AMARELO);
     glTranslatef(-larg, 0, 0);
     texto_alinhado_direita("Arma: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPopMatrix();
@@ -341,14 +279,74 @@ void Cenario::desenhar_na_viewport2D()
     larg = desenhar_string("Potencia: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPushMatrix();
     glTranslatef(larg, 0, 0);
-    desenhar_string(std::to_string(jogadores[jog_vez]->potencia), TAM_TEXTO, FONTE, cor::AMARELO);
+    desenhar_string(std::to_string(tanqueNaVez->getPotencia()), TAM_TEXTO, FONTE, cor::AMARELO);
     glPopMatrix();
 
     glTranslatef(JANELA_LARGURA - 2*ESPACAMENTO, 0, 0);
-    larg = texto_alinhado_direita(std::to_string(jogadores[jog_vez]->homens), TAM_TEXTO, FONTE, cor::AMARELO);
+    larg = texto_alinhado_direita(std::to_string(tanqueNaVez->getNumeroDeHomens()), TAM_TEXTO, FONTE, cor::AMARELO);
     glTranslatef(-larg, 0, 0);
     texto_alinhado_direita("Homens: ", TAM_TEXTO, FONTE, cor::LILAS_ESCURO);
     glPopMatrix();
+}
+
+
+/**
+ * Configura a viewport 3D principal e desenha o cenário na viewport.
+ */
+void Cenario::desenhar_na_viewport3D()
+{
+    // Configura GL_SCISSOR para coincidir com viewport para limpar a tela com
+    // corBase azul celeste
+    glScissor(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+    glEnable(GL_SCISSOR_TEST);
+    glClearColor(cor::AZUL_CELESTE[0], cor::AZUL_CELESTE[1], cor::AZUL_CELESTE[2], cor::AZUL_CELESTE[3]);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glDisable(GL_SCISSOR_TEST);
+
+    // Ativa iluminação e teste de profundidade
+    glEnable(GL_LIGHTING);
+    glEnable(GL_DEPTH_TEST);
+
+    // Configura Viewport e Projeção Perspectiva
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(FOV, ASPECT_RATIO, DNEAR, DFAR);
+    glViewport(VP3D_XMIN, VP3D_YMIN, VP3D_LARGURA, VP3D_ALTURA);
+
+    // Muda para matriz ModelView, posiciona a câmera e desenha o cenário
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    posicionar_camera();
+    this->desenhar();
+}
+
+/**
+ * desenhar()
+ * Função responsável por desenhar todos os objetos 3D que compõem o cenário.
+ */
+void Cenario::desenhar()
+{
+    // Desenha o terreno
+    terreno->desenhar();
+
+    // Desenha os jogadores
+    for (auto tanque : tanques) {
+        if (tanque.isVivo()) {
+            tanque.desenhar();
+        }
+    }
+
+    // Desenha o projétil, se houver
+    if (projetil != nullptr)
+    {
+        projetil->desenhar();
+    }
+
+    // Desenha a explosão, se houver
+    if (explosao != nullptr)
+    {
+        explosao->desenhar();
+    }
 }
 
 /**
@@ -375,13 +373,13 @@ void Cenario::gerenciar_teclado(unsigned char tecla)
         // Muda estado do cenário para ativar a animação do projétil
         case ' ':
             controle_jogador = false;
-            projetil = jogadores[jog_vez]->atirar(vento);
+            projetil = tanqueNaVez->atirar(this);
             glutTimerFunc(DT_ANIMACAO, Cenario::animacao_projetil, 1);    // ativa animacao
             break;
 
             // Tab: muda o armamento
         case '\t':
-            jogadores[jog_vez]->lista_armas->selecionar_proxima();
+            tanqueNaVez->selecionarProximaArma();
             break;
 
         default:
@@ -405,31 +403,27 @@ void Cenario::gerenciar_teclas_especiais(int tecla)
     switch (tecla)
     {
         case GLUT_KEY_LEFT:
-
-            jogadores[jog_vez]->angulo += 1;
-            if (jogadores[jog_vez]->angulo > 180)
-                jogadores[jog_vez]->angulo = 0;
+            tanqueNaVez->incrementarAnguloSentidoHorario();
             break;
 
         case GLUT_KEY_RIGHT:
-            jogadores[jog_vez]->angulo -= 1;
-            if (jogadores[jog_vez]->angulo < 0)
-                jogadores[jog_vez]->angulo = 180;
+            tanqueNaVez->incrementarAnguloSentidoAntiHorario();
             break;
 
-            // Controle de potência. Note o limite pelo número de homens!
         case GLUT_KEY_UP:
+            tanqueNaVez->aumentarPotenciaLento();
+            break;
+
         case GLUT_KEY_PAGE_UP:
-            jogadores[jog_vez]->potencia += (tecla == GLUT_KEY_PAGE_UP) ? 100 : 1;
-            if (jogadores[jog_vez]->potencia > 10*jogadores[jog_vez]->homens)
-                jogadores[jog_vez]->potencia = 10*jogadores[jog_vez]->homens;
+            tanqueNaVez->aumentarPotenciaRapido();
             break;
 
         case GLUT_KEY_DOWN:
+            tanqueNaVez->diminuirPotenciaLento();
+            break;
+
         case GLUT_KEY_PAGE_DOWN:
-            jogadores[jog_vez]->potencia -= (tecla == GLUT_KEY_PAGE_DOWN) ? 100 : 1;
-            if (jogadores[jog_vez]->potencia < 0)
-                jogadores[jog_vez]->potencia = 0;
+            tanqueNaVez->diminuirPotenciaRapido();
             break;
     }
 }
@@ -447,31 +441,53 @@ void Cenario::animacao_projetil(int valor)
 void Cenario::animar_projetil()
 {
     // atualiza a posição do projétil
-    assert(this->projetil != NULL);
-    this->projetil->atualizar_posicao();
+    assert(this->projetil != nullptr);
+    projetil->atualizar_posicao();
 
     // Se projétil atingiu um obstáculo, cria uma explosão no local atual
-    if (this->projetil->atingiu_obstaculo())
+    if (atingiuObstaculo(projetil->getPosicao()))
     {
-        this->explosao = this->projetil->detonar();
-        delete this->projetil;
-        this->projetil = NULL;
+        explosao = projetil->detonar();
+        delete projetil;
+        projetil = nullptr;
         glutTimerFunc(DT_ANIMACAO, Cenario::animacao_explosao, 0);   // 0 = explosao projetil
     }
 
-        // Caso contrário, continua a animação do projétil
+    // Caso contrário, continua a animação do projétil
     else
     {
         glutTimerFunc(DT_ANIMACAO, Cenario::animacao_projetil, 1);
     }
 }
 
+/**
+ * Verifica se a posição dada localiza-se dentro de algum obstáculo: tanque ou terreno.
+ * @param projetil
+ * @return true, se o projétil atingiu o terreno ou um tanque; false caso contrário.
+ */
+bool Cenario::atingiuObstaculo(double const *X)
+{
+    return atingiuTerreno(X) || atingiuUmTanque(X);
+}
+
+bool Cenario::atingiuTerreno(const double *posicao) {
+    return (posicao[2] - getCoordenadaZ(posicao[0], posicao[1])) <= RAIO_PROJETIL;
+}
+
+bool Cenario::atingiuUmTanque(const double *X) {
+    bool atingiu = false;
+    for (auto tanque = tanques.cbegin(); !atingiu && tanque != tanques.end(); ++tanque)
+    {
+        atingiu = tanque->atingiu(X);
+    }
+    return atingiu;
+}
 
 /**
  * Funções responsáveis pela animação da explosão.
  * Assume que existe explosão ocorrendo no cenário.
  */
-void Cenario::animacao_explosao(int value)
+void Cenario::animacao_explosao(int value)  // static
 {
     mundo.cenario->animar_explosao();
     glutPostRedisplay();
@@ -480,10 +496,10 @@ void Cenario::animacao_explosao(int value)
 void Cenario::animar_explosao()
 {
     // Confirma que existe explosão no cenário
-    assert(this->explosao != NULL);
+    assert(explosao != nullptr);
 
     // Chamar esta função continuamente enquanto a animação não tiver terminado.
-    if (this->explosao->proximo_frame()) // true enquanto animação não terminar
+    if (explosao->proximo_frame()) // true enquanto animação não terminar
     {
         glutTimerFunc(DT_ANIMACAO, Cenario::animacao_explosao, 0);
     }
@@ -507,31 +523,34 @@ void Cenario::animar_explosao()
 void Cenario::analisar_danos()
 {
     // Confirma que existe explosão. Esta função é chamada por animar_explosao().
-    assert(this->explosao != NULL);
+    assert(this->explosao != nullptr);
 
-    // Itera pelos jogadores vivos no cenário e atualiza seus respectivos números
-    // de homens.
-    for (int i = 0; i < mundo.n_jogadores; i++)
-    {
-        if (this->jogadores[i]->homens > 0)
-        {
-            this->jogadores[i]->homens -= this->explosao->dano(this->jogadores[i]->pos);
-
-            // Inclui jogador na fila para executar animação de morte se ele morreu.
-            if (this->jogadores[i]->homens <= 0)
-            {
-                this->jogadores[i]->homens = 0;
-                fila_jogadores_mortos.push(i);
-            }
-        }
-    }
+    registrarDanoAosTanquesAfetados();
 
     // Apaga o objeto explosão
-    delete this->explosao;
-    this->explosao = NULL;
+    delete explosao;
+    explosao = nullptr;
 
     // Voltar para o loop de executar a animação de saída dos jogadores
     retirar_jogadores_mortos();
+}
+
+void Cenario::registrarDanoAosTanquesAfetados() {
+    // Itera pelos jogadores vivos no cenário e atualiza seus respectivos números
+    // de homens.
+    for (auto &tanque : tanques)
+    {
+        if (tanque.isVivo())
+        {
+            tanque.removerHomens(explosao->dano(tanque.getPosicao()));
+
+            // Inclui jogador na fila para executar animação de morte se ele morreu.
+            if (!tanque.isVivo())
+            {
+                filaTanquesMortos.push(&tanque);
+            }
+        }
+    }
 }
 
 /**
@@ -550,15 +569,14 @@ void Cenario::analisar_danos()
 void Cenario::retirar_jogadores_mortos()
 {
     // Executa animações de morte.
-    if (!fila_jogadores_mortos.empty())
+    if (!filaTanquesMortos.empty())
     {
-        // retira índice do jogador da fila e o salva na variável jogador_morrendo
-        int i_jogador    = fila_jogadores_mortos.front();
-        jogador_morrendo = jogadores[i_jogador];
+        // retira índice do jogador da fila e o salva na variável tanqueMorrendo
+        tanqueMorrendo = filaTanquesMortos.front();
+        tanqueEmFoco = tanqueMorrendo;
         n_jogadores_vivos--;                                // menos 1 jogador vivo
-        jog_ativo        = i_jogador;                       // Mostra na tela o nome do jogador que morreu
 
-        fila_jogadores_mortos.pop();
+        filaTanquesMortos.pop();
         glutTimerFunc(DT_ANIMACAO, Cenario::animacao_morte_jogador, 1);
     }
 
@@ -566,12 +584,12 @@ void Cenario::retirar_jogadores_mortos()
         // muda a vez para o próximo jogador.
     else
     {
-        jogador_morrendo = NULL;
+        tanqueMorrendo = nullptr;
         if (this->rodada_encerrou())
         {
             // dá um pequeno intervalo entre a ultima animação e ir para o
             // resultado parcial.
-            glutTimerFunc(500, resultado_parcial, 0);
+            glutTimerFunc(500, resultado_parcial, 0);           // TODO: modificar esta operação para ser executada pelo objeto Mundo.
         }
 
             // Iniciar a vez do próximo jogador
@@ -593,30 +611,24 @@ void Cenario::retirar_jogadores_mortos()
  */
 bool Cenario::rodada_encerrou()
 {
-    bool resultado;
-
     // 0 ou 1 jogador - rodada encerrou.
-    if (this->n_jogadores_vivos < 2)
+    bool encerrou = (n_jogadores_vivos < 2);
+
+    // incrementar número de vitórias ao jogador que sobrou
+    if (n_jogadores_vivos == 1)
     {
-        if (this->n_jogadores_vivos == 1)
-        {
-            Jogador **j = jogadores;
-            while (!(*j)->vivo)
-            {
-                j++;
-            }
-            (*j)->vitorias++;
+        registrarVitoriaAosTanquesSobreviventes();
+    }
+
+    return encerrou;
+}
+
+void Cenario::registrarVitoriaAosTanquesSobreviventes() const {
+    for (auto tanque : tanques) {
+        if (tanque.isVivo()) {
+            tanque.registrarVitoria();
         }
-        resultado = true;
     }
-
-        // Mais de 1 jogador: retorna false
-    else
-    {
-        resultado = false;
-    }
-
-    return resultado;
 }
 
 /**
@@ -628,19 +640,21 @@ void Cenario::iniciar_vez_do_proximo_jogador()
     assert (n_jogadores_vivos > 1);
     do
     {
-        jog_vez = (jog_vez + 1) % mundo.n_jogadores;
+        ++tanqueNaVez;
+        if (tanqueNaVez == tanques.end())
+            tanqueNaVez = tanques.begin();
     }
-    while (!jogadores[jog_vez]->vivo);
+    while (!tanqueNaVez->isVivo());
 
     // Faz jogador da vez tmb ser o jogador ativo e segue o jogo!
-    jog_ativo = jog_vez;
-    jogadores[jog_vez]->preparar_para_jogar();
+    tanqueEmFoco = &*tanqueNaVez;
+    tanqueNaVez->preparar_para_jogar();
     controle_jogador = true;
 }
 
 /**
  * Funções responsáveis pela animação da morte de um jogador.
- * Manipula a variável jogador_morrendo.
+ * Manipula a variável tanqueMorrendo.
  */
 void Cenario::animacao_morte_jogador(int value)
 {
@@ -650,51 +664,34 @@ void Cenario::animacao_morte_jogador(int value)
 
 void Cenario::animar_morte_jogador()
 {
-    jogador_morrendo->morte_proximo_frame();
-
-    // Se ainda não tiver acabado os frames de animação, usar glutTimerFunc para
-    // continuar animando
-    if (!jogador_morrendo->anim_finalizada)
+    tanqueMorrendo->morte_proximo_frame();
+    if (tanqueMorrendo->isAnimacaoFinalizada())
     {
-        glutTimerFunc(DT_ANIMACAO, animacao_morte_jogador, 1);
-    }
+        explosao = tanqueMorrendo->gerarExplosaoAdicional();
+        tanqueMorrendo = nullptr;
 
-        // Acabou animação: remove jogador morrendo da tela
-    else
-    {
-        jogador_morrendo->vivo = false;
-        jogador_morrendo = NULL;
-
-        // Anima uma eventual explosao que a animação possa ter criado.
-        if (explosao != NULL)
+        // Anima uma eventual explosao que a animação possa ter criada.
+        if (explosao != nullptr)
         {
             glutTimerFunc(DT_ANIMACAO, animacao_explosao, 0);
         }
 
-            // Senão, volta para retirar_jogadores_mortos()
+        // Senão, volta para retirar_jogadores_mortos()
         else
         {
             retirar_jogadores_mortos();
         }
     }
+    else
+    {
+        glutTimerFunc(DT_ANIMACAO, animacao_morte_jogador, 1);
+    }
 }
 
 /**
- * Utilizada pela animação da morte de jogadores, esta função cria uma explosão
- * no local indicado pelo cenário.
- *
- * Futuramente, esta função pode ser implementada como uma "fila de explosões".
+ * getCoordenadaZ(): Retorna a posição z do solo na posição (x, y) dada.
  */
-void Cenario::criar_explosao(double pos[3], double raio)
-{
-    assert (explosao == NULL);
-    explosao = new Explosao(pos, raio);
-}
-
-/**
- * z_solo(): Retorna a posição z do solo na posição (x, y) dada.
- */
-double Cenario::z_solo(double x, double y)
+double Cenario::getCoordenadaZ(double const x, double const y)
 {
     return this->terreno->z(x, y);
 }
@@ -705,4 +702,3 @@ void Cenario::posicionar_camera()
               CAMERA_LOOKAT[0], CAMERA_LOOKAT[1], CAMERA_LOOKAT[2],
               CAMERA_VIEWUP[0], CAMERA_VIEWUP[1], CAMERA_VIEWUP[2]);
 }
-

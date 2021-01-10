@@ -18,7 +18,7 @@
 #include <GL/glut.h>
 #include <cmath>
 #include <graphics/cor.h>
-#include <auxiliares.hpp>
+#include <auxiliar/auxiliares.hpp>
 #include <constantes.hpp>
 #include <objetos3D.hpp>
 /* Constantes */
@@ -27,7 +27,7 @@ const int NPONTOS = 50;                                 // para desenhar superf�
 
 /* Constantes usados para desenhar objetos 3D */
 const float COR_ESTEIRA[]       = {0.3, 0.3, 0.3, 1};
-const float SPECULAR_ESTEIRA[4] = {0.75, 0.75, 0.75, 1};// cor specular da esteira
+const float SPECULAR_ESTEIRA[4] = {0.75, 0.75, 0.75, 1};// corBase specular da esteira
 const float BRILHO_ESTEIRA      = 48.0f;                // constante usado com GL_SHININESS
 
 const float SPECULAR_TANQUE[4]  = {0.4, 0.4, 0.4, 1};
@@ -44,8 +44,8 @@ const float BRILHO_TANQUE       = 32.0f;
  *
  * Assume que a matriz ativa é a MODELVIEW.
  *
- * - cor: cor "real" do jogador - já corrigido pelo número de homens
- * - angulo: Ângulo
+ * - corBase: corBase "real" do jogador - já corrigido pelo número de homens
+ * - anguloCanhao: Ângulo
  *
  * Nota: o canhão não é desenhado por esta função. Deve ser desenhado posterior-
  * mente, após o posicionamento do corpo do tanque no mundo.
@@ -115,7 +115,7 @@ void desenhar_esteira_tanque(const GLfloat *cor)
     desenhar_roda_tanque(cor);      // dianteira
     glPopMatrix();
 
-    // Desenhar "armadura" sobre a esteira. Possui a cor do tanque
+    // Desenhar "armadura" sobre a esteira. Possui a corBase do tanque
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, cor);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_TANQUE);
     glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, BRILHO_TANQUE);
@@ -167,7 +167,7 @@ void desenhar_esteira_tanque(const GLfloat *cor)
  */
 void desenhar_corpo_tanque(const GLfloat *cor)
 {
-    // Ajusta cor do tanque
+    // Ajusta corBase do tanque
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, cor);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_TANQUE);
     glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, BRILHO_TANQUE);
@@ -292,7 +292,7 @@ void desenhar_roda_tanque(const GLfloat *cor)
     desenhar_anel(1/20., 1/16.);
     glPopMatrix();
 
-    // desenha parede interna da roda na cor do tanque
+    // desenha parede interna da roda na corBase do tanque
     glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, cor);
     glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, SPECULAR_TANQUE);
     glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, BRILHO_TANQUE);
@@ -330,7 +330,7 @@ void desenhar_canhao()
 
 /**
  * Desenha um círculo no plano xz.
- * Vetor normal: (0, 1, 0).
+ * Vetor vetorNormal: (0, 1, 0).
  */
 void desenhar_circulo(const GLfloat r)
 {
@@ -349,7 +349,7 @@ void desenhar_circulo(const GLfloat r)
  * Os vetores normais das faces é automaticamente determinado.
  * r     = raio da faixa.
  * L     = largura do faixa.
- * sinal = sinal do vetor normal. -1 = inverte o vetor normal. Para uso em super-
+ * sinal = sinal do vetor vetorNormal. -1 = inverte o vetor vetorNormal. Para uso em super-
  * fícies internas.
  */
 void desenhar_faixa_circular(const GLfloat r, const GLfloat L)
@@ -365,7 +365,7 @@ void desenhar_faixa_circular(const GLfloat r, const GLfloat L, int sinal)
     for (int i = 0; i <= NPONTOS; i++)  // <= para fechar a circunferência.
     {
         double teta    = i*2*PI/NPONTOS;
-        glNormal3f(sinal*cos(teta), 0, sinal*sin(teta));         // vetor normal alinhado com a direção radial
+        glNormal3f(sinal*cos(teta), 0, sinal*sin(teta));         // vetor vetorNormal alinhado com a direção radial
         glVertex3f(r*cos(teta), -L/2, r*sin(teta));
         glVertex3f(r*cos(teta),  L/2, r*sin(teta));
     }
@@ -375,7 +375,7 @@ void desenhar_faixa_circular(const GLfloat r, const GLfloat L, int sinal)
 /**
  * Desenha um anel em torno do eixo y, com raio mínimo r e raio máximo R.
  * Anel localiza-se no plano XZ.
- * Vetor normal: (0, 1, 0) (direção positiva de y).
+ * Vetor vetorNormal: (0, 1, 0) (direção positiva de y).
  */
 void desenhar_anel(const GLfloat r, const GLfloat R)
 {

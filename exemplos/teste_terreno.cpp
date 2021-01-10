@@ -6,7 +6,7 @@
 #include <GL/glut.h>
 #include "../include/terreno.hpp"
 #include "../include/cenario.hpp"
-#include "../include/jogador.hpp"
+#include "objetos/jogador.hpp"
 #include "../include/globals.hpp"
 
 using namespace std;

@@ -13,7 +13,7 @@
  */
 #include <cmath>
 #include <iostream>
-#include "../include/auxiliares.hpp"
+#include "auxiliar/auxiliares.hpp"
 
 /**
  * Retorna o produto escalar entre dois vetores.

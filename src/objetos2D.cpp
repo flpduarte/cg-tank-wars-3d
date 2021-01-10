@@ -23,7 +23,7 @@
  * font = fonte do stroke character. Pode ser GLUT_STROKE_ROMAN ou
  *        GLUT_STROKE_MONO_ROMAN.
  * str  = string a ser desenhada.
- * cor  = cor do texto, RGB.
+ * corBase  = corBase do texto, RGB.
  *
  * Variação vertical do caractere é 119,05 unidades para cima e até
  * 33,33 unidades para baixo.

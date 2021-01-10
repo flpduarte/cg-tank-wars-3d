@@ -38,13 +38,8 @@ const int JANELA_POSICAO_Y =  100;
 #define MASSA_MUNICAO       1.0   // TBD - municao.cpp
 #define RAIO_INCINERADOR    3.0     // Raio de explosão do incinerador; os outros são baseados nesta - usado em armas.cpp (ok), explosoes.cpp (?) e jogador.cpp (???)
 #define QTD_INCINERADOR     100     // Qtd inicial de incineradores por jogador - armas.cpp
-#define FRACAO_RAIO_DANO    0.8     // explosoes.cpp
-#define FRACAO_EFEITO_COLAT 1.4    // Raio de dano / Raio de Explosao no modelo de explosão - explosoes.cpp
 
 /* Constates que influenciam na velocidade de animação e na sensação do jogo */
-#define GRAVIDADE           50.0     // Projetil.cpp
-#define FATOR_POT_VEL       0.16     // Fator que converte potência em velocidade inicial - jogador.cpp
-#define DT                  0.033    // Passo de integração - interfaces.cpp (??)
 #define DT_ANIMACAO         10      // Em ms; intervalo de tempo entre chamadas do glutTimerFunc - cenario.cpp
 
 /* Dimensões de referência para desenhar objetos */
@@ -58,21 +53,5 @@ const float COR_PROJETIL[]       = {0.4, 0.4, 0.4, 1.0};
 const float SPECULAR_PROJETIL[]  = {0.75, 0.75, 0.75, 0.75};
 const float BRILHO_PROJETIL      = 20.0f;
 const double RAIO_PROJETIL        = 4*1/32. * TAMANHO_TANQUE; // coincide com raio do canhão
-
-/* Constantes utilizadas por mundo.hpp e mundo.c */
-
-
-/* Tipos enumerados */
-/**
- * Tela: tipo enumerado para definir qual é a tela atual ativa.
- */
-enum Tela
-{
-    TELA_INICIAL,
-    TELA_RENOMEAR_JOGADORES,
-    TELA_RODADA,
-    TELA_RESULTADO_PARCIAL,
-    TELA_COMPRAS
-};
 
 #endif

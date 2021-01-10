@@ -15,7 +15,8 @@
 /* Bibliotecas */
 #include <iostream>
 #include <GL/glut.h>
-#include "../include/armas.hpp"
+#include <constantes.hpp>
+#include "objetos/armas.hpp"
 #include "../include/globals.hpp"
 #include "../include/interacoes.hpp"
 

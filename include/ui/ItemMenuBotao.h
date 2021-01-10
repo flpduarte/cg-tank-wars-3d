@@ -8,6 +8,8 @@
 #include <string>
 #include <ui/ItemMenuRetangular.h>
 
+class Mundo;
+
 /**
  * ItemMenuBotao: Implementa a interface ItemMenu.
  *
@@ -23,7 +25,7 @@ class ItemMenuBotao : public ItemMenuRetangular
     GLfloat const *cor_rotulo;
 
 public:
-    ItemMenuBotao(std::string rotulo, void acao(void), GLfloat const *cor_rotulo = cor::LILAS);
+    ItemMenuBotao(std::string rotulo, void (acao)(), GLfloat const *cor_rotulo = cor::LILAS);
     ~ItemMenuBotao();
 
     void desenhar() final;

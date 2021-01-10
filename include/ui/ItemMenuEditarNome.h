@@ -18,7 +18,7 @@
  * | Jogador 1                     |
  + +-------------------------------+
  *
- * Clicar Enter sobre a caixa muda a cor de seu fundo para um azul escuro e
+ * Clicar Enter sobre a caixa muda a corBase de seu fundo para um azul escuro e
  * apresenta um cursor à frente da última letra. O botão estará no modo edição,
  * e teclas normais do teclado modificarão o string título.
  *

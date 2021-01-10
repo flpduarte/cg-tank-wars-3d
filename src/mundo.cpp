@@ -17,19 +17,21 @@
 #include <GL/glut.h>
 #include <cassert>
 #include <iostream>
-#include <armas.hpp>
+#include <objetos/armas.hpp>
+#include <objetos/jogador.hpp>
 #include <cenario.hpp>
 #include <mundo.hpp>
-#include <jogador.hpp>
-#include <globals.hpp>
-#include <configmenu.hpp>
+#include <ui/Menu.hpp>
+#include <ui/ItemMenuAlterarValorNumerico.h>
+#include <ui/ItemMenuBotao.h>
+#include <ui/ItemMenuEditarNome.h>
 
 
 /* Funções auxiliares */
 
 /**
  * Deixa a tela preta e ajusta janela de recorte de forma que as Coordenadas do
- * Mundo coincidam com as Coordenadas da Tela.
+ * Mundo coincidam com as Coordenadas da TelaAtual.
  */
 void preparar_tela_para_menu()
 {
@@ -65,6 +67,7 @@ Mundo::Mundo()
     this->tela_atual  = TELA_INICIAL;
     this->n_jogadores = PADRAO_N_JOGADORES;
     this->n_rodadas   = PADRAO_N_RODADAS;
+    this->rodada_atual = -1;
     this->menu_ativo  = nullptr;
     this->cenario     = nullptr;
 }
@@ -74,10 +77,8 @@ Mundo::Mundo()
  */
 Mundo::~Mundo()
 {
-
-    for (int i = 0; i < MAX_JOGADORES; i++)
-    {
-        delete this->jogadores[i];
+    for (auto & jogador : this->jogadores) {
+        delete jogador;
     }
 }
 
@@ -130,13 +131,15 @@ void Mundo::ir_para_tela_renomear_jogadores()
 void Mundo::iniciar_jogo()
 {
     // Zera todas as variáveis do jogo
-    rodada_atual = 0;
+    jogadoresAtivos.clear();
     for (int i = 0; i < n_jogadores; i++)
     {
-        jogadores[i]->condicao_inicial();
+        jogadores[i]->resetar_jogador();
+        jogadoresAtivos.emplace_back(jogadores[i]);
     }
 
     // Inicia a primeira rodada
+    rodada_atual = 0;
     this->iniciar_rodada();
 }
 
@@ -152,21 +155,15 @@ void Mundo::iniciar_rodada()
     this->tela_atual = TELA_RODADA;
 
     // Remove menus da memória
-    if (this->menu_ativo != NULL)
+    if (this->menu_ativo != nullptr)
     {
         delete this->menu_ativo;
-        this->menu_ativo = NULL;
+        this->menu_ativo = nullptr;
     }
 
     // Prepara para início da rodada
     rodada_atual++;
-    for (int i = 0; i < n_jogadores; i++)
-    {
-        jogadores[i]->reiniciar();
-    }
-
-    // Cria um novo cenário
-    cenario = new Cenario;
+    cenario = new Cenario(jogadoresAtivos);
     glutPostRedisplay();
 }
 
@@ -315,7 +312,7 @@ void Mundo::interacao_teclas_especiais(int tecla, int x, int y)
  */
 void Mundo::interacao_mouse(int botao, int estado, int x, int y)
 {
-    switch (mundo.tela_atual)
+    switch (tela_atual)
     {
         case TELA_INICIAL:
         // TODO
@@ -337,4 +334,135 @@ void Mundo::interacao_mouse(int botao, int estado, int x, int y)
         // TODO
         break;
     }
+}
+
+
+/* ---- Métodos para criação dos menus do jogo ---- */
+
+/**
+ * Cria um menu principal. Retorna o ponteiro para o objeto Menu.
+ */
+Menu* Mundo::criar_menu_principal()
+{
+    Menu *menu = new Menu;
+    Mundo &mundo = Mundo::getInstance();
+
+    // adiciona opções
+    menu->inserir_opcao(new ItemMenuAlterarValorNumerico("Numero de Rodadas", 1, 100, mundo.n_rodadas));
+    menu->inserir_opcao(new ItemMenuAlterarValorNumerico("Numero de Jogadores", 2, Mundo::MAX_JOGADORES, mundo.n_jogadores));
+    menu->inserir_opcao(new ItemMenuBotao("INICIAR", renomear_jogadores));
+    return menu;
+}
+
+/**
+ * Cria menu para renomear os jogadores. Será algo do tipo:
+ *
+ * Jogador 1
+ * Jogador 2
+ * ...
+ * INICIAR JOGO     (botão) -> iniciar_jogo()
+ * Voltar           (botão) -> ir_para_tela_inicial()
+ */
+Menu* Mundo::criar_menu_renomear_jogadores()
+{
+    Menu *menu = new Menu();
+
+    // Insere as opções de renomear cada jogador
+    for (int i = 0; i < n_jogadores; i++)
+    {
+        ItemMenuEditarNome *nova = new ItemMenuEditarNome(jogadores[i]->nome, jogadores[i]->corBase);
+        menu->inserir_opcao(nova);
+    }
+
+    // Insere botões INICIAR e voltar
+    // Obs: para chamar uma função global com o mesmo nome de uma função dentro da classe: basta preceder o nome da função
+    // por "::" - ou seja, a função está localizado no namespace anônimo.
+    // https://stackoverflow.com/questions/18107094/call-global-function-with-same-name-as-class-method/18107296
+    // TODO: Verificar a possibilidade de referenciar diretamente aos métodos da classe.
+    menu->inserir_opcao(new ItemMenuBotao("INICIAR JOGO", ::iniciar_jogo));  // Chama iniciar_jogo() de interacoes.hpp.
+    menu->inserir_opcao(new ItemMenuBotao("Voltar", tela_inicial));
+    return menu;
+}
+
+/**
+ *
+ */
+Menu* Mundo::criar_menu_resultado_parcial()
+{
+    Menu *menu = new Menu;
+
+    // Configura o quadro resultado parcial
+    // TODO
+    return menu;
+}
+
+/**
+ * Exibe o menu de compras para o jogador dado.
+ * O jogador é passado como argumento para facilitar a escrita da
+ * função.
+ */
+Menu* Mundo::criar_menu_compras(Jogador *)
+{
+    // TODO
+    return new Menu();
+}
+
+
+/* --- Implementação das funções usadas como callback, localizadas fora da classe Mundo --- */
+
+/**
+ * Vai para a tela inicial do jogo.
+ * Chega-se nessa tela:
+ * - Ao iniciar o jogo
+ * - Ao clicar voltar da tela de renomear jogadores;
+ * - Ao terminar um jogo.
+ */
+void tela_inicial()
+{
+    Mundo::getInstance().ir_para_tela_inicial();
+}
+
+/**
+ * Transiciona para a tela de renomear jogadores. Executado após clicar "INICIAR"
+ * na tela inicial.
+ */
+void renomear_jogadores()
+{
+    Mundo::getInstance().ir_para_tela_renomear_jogadores();
+}
+
+/**
+ * Executa as ações de iniciar um jogo do zero. Executada após clicar "INICIAR"
+ * na tela de renomear os jogadores.
+ */
+void iniciar_jogo()
+{
+    Mundo::getInstance().iniciar_jogo();
+}
+
+/**
+ * Inicia o loop de uma rodada atual
+ */
+void iniciar_rodada()
+{
+    Mundo::getInstance().iniciar_rodada();
+}
+
+/**
+ * Apresenta a tela de resultados parciais, após o término de uma rodada.
+ * É chamada por um glutTimerFunc(), daí a necessidade da entrada, mesmo não sendo usada.
+ */
+void resultado_parcial(int valor)
+{
+    Mundo::getInstance().ir_para_resultado_parcial();
+}
+
+/**
+ * Apresenta o menu contendo os itens que o jogador pode comprar.
+ * Recebe como entrada o número do jogador. Deve ser executado com cada jogador
+ * ativo.
+ */
+void tela_compras(unsigned int jogador)
+{
+    Mundo::getInstance().ir_para_tela_compras(jogador);
 }

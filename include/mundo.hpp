@@ -8,16 +8,14 @@
  * Autores:
  * Guilherme Felipe Reis Duarte     RA: 120805
  *
- * Define a classe Mundo e outros dados associados.
+ * Classe Mundo: Gerencia o jogo: as telas possíveis do jogo (menu principal, cenario, placar, etc.) e o momento de
+ * alternar entre as telas; armazena também as informações dos jogadores.
  *
- * Possíveis estados do jogo:
- * Tela Inicial -> Renomear Jogadores,
  */
 #ifndef MUNDO_HPP
 #define MUNDO_HPP
 
-#include <constantes.hpp>
-#include "ui/Menu.hpp"
+#include <vector>
 
 class Jogador;
 class Menu;
@@ -26,34 +24,64 @@ class Cenario;
 /**
  * Mundo: Contém as variáveis de estado do mundo tais como tela atual, no. de
  * jogadores, etc.
+ *
+ * Escrito como um Singleton, segundo as orientações daqui:
+ * https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
  */
 class Mundo
 {
+    // --- Procedimento para construir um Singleton ---
 public:
+    static Mundo &getInstance() {
+        static Mundo instance;          // Static variable within a function: persists during the entire program.
+        return instance;
+    }
+
+    // C++ 11: deletar métodos de copiar / assign que eventualmente poderiam criar uma cópia do singleton
+    Mundo(Mundo const &) = delete;
+    void operator=(Mundo const&) = delete;
+
+    // Tornar construtor e destrutor privativos.
+private:
+    Mundo();
+    ~Mundo();
+
+
+    // --------- Restante da classe --------------
+private:
+
     static const int MAX_JOGADORES = 10;
 
-    // Lista de jogadores. Só estarão ativos os jogadores de 0 a n_jogadores - 1
-    Jogador *jogadores[MAX_JOGADORES];
+    enum TelaAtual {
+        TELA_INICIAL,
+        TELA_RENOMEAR_JOGADORES,
+        TELA_RODADA,
+        TELA_RESULTADO_PARCIAL,
+        TELA_COMPRAS
+    } tela_atual;
+
+public:
+    // Menu atual
+    Menu    *menu_ativo;            // Armazena o menu atualmente ativo
+
+    Jogador *jogadores[MAX_JOGADORES];              // Lista de jogadores.
+    std::vector<Jogador *> jogadoresAtivos;         // Só estarão ativos os jogadores de 0 a n_jogadores - 1
 
     // configurações do jogo
     int n_jogadores;    // 2, ..., MAX_JOGADORES <= 10
     int n_rodadas;      // > 0
 
     // estado atual do mundo
-    Tela tela_atual;
     int rodada_atual;   // 1, 2, ..., n_rodadas
     Cenario *cenario;   // Armazena o cenário atual
 
-    // Construtor e destrutor
-    Mundo();
-    ~Mundo();
 
-    // Métodos que transicionam de uma tela para outra e realizam o loop do jogo
+    // Transição de telas de uma tela para outra e realizam o loop do jogo
     void ir_para_tela_inicial();            // Vai para a tela inicial
-    void ir_para_tela_renomear_jogadores();      // Tela inicial -> Escolha jogadores
-    void iniciar_jogo();            // Escolha jogadores -> jogo
-    void iniciar_rodada();          // Inicia o loop de uma rodada_atual
-    void ir_para_resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
+    void ir_para_tela_renomear_jogadores();      // TelaAtual inicial -> Escolha jogadores
+    void iniciar_jogo();                    // Escolha jogadores -> jogo
+    void iniciar_rodada();                  // Cria um novo cenário e inicia o loop de uma rodada_atual
+    void ir_para_resultado_parcial();       // Vai para TELA_RESULTADO_PARCIAL e exibe placares ao fim de uma rodada
     void ir_para_tela_compras(int);         // Exibe o menu de compras de cada jogador
 
     // Métodos de interação com o usuário. São passados às funções do OpenGL
@@ -78,8 +106,22 @@ public:
     void funcao_exibicao();
 
 private:
-    Menu    *menu_ativo;            // Armazena o menu atualmente ativo
-
+    /* Funções que criam os menus utilizados no jogo. (Transferido do arquivo configmenu.hpp / configmenu.cpp) */
+    Menu *criar_menu_principal();
+    Menu *criar_menu_renomear_jogadores();
+    Menu *criar_menu_resultado_parcial();
+    Menu *criar_menu_compras(Jogador *);
 };
 
+/**
+ * As funções abaixo são utilizadas como callback em diversos objetos gerenciados pelo objeto Mundo. Para serem passadas
+ * como argumento, elas não podem ser métodos não estáticos; ao invés disso, elas servem de wrapper para chamar o método
+ * correspondente do objeto Mundo global.
+ */
+void tela_inicial();            // Vai para a tela inicial
+void renomear_jogadores();      // TelaAtual inicial -> Escolha jogadores
+void iniciar_jogo();            // Escolha jogadores -> jogo
+void iniciar_rodada();          // Inicia o loop de uma rodada_atual
+void resultado_parcial(int);    // Vai para TELA_RESULTADO_PARCIAL e exibe placares.
+void tela_compras(unsigned int);// Exibe o menu de compras de cada jogador
 #endif

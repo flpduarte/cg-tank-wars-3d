@@ -5,7 +5,7 @@
 #include <graphics/cor.h>
 
 /**
- * Copia valores de cor de origem para dest.
+ * Copia valores de corBase de origem para dest.
  *
  */
 void cor::definir_cor(GLfloat *dest, const GLfloat *origem)

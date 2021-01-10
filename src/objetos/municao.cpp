@@ -15,9 +15,16 @@
 /* Bibliotecas */
 #include <GL/glut.h>
 #include <constantes.hpp>
-#include <municao.hpp>
-#include <explosoes.hpp>
+#include <objetos/municao.hpp>
+#include <objetos/explosoes.hpp>
 #include <objetos3D.hpp>
+
+/* --- Implementação das funções da classe Municao --- */
+
+double Municao::massa()
+{
+    return m;
+}
 
 
 /* Implementação das funções da classe MunicaoExplosiva */
