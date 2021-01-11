@@ -2,15 +2,16 @@
 // Created by Felipe on 07/01/2021.
 //
 
-#include <objetos/Tanque.h>
+#include <cmath>
+#include <cenario/Tanque.h>
 #include <objetos/jogador.hpp>
 #include <graphics/cor.h>
 #include <auxiliar/auxiliares.hpp>
-#include <cmath>
 #include <objetos3D.hpp>
-#include <objetos/explosoes.hpp>
+#include <objetos/explosoes/Explosao.h>
+#include "objetos/explosoes/BolaDeFogo.h"
 
-Tanque::Tanque(Jogador &jogador) : jogador(jogador) {
+Tanque::Tanque(Jogador &jogador) : CenarioObject(), jogador(jogador) {
     cor::definir_cor(this->corAtual, jogador.corBase);
     this->posicao[0] = 0;
     this->posicao[1] = 0;
@@ -257,7 +258,7 @@ bool Tanque::atingiu(const double *X) const {
         // Para ser mais preciso, seria necessário calcular se o projétil
         // atingiu alguma parte do tanque.
         // Por simplicidade, considerou-se que o tanque possui formato
-        // esférico, com raio = 3/4 de seu comprimento. Esse é o chamado
+        // esférico, com raioProjetil = 3/4 de seu comprimento. Esse é o chamado
         // "hitbox" do tanque.
     else
         return ((posicao[0] - X[0]) * (posicao[0] - X[0]) +
@@ -353,7 +354,7 @@ void Tanque::meltdown()
  */
 Explosao *Tanque::gerarExplosaoAdicional() const {
     if (animacaoFinalizada && variacao_morte > 0)
-        return new Explosao(posicao, RAIO_INCINERADOR * pow(2, variacao_morte - 1));
+        return new BolaDeFogo(posicao, RAIO_INCINERADOR * pow(2, variacao_morte - 1));
     else
         return nullptr;
 }

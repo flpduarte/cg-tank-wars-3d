@@ -4,8 +4,8 @@
 #include <cstdlib>
 #include <iostream>
 #include <GL/glut.h>
-#include "../include/terreno.hpp"
-#include "../include/cenario.hpp"
+#include "cenario/Terreno.h"
+#include "cenario/Cenario.hpp"
 #include "objetos/jogador.hpp"
 #include "../include/globals.hpp"
 

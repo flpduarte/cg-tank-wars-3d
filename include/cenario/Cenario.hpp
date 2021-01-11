@@ -21,8 +21,9 @@
 #include <vector>
 #include <queue>
 #include <random>
-#include <objetos/Tanque.h>
+#include <cenario/Tanque.h>
 #include <GL/glut.h>
+#include <set>
 #include "constantes.hpp"
 
 class Terreno;
@@ -65,6 +66,7 @@ class Cenario
 
 
     /* Objetos no cenário */
+    //std::set<int, CenarioObject &> objetos;
     Terreno *terreno;                           // Terreno atual
     std::vector<Tanque> tanques;                // Lista de tanques no cenário, na ordem da esquerda para a direita
     Projetil *projetil;                         // Projétil em voo
@@ -91,10 +93,10 @@ public:
     double getCoordenadaZ(double x, double y);      // Retorna a coordenada z do solo em (x, y)
 
     // Verificar se a posição do projétil atinge algum obstáculo no cenário
-    bool atingiuObstaculo(double const *posicao);
+    bool detectarColisaoEntreProjetilEObtaculo();
 private:
-    bool atingiuTerreno(const double *posicao);
-    bool atingiuUmTanque(const double *posicao);
+    bool atingiuTerreno();
+    bool atingiuUmTanque();
 
 public:
     // Gerenciar teclas para controlar os tanques
@@ -124,7 +126,6 @@ private:
     void posicionar_camera();
     int  definir_vento();               // Define vento conforme configurações do jogo
     void criarListaDeTanquesEmOrdemAleatoria(std::vector<Jogador *> const &listaJogadores);  // Cria os tanques do cenário a partir da lista de juogadores recebida
-    // Reordena os tanques
     void posicionarTanques();           // Posiciona os tanques no cenário, após eles terem sido reordenados.
 
     void desenhar();                    // Desenha o cenário em si: terreno, jogadores, projéteis, explosões, etc.

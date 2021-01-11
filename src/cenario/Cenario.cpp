@@ -27,13 +27,13 @@
 #include <iostream>
 #include <random>
 #include <graphics/cor.h>
-#include <objetos/armas.hpp>
+#include <objetos/armas/armas.hpp>
 #include <objetos/jogador.hpp>
-#include <terreno.hpp>
-#include <cenario.hpp>
+#include <cenario/Terreno.h>
+#include <cenario/Cenario.hpp>
 #include <objetos2D.hpp>
 #include <constantes.hpp>
-#include "objetos/explosoes.hpp"
+#include <objetos/explosoes/Explosao.h>
 
 /* --- Implementação da classe Cenario --- */
 
@@ -445,7 +445,7 @@ void Cenario::animar_projetil()
     projetil->atualizar_posicao();
 
     // Se projétil atingiu um obstáculo, cria uma explosão no local atual
-    if (atingiuObstaculo(projetil->getPosicao()))
+    if (detectarColisaoEntreProjetilEObtaculo())
     {
         explosao = projetil->detonar();
         delete projetil;
@@ -462,23 +462,28 @@ void Cenario::animar_projetil()
 
 /**
  * Verifica se a posição dada localiza-se dentro de algum obstáculo: tanque ou terreno.
- * @param projetil
+ * Por simplicidade, será considerado que o projétil é uma esfera, para fins de detecção de colisão.
+ *
  * @return true, se o projétil atingiu o terreno ou um tanque; false caso contrário.
  */
-bool Cenario::atingiuObstaculo(double const *X)
+bool Cenario::detectarColisaoEntreProjetilEObtaculo()
 {
-    return atingiuTerreno(X) || atingiuUmTanque(X);
+    return atingiuTerreno() || atingiuUmTanque();
 }
 
-bool Cenario::atingiuTerreno(const double *posicao) {
-    return (posicao[2] - getCoordenadaZ(posicao[0], posicao[1])) <= RAIO_PROJETIL;
+bool Cenario::atingiuTerreno() {
+    double x = projetil->getPosicao()[0];
+    double y = projetil->getPosicao()[1];
+    double z = projetil->getPosicao()[2];
+    return (z - getCoordenadaZ(x, y) <= projetil->getRaio());
 }
 
-bool Cenario::atingiuUmTanque(const double *X) {
+bool Cenario::atingiuUmTanque() {
     bool atingiu = false;
     for (auto tanque = tanques.cbegin(); !atingiu && tanque != tanques.end(); ++tanque)
     {
-        atingiu = tanque->atingiu(X);
+        // todo: revisar este método de detecção de colisão
+        atingiu = tanque->atingiu(projetil->getPosicao());
     }
     return atingiu;
 }

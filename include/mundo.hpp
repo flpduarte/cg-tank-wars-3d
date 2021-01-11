@@ -30,6 +30,10 @@ class Cenario;
  */
 class Mundo
 {
+    /* Configuração padrão do jogo */
+    static const int PADRAO_N_JOGADORES  = 2;
+    static const int PADRAO_N_RODADAS    = 10;
+
     // --- Procedimento para construir um Singleton ---
 public:
     static Mundo &getInstance() {

@@ -17,9 +17,9 @@
 #include <GL/glut.h>
 #include <cassert>
 #include <iostream>
-#include <objetos/armas.hpp>
+#include <objetos/armas/armas.hpp>
 #include <objetos/jogador.hpp>
-#include <cenario.hpp>
+#include <cenario/Cenario.hpp>
 #include <mundo.hpp>
 #include <ui/Menu.hpp>
 #include <ui/ItemMenuAlterarValorNumerico.h>

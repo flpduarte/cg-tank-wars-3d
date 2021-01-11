@@ -12,7 +12,7 @@
  */
 #include <ui/Menu.hpp>
 #include <objetos/jogador.hpp>
-#include <cenario.hpp>
+#include <cenario/Cenario.hpp>
 
 //Menu::Menu(int x0, int y0):
 Menu::Menu():

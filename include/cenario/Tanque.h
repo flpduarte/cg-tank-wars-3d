@@ -19,6 +19,7 @@ enum TipoMorte
 #include <vector>
 #include <queue>
 #include <globals.hpp>
+#include <cenario/CenarioObject.h>
 
 class Projetil;
 class Explosao;
@@ -35,9 +36,10 @@ class Jogador;
  * Por fim, é esta a classe que produzirá a animação de morte do tanque.
  * Todo: talvez seja o caso de delegar a morte a outro objeto; analisar essa possibilidade.
  */
-class Tanque {
+class Tanque : public CenarioObject {
 
     /* Dimensões de referência para desenhar objetos */
+public:
     static constexpr double TAMANHO_TANQUE     = 3.0;          // fator de escala do canhão
     static constexpr double HITBOX_TANQUE      = 3.*TAMANHO_TANQUE/4.;
     static constexpr double COMPR_CANHAO       = 0.75;         // comprimento do canhão, sem aplicar fator de escala
@@ -46,6 +48,7 @@ class Tanque {
     static const int POTENCIA_MAXIMA = 1000;
     static constexpr double FATOR_POT_VEL      = 0.16;
 
+private:
     /* Animação do meltdown. TODO: Após implementar a classe Tanque, verificar a possibilidade de delegar a animação de
      * explosão para outra classe. */
     const unsigned int frame_interv_meltdown = 50;

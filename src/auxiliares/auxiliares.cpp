@@ -25,17 +25,17 @@ double aux::prod_escalar(const double A[3], const double B[3])
 }
 
 /**
- * Salva o resultado do produto vetorial entre dois vetores no vetor res.
+ * Salva o resultado do produto vetorial entre dois vetores no vetor resultado.
  * Ambas os fatores devem ter dimensão = 3.
  *
- * Retorna: o próprio ponteiro res.
+ * Retorna: o próprio ponteiro resultado.
  */
-double *aux::prod_vetorial(const double A[3], const double B[3], double *res)
+double *aux::prod_vetorial(const double A[3], const double B[3], double *resultado)
 {
-	res[0] = A[1]*B[2] - A[2]*B[1];
-	res[1] = A[2]*B[0] - A[0]*B[2];
-	res[2] = A[0]*B[1] - A[1]*B[0];
-	return res;
+    resultado[0] = A[1] * B[2] - A[2] * B[1];
+    resultado[1] = A[2] * B[0] - A[0] * B[2];
+    resultado[2] = A[0] * B[1] - A[1] * B[0];
+	return resultado;
 }
 
 /**

@@ -16,7 +16,7 @@
 #define ARMAS_HPP
 
 #include <array>
-#include <objetos/municao.hpp>
+#include <objetos/armas/Arma.h>
 
 #define N_ARMAMENTOS 4
 
@@ -37,11 +37,11 @@ enum TipoMunicao
  */
 struct MunicaoEQtd
 {
-    Municao *arma;
+    Arma *arma;
     int qtd;
 
     MunicaoEQtd();                  // Cria um elemento vazio
-    MunicaoEQtd(Municao *);         // Cria elemento com munição e sua *quantidade por lote*
+    MunicaoEQtd(Arma *);         // Cria elemento com munição e sua *quantidade por lote*
 
     /**
      * Define operador = para uso com MunicaoEQtd
@@ -65,69 +65,17 @@ public:
 
     // Seleção de armamentos
     void selecionar_proxima();  // seleciona próxima arma.
-    Municao *arma_atual();      // retorna a arma atual
+    Arma *arma_atual();      // retorna a arma atual
     int qtd_atual();            // retorna a qtd de tiros da arma atual
 
     // Alteração da qtd de munição
     void adicionar_lote(int, int);      // Adiciona munição à arma escolhida (ao comprar um armamento)
     void remover_lote(int, int);        // Remove um lote de tiros (ao desfazer uma compra)
-    Municao *atirarArmaAtual();       // Decrementa 1 da qtd de tiros da arma atual. Retorna a arma atual.
+    Arma *atirarArmaAtual();       // Decrementa 1 da qtd de tiros da arma atual. Retorna a arma atual.
     void condicao_inicial();            // Restaura a lista para a condição de início de jogo'
                                         // (qtd padrão de tiros)
 };
 
-
-/**
- * Incinerador: Armamento básico
- */
-class Incinerador : public MunicaoExplosiva
-{
-private:
-    int r_explosao;
-protected:
-    int raio_explosao();
-public:
-    Incinerador();
-};
-
-/**
- * Incinerador Mark II: dobro da força do incinerador.
- */
-class IncineradorM2 : public MunicaoExplosiva
-{
-private:
-    int r_explosao;
-protected:
-    int raio_explosao();
-public:
-    IncineradorM2();
-};
-
-/**
- * Bomba 20 kilotons: Dobro da forma do Mark II. Faz um estrago!
- */
-class Bomba20Kilotons : public MunicaoExplosiva
-{
-private:
-    int r_explosao;
-protected:
-    int raio_explosao();
-public:
-    Bomba20Kilotons();
-};
-
-/**
- * Bomba 5 Megatons: Dobro do raio da de 20 kilotons, a arma mais forte!
- */
-class Bomba5Megatons : public MunicaoExplosiva
-{
-private:
-    int r_explosao;
-protected:
-    int raio_explosao();
-public:
-    Bomba5Megatons();
-};
 
 /* --- Funções --- */
 void criar_lista_global_armamentos();

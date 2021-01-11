@@ -1,32 +1,18 @@
-/**
- * explosoes.cpp
- *
- * Tank Wars versão 3D
- * Baseado no jogo Tank Wars, por Kenneth Morse
- *
- *
- * Autores:
- * Guilherme Felipe Reis Duarte     RA: 120805
- *
- * Implementa as funções que realizam os efeito de detonação.
- * Inicialmente conterá somente explosão;
- * No futuro, será incluso aqui a produção de terra (Ball of Dirt).
- */
-#include <GL/glut.h>
+//
+// Created by Felipe on 10/01/2021.
+//
+#include <GL/gl.h>
 #include <cmath>
+#include <objetos/explosoes/BolaDeFogo.h>
 #include <graphics/cor.h>
-#include "objetos/explosoes.hpp"
-#include "constantes.hpp"
-#include "objetos3D.hpp"
+#include <constantes.hpp>
+#include <objetos3D.hpp>
 
 /**
- * Explosao
- * Classe que representa uma explosão!
- * Especificamente, é responsável por desenhar a animação da explosão,
- * bem como "avisar" à classe Cenario quando a animação encerrar.
+ * BolaDeFogo
+ * Explosão que provoca danos aos outros tanques.
  *
- * Efeito de explosão: exibe na tela o efeito de explosão a partir do epicentro
- * dado.
+ * Efeito de explosão: exibe na tela o efeito de explosão a partir do epicentro dado.
  * Provoca danos nos tanques conforme modelo abaixo.
  *
  * Modelo de dano:
@@ -35,17 +21,17 @@
  * +-----------------|--------|------------>
  * Raio de explosão  | Raio de dano
  * Tanques dentro    | Tanques aqui sofrem dano parcial; cai linearmente
- * deste raio sofrem | com a distância a partir do raio de explosão.
- * 100% de dano      | Raio de dano = aprox. 125% do raio de explosão
+ * deste raioProjetil sofrem | com a distância a partir do raioProjetil de explosão.
+ * 100% de dano      | Raio de dano = aprox. 125% do raioProjetil de explosão
  * configurado como  | (configurado como a constante FRACAO_EFEITO_COLATERAL)
  * FRACAO_RAIO_DANO
  */
 
-Explosao::Explosao(const double pos[3], double r): raio(r), t(0), finalizado(false), raio_atual(0)
+BolaDeFogo::BolaDeFogo(const double epicentro[3], double r): raio(r), t(0), finalizado(false), raio_atual(0)
 {
-    epicentro[0] = pos[0];
-    epicentro[1] = pos[1];
-    epicentro[2] = pos[2];
+    this->epicentro[0] = epicentro[0];
+    this->epicentro[1] = epicentro[1];
+    this->epicentro[2] = epicentro[2];
     cor[0] = 1.0;
     cor[1] = 1.0;
     cor[2] = 1.0;
@@ -60,7 +46,7 @@ Explosao::Explosao(const double pos[3], double r): raio(r), t(0), finalizado(fal
     glLightf(GL_LIGHT1, GL_CONSTANT_ATTENUATION, 2);
 }
 
-Explosao::~Explosao()
+BolaDeFogo::~BolaDeFogo()
 {
     glDisable(GL_LIGHT1);
 }
@@ -69,9 +55,9 @@ Explosao::~Explosao()
  * Retorna o número de homens de dano considerando um tanque na posição dada.
  * Usa o modelo definido nos comentários acima.
  */
-int Explosao::dano(double pos[3])
+int BolaDeFogo::dano(double pos[3])
 {
-    // Se o tanque estiver dentro do raio de explosão, causar dano 100%
+    // Se o tanque estiver dentro do raioProjetil de explosão, causar dano 100%
     double d = distancia(pos, epicentro);
     if (d < FRACAO_RAIO_DANO*raio)
     {
@@ -95,9 +81,9 @@ int Explosao::dano(double pos[3])
  * Modifica as características da Explosão para permitir que ela seja desenhada
  * no cenário.
  */
-bool Explosao::proximo_frame()
+bool BolaDeFogo::proximo_frame()
 {
-    // Primeira parte: Aumenta raio atual até chegar no raio máximo
+    // Primeira parte: Aumenta raioProjetil atual até chegar no raioProjetil máximo
     if (t <= frame_intervalos)
     {
         this->cor[2] = 1. - t/(2.*frame_intervalos);
@@ -123,11 +109,11 @@ bool Explosao::proximo_frame()
         finalizado = true;
     }
 
-    GLfloat cor_sombra[] = {
-        (GLfloat) 0.5*this->cor[0],
-        (GLfloat) 0.5*this->cor[1],
-        (GLfloat) 0.5*this->cor[2],
-        (GLfloat) 0.5*this->cor[3]
+    float cor_sombra[] = {
+            (float) 0.5 * this->cor[0],
+            (float) 0.5 * this->cor[1],
+            (float) 0.5 * this->cor[2],
+            (float) 0.5 * this->cor[3]
     };
     glLightfv(GL_LIGHT1, GL_DIFFUSE, this->cor);
     glLightfv(GL_LIGHT1, GL_AMBIENT, cor_sombra);
@@ -136,14 +122,13 @@ bool Explosao::proximo_frame()
     return !finalizado;
 }
 
-
 /**
  * Desenha a explosão como uma bola de fogo no local do epicentro!
  */
-void Explosao::desenhar()
+void BolaDeFogo::desenhar()
 {
     // Configura intensidade da fonte de luz
-    GLfloat sombra[] = {FRACAO_SOMBRA * cor[0], FRACAO_SOMBRA * cor[1], FRACAO_SOMBRA * cor[2], FRACAO_SOMBRA * cor[3]};
+    float sombra[] = {FRACAO_SOMBRA * cor[0], FRACAO_SOMBRA * cor[1], FRACAO_SOMBRA * cor[2], FRACAO_SOMBRA * cor[3]};
     glLightfv(GL_LIGHT1, GL_AMBIENT, sombra);
     glLightfv(GL_LIGHT1, GL_DIFFUSE, cor);
 
@@ -162,12 +147,42 @@ void Explosao::desenhar()
     glMaterialfv(GL_FRONT, GL_EMISSION, cor::PRETO);
 }
 
-
 /**
  * distancia()
  * Função auxiliar que retorna a distância euclidiana entre dois pontos dados.
  */
-double Explosao::distancia(double p1[3], double p2[3])
+double BolaDeFogo::distancia(double p1[3], double p2[3])
 {
     return sqrt(pow(p2[0] - p1[0], 2) + pow(p2[1] - p1[1], 2) + pow(p2[2] - p1[2], 2));
+}
+
+
+/* Bolas de fogo pré-definidas */
+
+/**
+ * Incinerador: Armamento básico
+ */
+BolaDeFogo *BolaDeFogo::ExplosaoIncinerador(const double *epicentro) {
+    return new BolaDeFogo(epicentro, RAIO_INCINERADOR);
+}
+
+/**
+ * Incinerador Mark II: dobro da força do incinerador.
+ */
+BolaDeFogo *BolaDeFogo::ExplosaoIncineradorMark2(const double *epicentro) {
+    return new BolaDeFogo(epicentro, 2 * RAIO_INCINERADOR);
+}
+
+/**
+ * Bomba 20 kilotons: Dobro da forma do Mark II. Faz um estrago!
+ */
+BolaDeFogo *BolaDeFogo::Explosao20KilotonNuke(const double *epicentro) {
+    return new BolaDeFogo(epicentro, 4 * RAIO_INCINERADOR);
+}
+
+/**
+ * Bomba 5 Megatons: Dobro do raioProjetil da de 20 kilotons, a arma mais forte!
+ */
+BolaDeFogo *BolaDeFogo::Explosao5MegatonNuke(const double *epicentro) {
+    return new BolaDeFogo(epicentro, 8 * RAIO_INCINERADOR);
 }

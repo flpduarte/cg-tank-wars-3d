@@ -16,7 +16,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include <constantes.hpp>
-#include "objetos/armas.hpp"
+#include "objetos/armas/armas.hpp"
 #include "../include/globals.hpp"
 #include "../include/interacoes.hpp"
 

@@ -21,7 +21,7 @@ namespace aux
 
     /* operações sobre vetores */
     double prod_escalar(const double A[3], const double B[3]);
-    double *prod_vetorial(const double A[3], const double B[3], double *res);
+    double *prod_vetorial(const double A[3], const double B[3], double *resultado);
 
 
     /* conversão de coordenadas esféricas para cartesianas */

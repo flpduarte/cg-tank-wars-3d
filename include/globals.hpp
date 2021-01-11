@@ -13,7 +13,7 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-#include <objetos/armas.hpp>
+#include <objetos/armas/armas.hpp>
 #include <mundo.hpp>
 
 

@@ -6,24 +6,33 @@ set(CMAKE_CXX_STANDARD 14)
 # Source Files
 set(SOURCE_FILES
         src/main.cpp
-        src/objetos/armas.cpp
         src/auxiliares/auxiliares.cpp
-        src/cenario.cpp
-        src/objetos/explosoes.cpp
+        src/objetos/armas/Arma.cpp
+        src/objetos/armas/armas.cpp
+        src/objetos/armas/Incinerador.cpp
+        src/objetos/armas/IncineradorMk2.cpp
+        src/objetos/armas/Bomba20Kilotons.cpp
+        src/objetos/armas/Bomba5Megatons.cpp
+        src/cenario/Cenario.cpp
+        src/objetos/explosoes/BolaDeFogo.cpp
         src/globals.cpp
         src/interacoes.cpp
         src/objetos/jogador.cpp
         src/ui/menu/Menu.cpp
         src/mundo.cpp
-        src/objetos/municao.cpp
         src/objetos2D.cpp
         src/objetos3D.cpp
-        src/terreno.cpp
+        src/cenario/Terreno.cpp
         src/ui/menu/ItemMenu.cpp
         src/ui/menu/ItemMenuBotao.cpp
         src/graphics/cor.cpp
         src/ui/menu/ItemMenuEditarNome.cpp
-        src/ui/menu/ItemMenuAlterarValorNumerico.cpp src/ui/menu/ItemMenuRetangular.cpp include/ui/ItemMenuRetangular.h src/objetos/Tanque.cpp include/objetos/Tanque.h src/objetos/Projetil.cpp include/objetos/Projetil.h)
+        src/ui/menu/ItemMenuAlterarValorNumerico.cpp
+        src/ui/menu/ItemMenuRetangular.cpp
+        src/cenario/Tanque.cpp
+        src/cenario/Projetil.cpp
+        src/cenario/CenarioObject.cpp
+        )
 
 add_executable(TankWars ${SOURCE_FILES})
 include_directories(include)

@@ -39,7 +39,7 @@ Jogador::Jogador(int i)
  * início de jogo:
  * - Pontos = 0
  * - Dolares = 0
- * - Armas: Apenas Incinerador, com QTD_INCINERADOR tiros
+ * - Armas: Apenas Incinerador, com QTD_INICIAL tiros
  */
 void Jogador::resetar_jogador()
 {
@@ -77,7 +77,7 @@ void Jogador::preparar_para_jogar()
     }
 }
 
-Municao *Jogador::atirarArmaAtual() {
+Arma *Jogador::atirarArmaAtual() {
     return lista_armas->atirarArmaAtual();
 }
 

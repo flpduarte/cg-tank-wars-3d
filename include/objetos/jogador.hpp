@@ -19,8 +19,8 @@
 #include <queue>
 #include <GL/glut.h>
 #include <globals.hpp>
-#include "Projetil.h"
-#include "municao.hpp"
+#include "cenario/Projetil.h"
+#include "objetos/armas/Arma.h"
 
 const int NUM_TIPOS_MORTE = 1;
 const int NUM_VARIACOES_MORTE[] = {4};    // vetor com variações possíveis
@@ -47,7 +47,7 @@ struct Jogador
     Jogador(int i);
     ~Jogador();
 
-    Municao *atirarArmaAtual();
+    Arma *atirarArmaAtual();
 
     void resetar_jogador();                             // Reseta a pontuação e as armas do jogador para a condição de início de partida.
     void preparar_para_jogar();                         // Prepara o jogador para o início da sua vez

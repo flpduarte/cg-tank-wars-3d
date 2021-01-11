@@ -18,8 +18,9 @@
 
 #include <GL/glut.h>
 #include "auxiliar/auxiliares.hpp"
+#include "CenarioObject.h"
 
-class Terreno
+class Terreno : public CenarioObject
 {
     /* Constantes */
     const double XMIN =   0.0;
@@ -69,7 +70,7 @@ class Terreno
 public:
     Terreno();
     ~Terreno();
-    void desenhar();
+    void desenhar() final;
     double z(double x, double y);           // retorna a altura no ponto (x, y)
     GLfloat *normal(double x, double y);     // Retorna o vetor vetorNormal ao terreno em (x, y)
 

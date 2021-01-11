@@ -347,7 +347,7 @@ void desenhar_circulo(const GLfloat r)
 /**
  * Desenha uma faixa circular em torno do eixo y.
  * Os vetores normais das faces é automaticamente determinado.
- * r     = raio da faixa.
+ * r     = raioProjetil da faixa.
  * L     = largura do faixa.
  * sinal = sinal do vetor vetorNormal. -1 = inverte o vetor vetorNormal. Para uso em super-
  * fícies internas.
@@ -373,7 +373,7 @@ void desenhar_faixa_circular(const GLfloat r, const GLfloat L, int sinal)
 }
 
 /**
- * Desenha um anel em torno do eixo y, com raio mínimo r e raio máximo R.
+ * Desenha um anel em torno do eixo y, com raioProjetil mínimo r e raioProjetil máximo R.
  * Anel localiza-se no plano XZ.
  * Vetor vetorNormal: (0, 1, 0) (direção positiva de y).
  */
@@ -391,7 +391,7 @@ void desenhar_anel(const GLfloat r, const GLfloat R)
 }
 
 /**
- * Desenha uma esfera de raio r e centrada na origem.
+ * Desenha uma esfera de raioProjetil r e centrada na origem.
  * Entrada apenas r: desenha a esfera inteira.
  * Entradas r, t0 e tf: Desenha latitudes [t0, tf].
  */

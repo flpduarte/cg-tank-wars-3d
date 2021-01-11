@@ -20,8 +20,8 @@
 #include <GL/glut.h>
 #include <graphics/cor.h>
 #include "auxiliar/auxiliares.hpp"
-#include "../include/terreno.hpp"
-#include "../include/constantes.hpp"
+#include "cenario/Terreno.h"
+#include "constantes.hpp"
 
 // Usar namespace aux, pois a classe terreno utiliza muito as funções auxiliares!
 using namespace aux;
@@ -29,7 +29,7 @@ using namespace aux;
 /**
  * Cria um terreno novo.
  */
-Terreno::Terreno()
+Terreno::Terreno() : CenarioObject()
 {
     // Nova semente para gerador de números aleatórios
     srand(time(NULL));		// semente do gerador de números aleatórios

@@ -11,9 +11,13 @@
  * Implementa cada tipo de munição declarada em armas.hpp
  */
 #include <iostream>
-#include <constantes.hpp>
-#include "objetos/armas.hpp"
+#include "objetos/armas/armas.hpp"
 #include "globals.hpp"
+#include <objetos/armas/Incinerador.h>
+#include <objetos/armas/IncineradorMk2.h>
+#include <objetos/armas/Bomba20Kilotons.h>
+#include <objetos/armas/Bomba5Megatons.h>
+
 
 /**
  * Cria a lista global de armamentos. Chamado no início do jogo (bomb.cpp)
@@ -21,7 +25,7 @@
 void criar_lista_global_armamentos()
 {
     lista_global_armamentos[0] = MunicaoEQtd(new Incinerador);
-    lista_global_armamentos[1] = MunicaoEQtd(new IncineradorM2);
+    lista_global_armamentos[1] = MunicaoEQtd(new IncineradorMk2);
     lista_global_armamentos[2] = MunicaoEQtd(new Bomba20Kilotons);
     lista_global_armamentos[3] = MunicaoEQtd(new Bomba5Megatons);
 }
@@ -33,8 +37,8 @@ MunicaoEQtd::MunicaoEQtd():
 
 // construtor usado ao criar a lista global: armazena munição e quantidade por lote
 // Entrada: apenas munição
-MunicaoEQtd::MunicaoEQtd(Municao *mun):
-    arma(mun), qtd(mun->qtd_por_lote) {}
+MunicaoEQtd::MunicaoEQtd(Arma *mun):
+    arma(mun), qtd(mun->quantidadePorLote) {}
 
 
 /**
@@ -83,7 +87,7 @@ void ListaArmamentos::selecionar_proxima()
 /**
  * Retorna o armamento ativo
  */
-Municao *ListaArmamentos::arma_atual()
+Arma *ListaArmamentos::arma_atual()
 {
     return lista[i_atual].arma;
 }
@@ -122,7 +126,7 @@ void ListaArmamentos::remover_lote(int indice, int qtd)
  * Note que esta função não troca o armamento ativo. A verificação se ainda há
  * tiros do armamento ativo deve ser realizada ao iniciar a vez do jogador.
  */
-Municao *ListaArmamentos::atirarArmaAtual()
+Arma *ListaArmamentos::atirarArmaAtual()
 {
     lista[i_atual].qtd--;
     return lista[i_atual].arma;
@@ -137,75 +141,7 @@ void ListaArmamentos::condicao_inicial()
 {
     for (int i = 0; i < N_ARMAMENTOS; i++)
     {
-        lista[i].qtd = lista[i].arma->qtd_inicial;
+        lista[i].qtd = lista[i].arma->quantidadeInicial;
     }
     i_atual = 0;
-}
-
-
-/* ---- Implementação dos armamentos ---- */
-// TODO: Definir constantes para todos os valores:
-// preço, qtd por lote, qtd inicial, etc.
-/**
- * Incinerador: Armamento básico
- */
-Incinerador::Incinerador()
-{
-    this->nome         = "Incinerador";
-    this->preco        = 3000;
-    this->qtd_por_lote = 100;
-    this->qtd_inicial  = QTD_INCINERADOR;
-    this->r_explosao   = RAIO_INCINERADOR;
-}
-int Incinerador::raio_explosao()
-{
-    return this->r_explosao;
-}
-
-/**
- * Incinerador Mark II: dobro da força do incinerador.
- */
-IncineradorM2::IncineradorM2()
-{
-    this->nome         = "Incinerador Mark II";
-    this->preco        = 4000;
-    this->qtd_por_lote = 10;
-    this->qtd_inicial  = 1;
-    this->r_explosao   = 2*RAIO_INCINERADOR;
-}
-int IncineradorM2::raio_explosao()
-{
-    return this->r_explosao;
-}
-
-/**
- * Bomba 20 kilotons: Dobro da forma do Mark II. Faz um estrago!
- */
-Bomba20Kilotons::Bomba20Kilotons()
-{
-    this->nome         = "Bomba 20 Kilotons";
-    this->preco        = 7000;
-    this->qtd_por_lote = 2;
-    this->qtd_inicial  = 1;
-    this->r_explosao   = 4*RAIO_INCINERADOR;
-}
-int Bomba20Kilotons::raio_explosao()
-{
-    return this->r_explosao;
-}
-
-/**
- * Bomba 5 Megatons: Dobro do raio da de 20 kilotons, a arma mais forte!
- */
-Bomba5Megatons::Bomba5Megatons()
-{
-    this->nome         = "Bomba 5 Megatons";
-    this->preco        = 10000;
-    this->qtd_por_lote = 1;
-    this->qtd_inicial  = 1;
-    this->r_explosao   = 8*RAIO_INCINERADOR;
-}
-int Bomba5Megatons::raio_explosao()
-{
-    return this->r_explosao;
 }

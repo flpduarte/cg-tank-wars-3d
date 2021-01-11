@@ -5,8 +5,8 @@
 #ifndef TANKWARS_PROJETIL_H
 #define TANKWARS_PROJETIL_H
 
-#include <cenario.hpp>
-#include "municao.hpp"
+#include <cenario/Cenario.hpp>
+#include <objetos/armas/Arma.h>
 
 class Projetil;
 
@@ -27,8 +27,8 @@ class Projetil;
  * do sistema de coordenadas do mundo.
  *
  * Propriedades
- * massa            = Massa do projétil. Para que a trajetória seja previsível,
- *                    todas as munições terão a mesma massa. Mantive esta proprie-
+ * getMassaProjetil            = Massa do projétil. Para que a trajetória seja previsível,
+ *                    todas as munições terão a mesma getMassaProjetil. Mantive esta proprie-
  *                    dade para o caso de eventualmente utilizar a interface para
  *                    outros tipos de projéteis, tal como o jogo original parece
  *                    fazer com a morte do tipo "Meltdown".
@@ -46,21 +46,22 @@ class Projetil;
  *                        Classes derivadas devem implementar esta função.
  *
  */
-class Projetil
+class Projetil : public CenarioObject
 {
     static constexpr double DT = 0.033;
 
-    Municao *municao;
+    Arma *arma;
     double X[6];            // Variáveis de estado: [x, y, z, vx, vy, vz]
     double F[3];            // Componentes da força resultante sobre o projétil: [Fx, Fy, Fz]
 
     public:
-    Projetil(Municao *m, Cenario *cenario, const double X0[6]);
+    Projetil(Arma *arma, Cenario *cenario, const double X0[6]);
 
+    double getRaio() const;             // Raio do projétil, para fins de detecção de colisão.
     double const *getPosicao() const;
     void atualizar_posicao();
 
-    void desenhar();
+    void desenhar() final;
     Explosao *detonar();        // produz a explosão da munição no local atual do projétil
 
 
