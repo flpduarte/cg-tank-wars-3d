@@ -15,7 +15,6 @@
 #ifndef ARMAS_HPP
 #define ARMAS_HPP
 
-#include <array>
 #include <objetos/armas/Arma.h>
 
 #define N_ARMAMENTOS 4
@@ -80,4 +79,6 @@ public:
 /* --- Funções --- */
 void criar_lista_global_armamentos();
 
+/* Lista Global de Armamentos. TODO: verificar posteriormente a possibilidade de colocar esta variável em outro arquivo */
+extern MunicaoEQtd lista_global_armamentos[N_ARMAMENTOS];
 #endif

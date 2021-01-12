@@ -5,7 +5,7 @@
 #include <iostream>
 #include <GL/glut.h>
 #include "cenario/Terreno.h"
-#include "cenario/Cenario.hpp"
+#include "cenario/Cenario.h"
 #include "objetos/jogador.hpp"
 #include "../include/globals.hpp"
 

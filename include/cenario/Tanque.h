@@ -18,12 +18,12 @@ enum TipoMorte
 #include <GL/glut.h>
 #include <vector>
 #include <queue>
-#include <globals.hpp>
 #include <cenario/CenarioObject.h>
 
 class Projetil;
 class Explosao;
 class Jogador;
+class Cenario;
 
 /**
  * Classe Tanque: é responsável pela representação física dos tanques no cenário.
@@ -44,22 +44,16 @@ public:
     static constexpr double HITBOX_TANQUE      = 3.*TAMANHO_TANQUE/4.;
     static constexpr double COMPR_CANHAO       = 0.75;         // comprimento do canhão, sem aplicar fator de escala
     static constexpr double RAIO_CANHAO        = 1/32.;
-
-    static const int POTENCIA_MAXIMA = 1000;
     static constexpr double FATOR_POT_VEL      = 0.16;
 
 private:
-    /* Animação do meltdown. TODO: Após implementar a classe Tanque, verificar a possibilidade de delegar a animação de
-     * explosão para outra classe. */
-    const unsigned int frame_interv_meltdown = 50;
-
     // Referência ao jogador correspondente a este tanque.
     Jogador &jogador;
 
     // Posição e cor do tanque
     double posicao[3];      // posição (x, y, z) do tanque
     double vetorNormal[3];   // orientação para cima do tanque. Deve ser unitário.
-    float corAtual[4]; // Cor considerando n. de homens. Atualizada pelo método getCorReal(). TODO: talvez esta variável seja desnecessária; confirmar.
+    float corAtual[4]; // Cor considerando n. de homens. Atualizada pelo método getCor(). TODO: talvez esta variável seja desnecessária; confirmar.
 
     // Estado atual do tanque
     int homens;
@@ -67,18 +61,18 @@ private:
 
     // Estes devem ser alterados via métodos para manter seus valores dentro de seus intervalos válidos.
     int anguloCanhao;               // em graus. Intervalo válido: [0, 180]. 0° = positivo eixo X (direita).
-    int potencia;                   // Intervalo válido: [0, 1000].
+    int potencia;                   // Intervalo válido: [0, 10*homens].
 
-private:
     // Formas de animação de morte do tanque.
-    // A forma de morrer do tanque será definida já no início da rodada!
+    const unsigned int frame_interv_meltdown = 50;
     int tipo_morte;         // Tipo de morte
     int variacao_morte;     // Variações entre os tipos de morte.
     unsigned int frame;     // número do frame de animação.
     bool animacaoFinalizada;   // indica se a animação finalizou ou não.
 
 public:
-    explicit Tanque(Jogador &jogador);
+    explicit Tanque(Jogador &jogador);              // Construtor baseado em um jogador
+    //Tanque();
 
     // getters
     bool isVivo() const;
@@ -86,9 +80,14 @@ public:
     std::string getAnguloEmString() const;          // Retorna o ângulo do tanque em formato de string
     int getPotencia() const;
     int getNumeroDeHomens() const;
-    float *getCorReal();                            // Calcula a cor real do tanque baseado no número de homens vivos.
     double *getPosicao();
     bool isAnimacaoFinalizada() const;
+
+    // Cor do tanque
+    const float *getCor() const;
+    void setCorBaseadoNoNumeroDeHomens();               // Define a cor do tanque baseado no número de homens vivos.
+    void setCorFracaoDaCorBase(double fracao);          // Define a cor como uma fracao [0.0, 1.0] da cor base. 0 = preto; 1 = cor total.
+    void setCor(const double *corNova);                 // Especifica a cor do tanque
 
     // modificadores do Jogador de referência
     void registrarVitoria() const;
@@ -110,19 +109,38 @@ public:
     const std::string &getNomeDaArmaAtual() const;
     void selecionarProximaArma() const;
 
-
-    void desenhar();
+    // Posição do tanque no mundo
+    void desenhar() override;
     void posicionar(const double nova_pos[3]);    // Posiciona o jogador nas coordenadas dada
     void definir_normal(const GLfloat normal[3]); // Define o sentido "para cima" do tanque
 
+    // Loop do jogo
     void preparar_para_jogar();                 // Prepara o jogador para o início da sua vez
-    Projetil *atirar(Cenario *cenario) const;     // Cria o projétil correspondente à arma atual
-    bool atingiu(const double *X) const;                // Retorna true se a posição do projétil recebida atinge o jogador atual
+    Projetil *atirar(Cenario *cenario) const;   // Cria o projétil correspondente à arma atual
+    bool atingiu(const double *X) const;        // Retorna true se a posição do projétil recebida atinge o jogador atual
+
+    // TODO: Delegar estes dois métodos para uma classe Explosao
     void morte_proximo_frame();                 // Executa a animação de morte do jogador atual.
     Explosao *gerarExplosaoAdicional() const;   // Cria a explosão adicional após a execução da animação de morte (se houver).
 
 private:
+    int potenciaMaxima() const;                 // Retorna a potência máxima do tanque (10 * homens)
     void meltdown();
+
+    // Uma classe exception utilizada apenas para controlar a porcentagem de cor usada pelo método setCorFracaoDaCorBase().
+    // Ajuda a capturar eventuais bugs na animação da morte do jogador.
+    class PorcentagemInvalida : public std::exception {
+        const std::string msgErro;
+    public:
+        explicit PorcentagemInvalida(double valorEnviado) :
+            std::exception(),
+            msgErro(std::string("Valor invalido em setCorFracaoDaCorBase(): fracao deve ser um numero real no intervalo [0, 1]; valor recebido foi ") + std::to_string(valorEnviado))
+        {}
+
+        const char *what() const _GLIBCXX_TXN_SAFE_DYN _GLIBCXX_NOTHROW override {
+            return msgErro.c_str();
+        }
+    };
 
 };
 

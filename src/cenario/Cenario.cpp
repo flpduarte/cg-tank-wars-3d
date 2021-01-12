@@ -19,6 +19,7 @@
 // desativar asserts qdo programa estiver funcionando
 //#define NDEBUG
 #include <GL/glut.h>
+#include <cenario/Cenario.h>
 #include <algorithm>
 #include <cassert>
 #include <cstdlib>
@@ -26,14 +27,15 @@
 #include <iterator>
 #include <iostream>
 #include <random>
+#include <objetos2D.hpp>
+#include <constantes.hpp>
 #include <graphics/cor.h>
 #include <objetos/armas/armas.hpp>
 #include <objetos/jogador.hpp>
 #include <cenario/Terreno.h>
-#include <cenario/Cenario.hpp>
-#include <objetos2D.hpp>
-#include <constantes.hpp>
+
 #include <objetos/explosoes/Explosao.h>
+#include <cenario/Projetil.h>
 
 /* --- Implementação da classe Cenario --- */
 
@@ -253,7 +255,7 @@ void Cenario::desenhar_na_viewport2D()
     glLoadIdentity();
     glPushMatrix();
     glTranslatef(JANELA_LARGURA/2, POS_PRIMEIRA_LINHA, 0);
-    desenharTextoCentralizado(tanqueEmFoco->getNome(), TAM_TEXTO, FONTE, tanqueEmFoco->getCorReal());
+    desenharTextoCentralizado(tanqueEmFoco->getNome(), TAM_TEXTO, FONTE, tanqueEmFoco->getCor());
     glPopMatrix();
 
     // 2a linha: anguloCanhao à esquerda, Arma à direita
@@ -331,7 +333,7 @@ void Cenario::desenhar()
 
     // Desenha os jogadores
     for (auto tanque : tanques) {
-        if (tanque.isVivo()) {
+        if (tanque.visivel) {
             tanque.desenhar();
         }
     }
@@ -445,7 +447,7 @@ void Cenario::animar_projetil()
     projetil->atualizar_posicao();
 
     // Se projétil atingiu um obstáculo, cria uma explosão no local atual
-    if (detectarColisaoEntreProjetilEObtaculo())
+    if (ocorreuColisaoEntreProjetilEObstaculo())
     {
         explosao = projetil->detonar();
         delete projetil;
@@ -466,7 +468,7 @@ void Cenario::animar_projetil()
  *
  * @return true, se o projétil atingiu o terreno ou um tanque; false caso contrário.
  */
-bool Cenario::detectarColisaoEntreProjetilEObtaculo()
+bool Cenario::ocorreuColisaoEntreProjetilEObstaculo()
 {
     return atingiuTerreno() || atingiuUmTanque();
 }
@@ -548,6 +550,7 @@ void Cenario::registrarDanoAosTanquesAfetados() {
         if (tanque.isVivo())
         {
             tanque.removerHomens(explosao->dano(tanque.getPosicao()));
+            tanque.setCorBaseadoNoNumeroDeHomens();
 
             // Inclui jogador na fila para executar animação de morte se ele morreu.
             if (!tanque.isVivo())
@@ -673,6 +676,7 @@ void Cenario::animar_morte_jogador()
     if (tanqueMorrendo->isAnimacaoFinalizada())
     {
         explosao = tanqueMorrendo->gerarExplosaoAdicional();
+        tanqueMorrendo->visivel = false;
         tanqueMorrendo = nullptr;
 
         // Anima uma eventual explosao que a animação possa ter criada.

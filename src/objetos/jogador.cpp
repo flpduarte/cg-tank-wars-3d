@@ -13,12 +13,9 @@
  */
 // para desativar asserts, ativar este comando antes de #define <cassert>
 //#define NDEBUG
-#include <cmath>
 #include <string>
-#include <graphics/cor.h>
 #include <objetos/jogador.hpp>
-#include <globals.hpp>
-#include <constantes.hpp>
+#include <objetos/armas/armas.hpp>
 
 void definir_cor(float *, int);     // função local para definir a corBase do tanque
 

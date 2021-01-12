@@ -15,12 +15,9 @@
 #define JOGADOR_HPP
 
 #include <string>
-#include <vector>
-#include <queue>
 #include <GL/glut.h>
 #include <globals.hpp>
-#include "cenario/Projetil.h"
-#include "objetos/armas/Arma.h"
+#include <objetos/armas/Arma.h>
 
 const int NUM_TIPOS_MORTE = 1;
 const int NUM_VARIACOES_MORTE[] = {4};    // vetor com variações possíveis

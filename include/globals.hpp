@@ -13,11 +13,8 @@
 #ifndef GLOBALS_HPP
 #define GLOBALS_HPP
 
-#include <objetos/armas/armas.hpp>
 #include <mundo.hpp>
 
-
 extern Mundo &mundo;
-extern MunicaoEQtd lista_global_armamentos[N_ARMAMENTOS];
 
 #endif

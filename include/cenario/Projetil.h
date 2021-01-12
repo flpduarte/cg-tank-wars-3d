@@ -5,7 +5,7 @@
 #ifndef TANKWARS_PROJETIL_H
 #define TANKWARS_PROJETIL_H
 
-#include <cenario/Cenario.hpp>
+#include <cenario/Cenario.h>
 #include <objetos/armas/Arma.h>
 
 class Projetil;

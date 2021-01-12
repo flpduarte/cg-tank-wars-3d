@@ -4,11 +4,14 @@
 
 #include <cmath>
 #include <cenario/Tanque.h>
+#include <cenario/Projetil.h>
 #include <objetos/jogador.hpp>
+#include <objetos/armas/armas.hpp>
+#include <objetos/explosoes/Explosao.h>
 #include <graphics/cor.h>
 #include <auxiliar/auxiliares.hpp>
 #include <objetos3D.hpp>
-#include <objetos/explosoes/Explosao.h>
+
 #include "objetos/explosoes/BolaDeFogo.h"
 
 Tanque::Tanque(Jogador &jogador) : CenarioObject(), jogador(jogador) {
@@ -61,25 +64,41 @@ int Tanque::getNumeroDeHomens() const {
     return homens;
 }
 
-/**
- * Retorna a corBase "real" do tanque - homens/100 * corBase.
- */
-float *Tanque::getCorReal()
-{
-    // altera só as componentes RGB. Componente A permanece = 1.
-    for (int i = 0; i < 3; i++)
-    {
-        corAtual[i] = jogador.corBase[i] * homens / 100.;
-    }
-    return corAtual;
-}
-
 double *Tanque::getPosicao() {
     return posicao;
 }
 
 bool Tanque::isAnimacaoFinalizada() const {
     return animacaoFinalizada;
+}
+
+
+const float *Tanque::getCor() const
+{
+    return corAtual;
+}
+
+void Tanque::setCorBaseadoNoNumeroDeHomens() {
+    for (int i = 0; i < 3; i++)
+    {
+        corAtual[i] = jogador.corBase[i] * homens / 100.;
+    }
+}
+
+void Tanque::setCor(const double *corNova) {
+    for (int i = 0; i < 3; i++)
+    {
+        corAtual[i] = corNova[i];
+    }
+}
+
+void Tanque::setCorFracaoDaCorBase(double fracao) {
+    if (fracao < 0.0 || fracao > 1.0) {
+        throw Tanque::PorcentagemInvalida(fracao);
+    }
+    for (int i = 0; i < 3; i++) {
+        corAtual[i] = fracao*jogador.corBase[i];
+    }
 }
 
 
@@ -106,15 +125,17 @@ void Tanque::incrementarAnguloSentidoAntiHorario() {
 }
 
 void Tanque::aumentarPotenciaLento() {
-    if (potencia < POTENCIA_MAXIMA) {
+    if (potencia < potenciaMaxima()) {
         potencia++;
     }
 }
 
+int Tanque::potenciaMaxima() const { return 10 * homens; }
+
 void Tanque::aumentarPotenciaRapido() {
     potencia += 100;
-    if (potencia > POTENCIA_MAXIMA) {
-        potencia = POTENCIA_MAXIMA;
+    if (potencia > potenciaMaxima()) {
+        potencia = potenciaMaxima();
     }
 }
 
@@ -165,7 +186,7 @@ void Tanque::desenhar()
     // Rotaciona o tanque e o desenha
     glPushMatrix();
     glRotated(anguloCorpoDoTanque, eixo[0], eixo[1], eixo[2]);
-    desenhar_tanque(this->getCorReal());                  // em Objetos3D
+    desenhar_tanque(this->getCor());                  // em Objetos3D
     glPopMatrix();
 
     // Prepara para desenhar o canhão: translada centro dos eixos para a esfera
@@ -298,17 +319,16 @@ void Tanque::meltdown()
     {
         if (frame < frame_interv_meltdown)
         {
-            this->homens = (int) ((double)frame/frame_interv_meltdown * 100.); // incrementa, depois usa o frame
+            setCorFracaoDaCorBase((double) frame / frame_interv_meltdown); // incrementa, depois usa o frame
         }
         else if (frame < 2*frame_interv_meltdown)
         {
-            this->homens = (int) ( 100. * (1 - (double)(frame - frame_interv_meltdown)/frame_interv_meltdown ));
+            setCorFracaoDaCorBase(1 - (double) (frame - frame_interv_meltdown) / frame_interv_meltdown);
         }
 
             // Finalizar animação
         else
         {
-            this->homens = 0;
             this->animacaoFinalizada = true;
         }
     }
@@ -320,26 +340,22 @@ void Tanque::meltdown()
         // Brilho do tanque antes da explosão
         if (frame < frame_interv_meltdown)
         {
-            this->homens = (int) ((double)frame/frame_interv_meltdown * 100.);
+            setCorFracaoDaCorBase((double) frame / frame_interv_meltdown);
         }
         else if (frame < 2*frame_interv_meltdown)
         {
-            this->homens = (int) ((double)(frame - frame_interv_meltdown)/frame_interv_meltdown * 100.);
+            setCorFracaoDaCorBase((double) (frame - frame_interv_meltdown) / frame_interv_meltdown);
         }
         else if (frame < 3*frame_interv_meltdown)
         {
-            this->homens = (int) ((double)(frame - 2*frame_interv_meltdown)/frame_interv_meltdown * 100.);
+            setCorFracaoDaCorBase((double) (frame - 2 * frame_interv_meltdown) / frame_interv_meltdown);
         }
         else if (frame < 4*frame_interv_meltdown)
         {
-            this->homens = (int) (100. * (1. - (frame - 3.*frame_interv_meltdown)/frame_interv_meltdown ));
+            setCorFracaoDaCorBase((1. - (frame - 3. * frame_interv_meltdown) / frame_interv_meltdown));
         }
-
-            // cria explosão após animação.
         else
         {
-            this->homens = 0;
-            //mundo.cenario->criar_explosao(this->posicao, RAIO_INCINERADOR * pow(2, variacao_morte - 1));
             this->animacaoFinalizada = true;
         }
     }

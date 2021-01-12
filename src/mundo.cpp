@@ -19,7 +19,7 @@
 #include <iostream>
 #include <objetos/armas/armas.hpp>
 #include <objetos/jogador.hpp>
-#include <cenario/Cenario.hpp>
+#include <cenario/Cenario.h>
 #include <mundo.hpp>
 #include <ui/Menu.hpp>
 #include <ui/ItemMenuAlterarValorNumerico.h>

@@ -13,10 +13,10 @@
  */
 class Bomba5Megatons : public Arma
 {
-    static constexpr char NOME[] = "Incinerador Mark II";
-    static const int QUANTIDADE_INICIAL = 2;
-    static const int PRECO_POR_LOTE = 4000;
-    static const int QUANTIDADE_POR_LOTE = 10;
+    static constexpr char NOME[] = "Bomba 5 Megatons";
+    static const int QUANTIDADE_INICIAL = 1;
+    static const int PRECO_POR_LOTE = 10000;
+    static const int QUANTIDADE_POR_LOTE = 1;
 
 public:
     Bomba5Megatons();

@@ -66,7 +66,7 @@ class Cenario
 
 
     /* Objetos no cenário */
-    //std::set<int, CenarioObject &> objetos;
+    //std::set<int, CenarioObject *> objetos;
     Terreno *terreno;                           // Terreno atual
     std::vector<Tanque> tanques;                // Lista de tanques no cenário, na ordem da esquerda para a direita
     Projetil *projetil;                         // Projétil em voo
@@ -82,7 +82,6 @@ class Cenario
     std::queue<Tanque *> filaTanquesMortos;     // Armazena uma referência ao tanque (ponteiro).
 
 
-    // Funções para exibir o cenário
 public:
     explicit Cenario(const std::vector<Jogador *> &listaJogadores);
     ~Cenario();
@@ -93,7 +92,7 @@ public:
     double getCoordenadaZ(double x, double y);      // Retorna a coordenada z do solo em (x, y)
 
     // Verificar se a posição do projétil atinge algum obstáculo no cenário
-    bool detectarColisaoEntreProjetilEObtaculo();
+    bool ocorreuColisaoEntreProjetilEObstaculo();
 private:
     bool atingiuTerreno();
     bool atingiuUmTanque();
